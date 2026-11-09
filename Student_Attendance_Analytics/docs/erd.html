@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ERD v2 (short) · Student Attendance Analytics System</title>
+<style>
+  @page { size: A3 landscape; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: #1f2d3a; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1f877b; padding-bottom: 8px; margin-bottom: 10px; }
+  h1 { margin: 0; font-size: 24px; }
+  .sub { color: #5b6b78; font-size: 13px; }
+  .diagram { display: flex; justify-content: center; }
+  .diagram svg { width: 100% !important; max-width: none !important; height: 222mm !important; }
+  .legend { display: flex; gap: 24px; flex-wrap: wrap; font-size: 12px; color: #5b6b78; margin-top: 6px; }
+  .legend b { color: #1f2d3a; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; break-inside: avoid; }
+  caption { text-align: left; font-weight: 700; font-size: 13px; padding: 4px 0; color: #1f877b; }
+  th, td { border: 1px solid #d7e4e2; padding: 2px 6px; text-align: left; vertical-align: top; }
+  th { background: #eef5f4; }
+  td.k { font-weight: 700; color: #1f877b; white-space: nowrap; }
+  .tbl { break-inside: avoid; }
+  .tbl p { margin: 2px 0 0; font-size: 11px; color: #5b6b78; }
+  .rules { font-size: 12px; margin: 0 0 10px; padding: 8px 12px; background: #eef5f4; border-left: 3px solid #1f877b; }
+</style>
+</head>
+<body>
+
+<!-- ======================= PAGE 1: main ERD ======================= -->
+<section class="page">
+  <header>
+    <div>
+      <h1>1. ERD: the project tables</h1>
+      <div class="sub">Student Attendance Analytics System · Plan v2.0 · Laravel + MySQL · database <b>attendance_db</b></div>
+    </div>
+    <div class="sub">Page 1 of 3 · 15 project tables · Crow's foot notation</div>
+  </header>
+
+  <div class="diagram">
+<pre class="mermaid">
+erDiagram
+  academic_years ||--o{ school_classes : "has"
+  users |o--o{ school_classes : "homeroom teacher of"
+  school_classes ||--o{ students : "enrolls"
+  guardians ||--o{ guardian_student : "is parent in"
+  students ||--o{ guardian_student : "is child in"
+  users ||--o{ teaching_assignments : "teaches"
+  school_classes ||--o{ teaching_assignments : "has"
+  subjects ||--o{ teaching_assignments : "is taught in"
+  school_classes ||--o{ timetable_slots : "scheduled in"
+  subjects ||--o{ timetable_slots : "scheduled as"
+  users ||--o{ timetable_slots : "teaches at"
+  school_classes ||--o{ attendance_sessions : "has"
+  subjects ||--o{ attendance_sessions : "is for"
+  users ||--o{ attendance_sessions : "records"
+  attendance_sessions ||--|{ attendance_records : "contains"
+  students ||--o{ attendance_records : "has"
+  attendance_records ||--o{ attendance_corrections : "corrected in"
+  users ||--o{ attendance_corrections : "made"
+  students ||--o{ interventions : "followed up by"
+  users ||--o{ interventions : "created"
+  guardians ||--o{ parent_messages : "receives"
+  students ||--o{ parent_messages : "is about"
+  users |o--o{ parent_messages : "sent"
+  users ||--o{ alerts : "is warned by"
+  students |o--o{ alerts : "is about"
+  timetable_slots |o--o{ alerts : "not recorded"
+
+  users {
+    bigint id PK
+    string name "Latin name"
+    string name_km "Khmer name"
+    string email UK "nullable"
+    string phone UK "nullable"
+    string password
+    enum role "admin, teacher"
+    string locale "en or km"
+  }
+  academic_years {
+    bigint id PK
+    string name UK "2025-2026"
+    date start_date
+    date end_date
+    boolean is_current
+  }
+  school_classes {
+    bigint id PK
+    bigint academic_year_id FK
+    bigint homeroom_teacher_id FK "users.id"
+    string name "10A"
+    tinyint grade "10, 11, 12"
+    string room
+  }
+  subjects {
+    bigint id PK
+    string code UK "MAT"
+    string name_en
+    string name_km
+    tinyint hours_per_week
+  }
+  students {
+    bigint id PK
+    bigint school_class_id FK
+    string student_code UK
+    string name_km
+    string name_latin
+    enum gender "male, female"
+    date date_of_birth
+    enum status "active, inactive"
+  }
+  guardians {
+    bigint id PK
+    string name
+    string name_km
+    string phone UK
+    string telegram_chat_id "nullable"
+  }
+  guardian_student {
+    bigint id PK
+    bigint guardian_id FK
+    bigint student_id FK
+    enum relation "father, mother, guardian"
+  }
+  teaching_assignments {
+    bigint id PK
+    bigint teacher_id FK "users.id"
+    bigint school_class_id FK
+    bigint subject_id FK
+  }
+  timetable_slots {
+    bigint id PK
+    bigint school_class_id FK
+    bigint subject_id FK
+    bigint teacher_id FK "users.id"
+    tinyint weekday "1 Mon to 6 Sat"
+    tinyint period "1 to 8"
+    time start_time
+    time end_time
+  }
+  attendance_sessions {
+    bigint id PK
+    bigint school_class_id FK
+    bigint subject_id FK
+    bigint teacher_id FK "users.id"
+    date date
+    tinyint period
+  }
+  attendance_records {
+    bigint id PK
+    bigint attendance_session_id FK
+    bigint student_id FK
+    enum status "present, absent"
+    enum absence_reason "nullable"
+    string note "nullable"
+  }
+  attendance_corrections {
+    bigint id PK
+    bigint attendance_record_id FK
+    bigint changed_by FK "users.id"
+    enum old_status
+    enum new_status
+    string reason
+  }
+  interventions {
+    bigint id PK
+    bigint student_id FK
+    bigint created_by FK "users.id"
+    string action
+    date action_date
+    date follow_up_date
+    decimal rate_before
+    decimal rate_after
+    enum status "open, closed"
+  }
+  parent_messages {
+    bigint id PK
+    bigint guardian_id FK
+    bigint student_id FK
+    bigint sent_by FK "users.id, nullable"
+    enum type "absence_alert, monthly_report"
+    enum channel "telegram, sms"
+    text body
+    enum status "pending, sent, failed"
+    timestamp sent_at
+  }
+  alerts {
+    bigint id PK
+    bigint teacher_id FK "users.id"
+    enum type "absent_streak, risk_up, not_recorded"
+    bigint student_id FK "nullable"
+    bigint timetable_slot_id FK "nullable"
+    date date
+    string message
+    timestamp handled_at
+  }
+</pre>
+  </div>
+
+  <div class="legend">
+    <span><b>PK</b> primary key</span>
+    <span><b>FK</b> foreign key</span>
+    <span><b>UK</b> unique</span>
+    <span><b>||</b> exactly one</span>
+    <span><b>|o</b> zero or one</span>
+    <span><b>o{</b> zero or many</span>
+    <span><b>|{</b> one or many</span>
+    <span>Every table also has <b>created_at</b> and <b>updated_at</b>.</span>
+  </div>
+</section>
+
+<!-- ======================= PAGE 3: dictionary, school data ======================= -->
+<section class="page">
+  <header>
+    <div>
+      <h1>2. Data dictionary: school data</h1>
+      <div class="sub">Users, the school structure, students and their parents</div>
+    </div>
+    <div class="sub">Page 2 of 3 · Student Attendance Analytics System</div>
+  </header>
+
+  <p class="rules"><b>Plan v2.0 rules built into the database:</b> only Admin and Teacher log in · parents are contacts that receive Telegram or SMS messages · attendance is only Present or Absent, with an optional absence reason.</p>
+
+  <div class="grid">
+    <div class="tbl">
+      <table>
+        <caption>users</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td>name</td><td>varchar</td><td>Name in Latin letters</td></tr>
+        <tr><td>name_km</td><td>varchar</td><td>Name in Khmer</td></tr>
+        <tr><td>email</td><td>varchar</td><td>Unique, optional</td></tr>
+        <tr><td>phone</td><td>varchar</td><td>Unique, optional; can be used to log in</td></tr>
+        <tr><td>password</td><td>varchar</td><td>Hashed (bcrypt), never plain text</td></tr>
+        <tr><td>role</td><td>enum</td><td>admin or teacher</td></tr>
+        <tr><td>locale</td><td>varchar</td><td>Preferred language: en or km</td></tr>
+        <tr><td>email_verified_at</td><td>timestamp</td><td>Laravel default, optional</td></tr>
+        <tr><td>remember_token</td><td>varchar</td><td>For "Remember me"</td></tr>
+      </table>
+      <p>Only school staff have accounts. The role decides which screens a user can open.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>academic_years</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td>name</td><td>varchar</td><td>Unique, e.g. 2025-2026</td></tr>
+        <tr><td>start_date</td><td>date</td><td>First school day</td></tr>
+        <tr><td>end_date</td><td>date</td><td>Last school day</td></tr>
+        <tr><td>is_current</td><td>boolean</td><td>Only one year is current</td></tr>
+      </table>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>school_classes</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">academic_year_id</td><td>bigint</td><td>FK → academic_years.id</td></tr>
+        <tr><td class="k">homeroom_teacher_id</td><td>bigint</td><td>FK → users.id, optional</td></tr>
+        <tr><td>name</td><td>varchar</td><td>e.g. 10A</td></tr>
+        <tr><td>grade</td><td>tinyint</td><td>10, 11 or 12</td></tr>
+        <tr><td>room</td><td>varchar</td><td>Room number</td></tr>
+      </table>
+      <p>Unique: (academic_year_id, name). Named school_classes because "class" is a reserved word in PHP.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>subjects</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td>code</td><td>varchar</td><td>Unique short code, e.g. MAT</td></tr>
+        <tr><td>name_en</td><td>varchar</td><td>English name</td></tr>
+        <tr><td>name_km</td><td>varchar</td><td>Khmer name</td></tr>
+        <tr><td>hours_per_week</td><td>tinyint</td><td>Lessons per week</td></tr>
+      </table>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>students</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">school_class_id</td><td>bigint</td><td>FK → school_classes.id</td></tr>
+        <tr><td>student_code</td><td>varchar</td><td>Unique, e.g. S-10A-001</td></tr>
+        <tr><td>name_km</td><td>varchar</td><td>Khmer name</td></tr>
+        <tr><td>name_latin</td><td>varchar</td><td>Latin name</td></tr>
+        <tr><td>gender</td><td>enum</td><td>male, female</td></tr>
+        <tr><td>date_of_birth</td><td>date</td><td>Optional</td></tr>
+        <tr><td>status</td><td>enum</td><td>active, inactive (left the school)</td></tr>
+      </table>
+      <p>Students do not log in. They are records managed by the admin.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>guardians</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td>name</td><td>varchar</td><td>Latin name</td></tr>
+        <tr><td>name_km</td><td>varchar</td><td>Khmer name</td></tr>
+        <tr><td>phone</td><td>varchar</td><td>Unique; used for SMS</td></tr>
+        <tr><td>telegram_chat_id</td><td>varchar</td><td>Set when the parent joins the school's Telegram bot</td></tr>
+      </table>
+      <p>Parents are contacts only. Telegram if they joined the bot, otherwise SMS.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>guardian_student</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">guardian_id</td><td>bigint</td><td>FK → guardians.id</td></tr>
+        <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id</td></tr>
+        <tr><td>relation</td><td>enum</td><td>father, mother, guardian</td></tr>
+      </table>
+      <p>Pivot table: one parent can have many children, one child can have many parents. Unique: (guardian_id, student_id).</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>teaching_assignments</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (role teacher)</td></tr>
+        <tr><td class="k">school_class_id</td><td>bigint</td><td>FK → school_classes.id</td></tr>
+        <tr><td class="k">subject_id</td><td>bigint</td><td>FK → subjects.id</td></tr>
+      </table>
+      <p>Who teaches which subject in which class. A teacher sees only these classes. Unique: (school_class_id, subject_id).</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>timetable_slots</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">school_class_id</td><td>bigint</td><td>FK → school_classes.id</td></tr>
+        <tr><td class="k">subject_id</td><td>bigint</td><td>FK → subjects.id</td></tr>
+        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id</td></tr>
+        <tr><td>weekday</td><td>tinyint</td><td>1 Monday … 6 Saturday</td></tr>
+        <tr><td>period</td><td>tinyint</td><td>Lesson number, 1 to 8</td></tr>
+        <tr><td>start_time / end_time</td><td>time</td><td>e.g. 07:00 to 08:00</td></tr>
+      </table>
+      <p>The weekly timetable. Gives the teacher "today's schedule". Unique: (class, weekday, period) and (teacher, weekday, period), so nobody is in two places at once.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PAGE 4: dictionary, attendance and follow-up ======================= -->
+<section class="page">
+  <header>
+    <div>
+      <h1>3. Data dictionary: attendance, analytics and parent contact</h1>
+      <div class="sub">Lessons, records, the audit log, follow-ups, parent messages and early warnings</div>
+    </div>
+    <div class="sub">Page 3 of 3 · Student Attendance Analytics System</div>
+  </header>
+
+  <div class="grid">
+    <div class="tbl">
+      <table>
+        <caption>attendance_sessions</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">school_class_id</td><td>bigint</td><td>FK → school_classes.id</td></tr>
+        <tr><td class="k">subject_id</td><td>bigint</td><td>FK → subjects.id</td></tr>
+        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (who recorded it)</td></tr>
+        <tr><td>date</td><td>date</td><td>Day of the lesson</td></tr>
+        <tr><td>period</td><td>tinyint</td><td>Lesson period, 1 to 8</td></tr>
+      </table>
+      <p>One lesson where attendance was taken. Unique: (school_class_id, date, period), so the same lesson cannot be recorded twice.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>attendance_records</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">attendance_session_id</td><td>bigint</td><td>FK → attendance_sessions.id</td></tr>
+        <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id</td></tr>
+        <tr><td>status</td><td>enum</td><td>present or absent, nothing else</td></tr>
+        <tr><td>absence_reason</td><td>enum</td><td>Optional: not_given, sick, family_matter, school_activity, other</td></tr>
+        <tr><td>note</td><td>varchar</td><td>Optional</td></tr>
+      </table>
+      <p>One row per student per lesson. Unique: (attendance_session_id, student_id). All analytics come from this table. Rate = present ÷ all records.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>attendance_corrections</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">attendance_record_id</td><td>bigint</td><td>FK → attendance_records.id</td></tr>
+        <tr><td class="k">changed_by</td><td>bigint</td><td>FK → users.id (who made the change)</td></tr>
+        <tr><td>old_status</td><td>enum</td><td>present or absent, before</td></tr>
+        <tr><td>new_status</td><td>enum</td><td>present or absent, after</td></tr>
+        <tr><td>reason</td><td>varchar</td><td>Why it was changed</td></tr>
+        <tr><td>created_at</td><td>timestamp</td><td>When the change was made</td></tr>
+      </table>
+      <p>Audit log. Teachers correct on the same day; the admin corrects past days. Records are never changed silently.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>interventions</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id</td></tr>
+        <tr><td class="k">created_by</td><td>bigint</td><td>FK → users.id</td></tr>
+        <tr><td>action</td><td>varchar</td><td>e.g. Parent message (Telegram), meeting with parent</td></tr>
+        <tr><td>notes</td><td>text</td><td>Optional</td></tr>
+        <tr><td>action_date</td><td>date</td><td>When the action was taken</td></tr>
+        <tr><td>follow_up_date</td><td>date</td><td>When to check again</td></tr>
+        <tr><td>rate_before / rate_after</td><td>decimal</td><td>Attendance rate before, and when closed</td></tr>
+        <tr><td>status</td><td>enum</td><td>open or closed</td></tr>
+        <tr><td>closed_at</td><td>timestamp</td><td>When it was closed</td></tr>
+      </table>
+      <p>Follow-up actions for at-risk students. rate_before and rate_after show whether the action helped.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>parent_messages</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">guardian_id</td><td>bigint</td><td>FK → guardians.id</td></tr>
+        <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id</td></tr>
+        <tr><td class="k">sent_by</td><td>bigint</td><td>FK → users.id; empty = sent by the system</td></tr>
+        <tr><td>type</td><td>enum</td><td>absence_alert or monthly_report</td></tr>
+        <tr><td>channel</td><td>enum</td><td>telegram or sms</td></tr>
+        <tr><td>body</td><td>text</td><td>Message text, Khmer then English</td></tr>
+        <tr><td>status</td><td>enum</td><td>pending, sent, failed</td></tr>
+        <tr><td>error</td><td>varchar</td><td>Why sending failed</td></tr>
+        <tr><td>sent_at</td><td>timestamp</td><td>When it was delivered</td></tr>
+      </table>
+      <p>Every message to a parent, so the school can prove what was sent and when.</p>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <caption>alerts</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
+        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (who should see it)</td></tr>
+        <tr><td>type</td><td>enum</td><td>absent_streak, risk_up, not_recorded</td></tr>
+        <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id, for student alerts</td></tr>
+        <tr><td class="k">timetable_slot_id</td><td>bigint</td><td>FK → timetable_slots.id, for "not recorded"</td></tr>
+        <tr><td>date</td><td>date</td><td>Day of the alert</td></tr>
+        <tr><td>message</td><td>varchar</td><td>e.g. Absent 3 school days in a row</td></tr>
+        <tr><td>handled_at</td><td>timestamp</td><td>When the teacher handled it</td></tr>
+        <tr><td class="k">handled_by</td><td>bigint</td><td>FK → users.id</td></tr>
+      </table>
+      <p>Early warnings. Risk levels themselves are calculated, not stored: Critical (&lt;70% or 5+ days in a row), High (70–79%, 3–4 days or down 10+ points), Medium (80–89% or down 5–9), Low.</p>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    themeVariables: {
+      fontFamily: 'Segoe UI, Arial, sans-serif',
+      primaryColor: '#eef5f4',
+      primaryBorderColor: '#1f877b',
+      primaryTextColor: '#1f2d3a',
+      lineColor: '#1f877b',
+      tertiaryColor: '#ffffff',
+    },
+    er: { useMaxWidth: true, fontSize: 14 },
+  });
+  mermaid.run();
+</script>
+</body>
+</html>

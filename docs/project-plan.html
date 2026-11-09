@@ -1,0 +1,322 @@
+<title>Student Attendance Analytics System</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;600&display=swap">
+<style>
+/* Layout: one readable column, a short header, numbered sections that follow the project order */
+:root {
+  --bg: #eef5f4;
+  --surface: #ffffff;
+  --fg: #1f2d3a;
+  --muted: #5b6b78;
+  --line: #d7e4e2;
+  --accent: #1f877b;
+  --accent-soft: #dcefeb;
+  --present: #3aa876;
+  --absent: #dc6b6b;
+  --late: #e0a83a;
+  --permission: #7c8fd6;
+  --display: "Plus Jakarta Sans", "Kantumruy Pro", system-ui, sans-serif;
+  --body: "Plus Jakarta Sans", "Kantumruy Pro", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17223d; --surface: #1e2b4a; --fg: #e3eaf6; --muted: #a3b1c8;
+    --line: #31416b; --accent: #3fb8a9; --accent-soft: #1f3f55; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17223d; --surface: #1e2b4a; --fg: #e3eaf6; --muted: #a3b1c8;
+  --line: #31416b; --accent: #3fb8a9; --accent-soft: #1f3f55; color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.65 var(--body);
+}
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 28px;
+}
+header { display: grid; gap: 10px; }
+.eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+}
+h1 { font: 800 clamp(28px, 5vw, 40px)/1.15 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+h1 .km { display: block; font-size: .55em; font-weight: 600; color: var(--muted); margin-top: 6px; }
+.lead { color: var(--muted); max-width: 65ch; margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.chip {
+  font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+  background: var(--accent-soft); color: var(--fg);
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px clamp(18px, 4vw, 32px);
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+h2 { font: 700 21px/1.3 var(--display); letter-spacing: -.01em; margin: 0; display: flex; gap: 12px; align-items: baseline; }
+h2 .n { font-size: 13px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+h3 { font: 700 15px/1.4 var(--display); margin: 6px 0 0; }
+p { margin: 0; max-width: 68ch; }
+ul, ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+code { font-size: 13px; background: var(--accent-soft); padding: 1px 6px; border-radius: 6px; }
+
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+
+.status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.status::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.done { color: var(--present); font-weight: 700; }
+.next { color: var(--accent); font-weight: 700; }
+
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.cols > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+
+.note {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 12px 16px;
+  border-radius: 0 12px 12px 0;
+}
+pre.mermaid { background: transparent; margin: 0; overflow-x: auto; }
+footer { color: var(--muted); font-size: 13px; text-align: center; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Final-year thesis · project plan · Plan v2.0</span>
+    <h1>Student Attendance Analytics System
+      <span class="km">ប្រព័ន្ធវិភាគវត្តមានសិស្ស</span></h1>
+    <p class="lead">A Laravel web system and a Java Android app that let a Cambodian high school take attendance in about one minute per class, and find the students who need help before it is too late.</p>
+    <div class="facts">
+      <span class="chip">Laravel + MySQL</span>
+      <span class="chip">Android (Java)</span>
+      <span class="chip">2 login roles + parent messages</span>
+      <span class="chip">English + Khmer</span>
+      <span class="chip">Solo student project</span>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="n">01</span>Problem and goal</h2>
+    <p>Many high schools in Cambodia still record attendance on paper. It is slow, easy to lose, and nobody sees the patterns: which students miss school often, which days are worst, and which classes have a problem. By the time someone notices, a student may already be close to dropping out.</p>
+    <h3>Objectives</h3>
+    <ul>
+      <li>Let teachers record attendance on a phone in under one minute for a class of 40 to 50 students.</li>
+      <li>Give the school office a dashboard with attendance rates, trends and comparisons.</li>
+      <li>Flag at-risk students automatically with 4 risk levels (Critical, High, Medium, Low) and early-warning alerts.</li>
+      <li>Tell parents quickly: an absence alert and a monthly report by Telegram (or SMS), in Khmer and English.</li>
+      <li>Export reports to PDF and Excel.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">02</span>Build approach</h2>
+    <div class="cols">
+      <div>
+        <h3>Web first</h3>
+        <p>Laravel holds the database, the admin pages and the API. The Android app only sends and reads data through that API, so it cannot work until the web side exists.</p>
+      </div>
+      <div>
+        <h3>Static first, then dynamic</h3>
+        <p>Every page is built as plain HTML with fake data first, so the design can be fixed while change is cheap. Then each page moves into Laravel Blade and the fake data is replaced with real data. The Android app follows the same idea with static XML screens first.</p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Part</th><th>Technology</th></tr></thead>
+        <tbody>
+          <tr><td>Web</td><td>Laravel, Blade, Tailwind CSS, daisyUI, ApexCharts</td></tr>
+          <tr><td>Database</td><td>MySQL (already installed with WAMP)</td></tr>
+          <tr><td>API</td><td>Laravel Sanctum token login, JSON under <code>/api/v1</code></td></tr>
+          <tr><td>Android</td><td>Java, XML layouts, Material 3, Retrofit + Gson, MPAndroidChart</td></tr>
+          <tr><td>Language</td><td>Laravel <code>lang/en</code> + <code>lang/km</code>; Android <code>values</code> + <code>values-km</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-size:14px">Folders: <code>static/</code> design pages · <code>web/</code> Laravel · <code>android/</code> app · <code>docs/</code> report and slides.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">03</span>Users and what they can do</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Role</th><th>Uses</th><th>Can do</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Admin</strong></td><td>Web</td><td>Manage academic year, classes, subjects, teachers, timetable, students and parent contacts; see all analytics; correct past attendance; export reports</td></tr>
+          <tr><td><strong>Teacher</strong></td><td>Android (and web)</td><td>See today's schedule; take and edit attendance for own classes; see alerts, analytics and history; record follow-ups; send parent messages</td></tr>
+          <tr><td><strong>Parent</strong></td><td>Telegram / SMS (no login)</td><td>Receives absence alerts and a monthly report about their child</td></tr>
+          <tr><td><strong>Student</strong></td><td>No login</td><td>The subject of the data: risk levels and follow-ups help them stay in school</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Permission rules (agreed)</h3>
+    <ul>
+      <li>A teacher sees only their own classes and subjects, and edits attendance on the <strong>same day only</strong>. Past days are corrected by the admin.</li>
+      <li>Teachers can use both the Android app and the web.</li>
+      <li>A homeroom teacher also sees their whole homeroom class, in all subjects, with its at-risk students.</li>
+      <li>An absent student can have an optional reason: not given, sick, family matter, school activity, other.</li>
+      <li>Only Admin and Teacher log in. Students and parents have no accounts (decided: Plan A). Student and parent accounts are future work.</li>
+      <li>Parents receive Telegram messages if they joined the school's bot, otherwise SMS. Every message is logged.</li>
+      <li>Every change to saved attendance is written to an audit log (Corrections page). The Insights page finds patterns automatically. Interventions record follow-up actions for at-risk students.</li>
+    </ul>
+    <p>Attendance has only two statuses, always shown with a label as well as a colour:</p>
+    <div class="facts">
+      <span class="status" style="--c:var(--present)">Present</span>
+      <span class="status" style="--c:var(--absent)">Absent</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">04</span>Main flow</h2>
+    <pre class="mermaid">
+flowchart LR
+  A[Admin sets up year,<br/>classes, subjects] --> B[Admin imports students<br/>and assigns teachers]
+  B --> C[Teacher opens app,<br/>sees today's schedule]
+  C --> D[Everyone starts Present;<br/>teacher taps exceptions]
+  D --> E[Saved to Laravel<br/>through the API]
+  E --> F[Dashboard, charts<br/>and at-risk list update]
+  F --> G[Parent gets a<br/>Telegram alert]
+    </pre>
+    <p class="note">The take attendance screen is the most important screen in the system. Because everyone starts as Present, the teacher only taps the few students who are absent, then reviews and submits.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">05</span>Features</h2>
+    <div class="cols">
+      <div>
+        <h3>Core</h3>
+        <ul>
+          <li>Login for Admin and Teacher on web and app</li>
+          <li>Manage students, classes, subjects, teachers, parent contacts, assignments and the timetable</li>
+          <li>Import students from Excel</li>
+          <li>Take attendance; edit on the same day</li>
+          <li>History per student and per class</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Analytics</h3>
+        <ul>
+          <li>Cards: total students, today's rate, absent today, at-risk count</li>
+          <li>Monthly and weekly trend</li>
+          <li>Absences by day of week and by subject</li>
+          <li>Class comparison</li>
+          <li>Risk levels, early-warning alerts, follow-ups, parent messages, PDF / Excel export</li>
+        </ul>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:14px">Rate = (present + late) ÷ all records. No timetable module: the teacher picks class, subject and period directly, which saves about a day of work.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">06</span>Database</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Table</th><th>Holds</th></tr></thead>
+        <tbody>
+          <tr><td><code>users</code></td><td>name, email or phone, password, role (admin / teacher), language</td></tr>
+          <tr><td><code>academic_years</code></td><td>school years, e.g. 2025–2026</td></tr>
+          <tr><td><code>school_classes</code></td><td>grade 10–12, name (10A), room, homeroom teacher, year</td></tr>
+          <tr><td><code>subjects</code></td><td>code, English and Khmer name, hours per week</td></tr>
+          <tr><td><code>students</code></td><td>student code, Khmer name, Latin name, gender, class, active or inactive</td></tr>
+          <tr><td><code>guardians</code></td><td>parent contacts: name, phone, Telegram chat id (no login)</td></tr>
+          <tr><td><code>guardian_student</code></td><td>which parent is linked to which child</td></tr>
+          <tr><td><code>teaching_assignments</code></td><td>teacher + class + subject</td></tr>
+          <tr><td><code>timetable_slots</code></td><td>weekly timetable: class, subject, teacher, weekday, period, time</td></tr>
+          <tr><td><code>attendance_sessions</code></td><td>one lesson: class, subject, teacher, date, period</td></tr>
+          <tr><td><code>attendance_records</code></td><td>one student in one session: present or absent, optional absence reason</td></tr>
+          <tr><td><code>attendance_corrections</code></td><td>audit log: who changed a saved record, from what to what, and why</td></tr>
+          <tr><td><code>interventions</code></td><td>follow-up actions for at-risk students, open or closed</td></tr>
+          <tr><td><code>parent_messages</code></td><td>every Telegram or SMS message sent to a parent</td></tr>
+          <tr><td><code>alerts</code></td><td>early warnings for teachers, and whether they were handled</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">07</span>Screens and design</h2>
+    <div class="cols">
+      <div>
+        <h3>Web (12 pages, built)</h3>
+        <p>Login, Dashboard, Take Attendance, Reports, At-Risk Students, Students, Classes, Subjects, Teachers, Parents, Teaching Assignments, Profile.</p>
+      </div>
+      <div>
+        <h3>Android (planned)</h3>
+        <p><strong>Teacher:</strong> Login, Home (today's classes), Take Attendance, History, Class Report, Profile.<br>
+        <strong>Student / Parent:</strong> Login, Home (rate ring and this month), Calendar history, Profile; parents get a child picker.</p>
+      </div>
+    </div>
+    <h3>Design decisions</h3>
+    <ul>
+      <li>Modern glass style: see-through blurred panels over a soft colour wash, floating sidebar and top bar, large round corners.</li>
+      <li>Soft teal as the main colour, chosen to be easy on the eyes and different from the green used for Present.</li>
+      <li>No pure white page and no pure black text; status colours toned down.</li>
+      <li>Light mode, and a dark mode in dark navy blue instead of black.</li>
+      <li>Plus Jakarta Sans for English, Kantumruy Pro for Khmer.</li>
+      <li>English / Khmer switch and light / dark switch on every page.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">08</span>Schedule and progress</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Day</th><th>Build</th><th>Report</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Static HTML design of all web pages</td><td>Ch.1 Introduction</td><td class="done">Done</td></tr>
+          <tr><td>2</td><td>Laravel setup, database, login with roles, pages into Blade</td><td>Ch.2 Literature review</td><td class="next">Next</td></tr>
+          <tr><td>3</td><td>Admin pages with real data, take attendance, REST API</td><td>Ch.3 Analysis</td><td></td></tr>
+          <tr><td>4</td><td>Android static screens, then login and attendance connected</td><td>Ch.3 Design (ERD, flow)</td><td></td></tr>
+          <tr><td>5</td><td>Analytics, at-risk, exports; student and parent app view</td><td>Ch.4 Implementation</td><td></td></tr>
+          <tr><td>6</td><td>Full Khmer translation, polish, 2 months of demo data</td><td>Ch.5 Testing</td><td></td></tr>
+          <tr><td>7</td><td>Testing, bug fixes, slides, demo practice, backups</td><td>Ch.6 Conclusion</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>If time runs short, drop in this order</h3>
+    <ol>
+      <li>Excel import (load students with a seeder instead)</li>
+      <li>PDF export (keep Excel)</li>
+      <li>Khmer on Android (keep Khmer on web)</li>
+      <li>Real Telegram sending (keep the logged messages)</li>
+    </ol>
+    <p>Never drop: login, take attendance, the analytics dashboard, the at-risk list.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">09</span>Testing and defense day</h2>
+    <ul>
+      <li>One command builds a full demo school: 6 classes, about 250 students, 2 months of attendance, one admin and six teacher logins, a weekly timetable and a parent contact for every student.</li>
+      <li>Automated tests for login, saving attendance, role permissions and analytics numbers.</li>
+      <li>App tested on the emulator first, then on a real phone on the same Wi-Fi.</li>
+      <li>Demo story: teacher saves attendance on the phone → admin dashboard changes → student appears in the at-risk list → parent receives a Telegram alert → report is exported.</li>
+      <li>Backups: a screen recording of the demo and a database copy on a USB drive.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">10</span>Open questions</h2>
+    <ul>
+      <li>What is the new defense date? The 7-day schedule may be relaxed or tightened.</li>
+      <li>What is the real system name and school name? "Attendance" and "Demo High School" are placeholders.</li>
+      <li>Are the Khmer labels and sample names correct? They need a check by a Khmer reader.</li>
+    </ul>
+  </section>
+
+  <footer>Living plan · updated as the project moves forward</footer>
+</div>

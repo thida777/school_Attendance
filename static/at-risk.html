@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>At-Risk Students · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="at-risk">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <!-- How many students at each risk level -->
+      <div class="grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-error)"><i data-lucide="octagon-alert"></i></div><div class="stat-title" data-km="ធ្ងន់ធ្ងរ">Critical</div><div class="stat-value" data-kpi="Critical">2</div><div class="stat-desc" data-km="ពិនិត្យសប្តាហ៍នេះ">review this week</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-warning)"><i data-lucide="triangle-alert"></i></div><div class="stat-title" data-km="ខ្ពស់">High</div><div class="stat-value" data-kpi="High">7</div><div class="stat-desc" data-km="គ្រូតាមដាន">teacher follow-up</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-info)"><i data-lucide="eye"></i></div><div class="stat-title" data-km="មធ្យម">Medium</div><div class="stat-value" data-kpi="Medium">2</div><div class="stat-desc" data-km="បន្តតាមដាន">keep watching</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-success)"><i data-lucide="circle-check"></i></div><div class="stat-title" data-km="ទាប">Low</div><div class="stat-value" data-kpi="Low">237</div><div class="stat-desc" data-km="មិនចាំបាច់ធ្វើអ្វី">no action needed</div></div></div>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="card-title text-base" data-km="បញ្ជីអាទិភាព">Priority list</h3>
+              <p class="text-sm opacity-60" data-km="សិស្សដែលត្រូវជួយមុនគេ នៅខាងលើ">Students who need help first are at the top.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <select class="select w-auto"><option>All levels</option><option>Critical</option><option>High</option><option>Medium</option></select>
+              <select class="select w-auto"><option>All classes</option><option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option><option>12B</option></select>
+              <button class="btn" data-toast="Excel file downloaded"><i data-lucide="file-spreadsheet" class="size-4"></i><span data-km="ទាញយកបញ្ជី">Export list</span></button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="table" id="risk-table">
+              <thead>
+                <tr><th>Student</th><th>Class</th><th>Risk · suggested action</th><th class="num">Rate</th><th class="num">Trend</th><th class="num">In a row</th><th>Pattern</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr data-risk="Chea Rithy"><td><a href="student-details.html" class="font-medium link link-hover">Chea Rithy</a><div class="text-xs opacity-60">ជា រិទ្ធី</div></td><td>11B</td><td><span class="badge badge-error" data-live="level">Critical</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Admin review · meet parent</div></td><td class="num" data-live="rate">68.4%</td><td class="num text-error" data-live="trend">▼ 9.8</td><td class="num" data-live="streak">4</td><td>Mon · P1</td><td class="text-right"><a href="interventions.html" class="btn btn-sm btn-primary"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="San Devi"><td><a href="student-details.html" class="font-medium link link-hover">San Devi</a><div class="text-xs opacity-60">សាន ទេវី</div></td><td>12B</td><td><span class="badge badge-error" data-live="level">Critical</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Admin review · meet parent</div></td><td class="num" data-live="rate">90.2%</td><td class="num text-error" data-live="trend">▼ 3.1</td><td class="num" data-live="streak">5</td><td>Since Mon 20 Oct</td><td class="text-right"><a href="interventions.html" class="btn btn-sm btn-primary"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Touch Vuthy"><td><a href="student-details.html" class="font-medium link link-hover">Touch Vuthy</a><div class="text-xs opacity-60">ទូច វុទ្ធី</div></td><td>10B</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">77.5%</td><td class="num text-error" data-live="trend">▼ 11.3</td><td class="num" data-live="streak">2</td><td>Mathematics</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Ouk Sreypov"><td><a href="student-details.html" class="font-medium link link-hover">Ouk Sreypov</a><div class="text-xs opacity-60">អ៊ុក ស្រីពៅ</div></td><td>10A</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">86.0%</td><td class="num text-error" data-live="trend">▼ 8.2</td><td class="num" data-live="streak">3</td><td>Mon · P1</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Kong Mealea"><td><a href="student-details.html" class="font-medium link link-hover">Kong Mealea</a><div class="text-xs opacity-60">គង់ មាលា</div></td><td>11A</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">88.5%</td><td class="num text-error" data-live="trend">▼ 6.0</td><td class="num" data-live="streak">3</td><td>Wed · P4</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Meas Sokha"><td><a href="student-details.html" class="font-medium link link-hover">Meas Sokha</a><div class="text-xs opacity-60">មាស សុខា</div></td><td>12A</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">74.1%</td><td class="num text-error" data-live="trend">▼ 4.1</td><td class="num" data-live="streak">1</td><td>Sat</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Nhem Vichea"><td><a href="student-details.html" class="font-medium link link-hover">Nhem Vichea</a><div class="text-xs opacity-60">ញ៉ែម វិជ្ជា</div></td><td>11B</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">76.2%</td><td class="num" data-live="trend">▼ 2.0</td><td class="num" data-live="streak">0</td><td>Physics</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Duong Panha"><td><a href="student-details.html" class="font-medium link link-hover">Duong Panha</a><div class="text-xs opacity-60">ដួង បញ្ញា</div></td><td>10B</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">78.8%</td><td class="num" data-live="trend">▼ 1.5</td><td class="num" data-live="streak">0</td><td>Mon · P1</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Run Veasna"><td><a href="student-details.html" class="font-medium link link-hover">Run Veasna</a><div class="text-xs opacity-60">រុន វាសនា</div></td><td>11B</td><td><span class="badge badge-warning" data-live="level">High</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Follow up · message parent</div></td><td class="num" data-live="rate">79.3%</td><td class="num" data-live="trend">▼ 0.8</td><td class="num" data-live="streak">1</td><td>Physics</td><td class="text-right"><a href="interventions.html" class="btn btn-sm"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a></td></tr>
+                <tr data-risk="Sao Bunthoeun"><td><a href="student-details.html" class="font-medium link link-hover">Sao Bunthoeun</a><div class="text-xs opacity-60">សៅ ប៊ុនធឿន</div></td><td>11B</td><td><span class="badge badge-info" data-live="level">Medium</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Watch · check reason</div></td><td class="num" data-live="rate">87.9%</td><td class="num text-error" data-live="trend">▼ 6.4</td><td class="num" data-live="streak">1</td><td>Mon · P1</td><td class="text-right"><button class="btn btn-sm" data-toast="Message sent to the parent"><i data-lucide="send" class="size-4"></i><span data-km="ជូនដំណឹង">Notify</span></button></td></tr>
+                <tr data-risk="Ly Bopha"><td><a href="student-details.html" class="font-medium link link-hover">Ly Bopha</a><div class="text-xs opacity-60">លី បុប្ផា</div></td><td>12B</td><td><span class="badge badge-info" data-live="level">Medium</span><div class="mt-1 text-xs whitespace-nowrap opacity-60" data-live="action">Watch · check reason</div></td><td class="num" data-live="rate">84.2%</td><td class="num" data-live="trend">▲ 0.5</td><td class="num" data-live="streak">0</td><td>No reason given ×4</td><td class="text-right"><button class="btn btn-sm" data-toast="Message sent to the parent"><i data-lucide="send" class="size-4"></i><span data-km="ជូនដំណឹង">Notify</span></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- The rules, so every reader knows why a student is on this list -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <h3 class="card-title text-base" data-km="របៀបកំណត់កម្រិតហានិភ័យ">How the risk level is decided</h3>
+          <p class="text-sm opacity-60" data-km="ប្រើកម្រិតខ្ពស់បំផុតដែលត្រូវ។ និន្នាការ = ៤ សប្តាហ៍ចុងក្រោយ ធៀបនឹង ៤ សប្តាហ៍មុន។">The highest matching level is used. Trend = last 4 weeks compared with the 4 weeks before.</p>
+          <div class="overflow-x-auto">
+            <table class="table table-sm">
+              <thead><tr><th>Level</th><th>Rule (any one is enough)</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge badge-error">Critical</span></td><td>Rate below 70%, or absent 5+ school days in a row</td></tr>
+                <tr><td><span class="badge badge-warning">High</span></td><td>Rate 70–79%, or absent 3–4 days in a row, or trend down 10+ points</td></tr>
+                <tr><td><span class="badge badge-info">Medium</span></td><td>Rate 80–89%, or trend down 5–9 points, or 3+ absences with no reason this month</td></tr>
+                <tr><td><span class="badge badge-success">Low</span></td><td>Rate 90% or higher, and the trend is stable or improving</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs opacity-60" data-km="កម្រិតហានិភ័យជាការព្រមានដំបូង មិនមែនជាការទស្សន៍ទាយទេ។ មនុស្សជាអ្នកសម្រេចចិត្ត។">A risk level is an early warning, not a prediction. People decide what to do.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

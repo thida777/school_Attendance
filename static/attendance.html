@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Take Attendance · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="attendance">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <!-- Where the teacher is in the flow -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body py-4">
+          <ul class="steps w-full text-xs sm:text-sm" id="steps">
+            <li class="step" data-km="ជ្រើសថ្នាក់">Choose class</li>
+            <li class="step" data-km="ស្រង់វត្តមាន">Mark</li>
+            <li class="step" data-km="ពិនិត្យ">Review</li>
+            <li class="step" data-km="រួចរាល់">Done</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ===== Step 1: today's schedule ===== -->
+      <section id="view-choose" class="space-y-4">
+        <div class="flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 class="text-xl font-bold" data-km="ថ្នាក់ថ្ងៃនេះ">Today's classes</h2>
+            <p class="text-sm opacity-60" id="today-label"></p>
+          </div>
+          <p class="text-sm opacity-60" id="today-progress"></p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3" id="schedule"></div>
+
+        <!-- Rare case: a class that is not on today's schedule -->
+        <div class="collapse collapse-arrow bg-base-100 border-base-300 border">
+          <input type="checkbox" />
+          <div class="collapse-title font-medium">
+            <span class="flex items-center gap-2"><i data-lucide="calendar-search" class="size-4"></i><span data-km="ថ្នាក់ ឬកាលបរិច្ឆេទផ្សេង">Other class or date</span></span>
+          </div>
+          <div class="collapse-content">
+            <form id="other-form" class="grid grid-cols-1 items-end gap-x-4 sm:grid-cols-2 xl:grid-cols-5">
+              <fieldset class="fieldset"><legend class="fieldset-legend" data-km="ថ្នាក់">Class</legend><select id="o-class" class="select w-full"><option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option><option>12B</option></select></fieldset>
+              <fieldset class="fieldset"><legend class="fieldset-legend" data-km="មុខវិជ្ជា">Subject</legend><select id="o-subject" class="select w-full"><option>Mathematics</option><option>Khmer Literature</option><option>Physics</option><option>Chemistry</option><option>English</option><option>History</option></select></fieldset>
+              <fieldset class="fieldset"><legend class="fieldset-legend" data-km="កាលបរិច្ឆេទ">Date</legend><input type="date" id="o-date" class="input w-full" required /></fieldset>
+              <fieldset class="fieldset"><legend class="fieldset-legend" data-km="ម៉ោងសិក្សា">Period</legend><select id="o-period" class="select w-full"><option>Period 1 · 07:00</option><option>Period 2 · 08:00</option><option>Period 3 · 09:15</option><option>Period 4 · 10:15</option><option>Period 5 · 13:30</option></select></fieldset>
+              <button class="btn btn-primary mb-1"><i data-lucide="play" class="size-4"></i><span data-km="ចាប់ផ្តើម">Start</span></button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Step 2: mark students ===== -->
+      <section id="view-mark" class="hidden space-y-4">
+        <!-- Session header with live progress ring -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body flex-row flex-wrap items-center gap-4">
+            <button class="btn btn-ghost btn-square" id="back-btn" aria-label="back to today's classes"><i data-lucide="arrow-left" class="size-5"></i></button>
+            <div class="min-w-0 grow">
+              <h2 class="text-xl font-bold" id="session-title"></h2>
+              <p class="text-sm opacity-60" id="session-sub"></p>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="radial-progress text-success font-bold" id="ring" style="--value:100; --size:4.75rem; --thickness:7px;" role="progressbar" aria-valuenow="100">100%</div>
+              <div class="space-y-1 text-sm">
+                <div class="flex items-center gap-2"><i data-lucide="circle-check" class="text-success size-4"></i><span id="n-present" class="font-semibold">0</span><span class="opacity-60" data-km="មានវត្តមាន">Present</span></div>
+                <div class="flex items-center gap-2"><i data-lucide="circle-x" class="text-error size-4"></i><span id="n-absent" class="font-semibold">0</span><span class="opacity-60" data-km="អវត្តមាន">Absent</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tools: search, filter, mark all -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body gap-4">
+            <div class="flex flex-wrap items-center gap-2">
+              <label class="input grow sm:max-w-xs">
+                <i data-lucide="search" class="size-4 opacity-50"></i>
+                <input type="search" id="search" placeholder="Search name or ID" />
+              </label>
+              <div role="tablist" class="tabs tabs-box tabs-sm" id="filter-tabs">
+                <button role="tab" class="tab tab-active" data-filter="all"><span data-km="ទាំងអស់">All</span>&nbsp;<span id="f-all"></span></button>
+                <button role="tab" class="tab" data-filter="P"><span data-km="មានវត្តមាន">Present</span>&nbsp;<span id="f-P"></span></button>
+                <button role="tab" class="tab" data-filter="A"><span data-km="អវត្តមាន">Absent</span>&nbsp;<span id="f-A"></span></button>
+              </div>
+              <button class="btn btn-sm ms-auto" id="all-present"><i data-lucide="check-check" class="size-4"></i><span data-km="ទាំងអស់មានវត្តមាន">Mark all present</span></button>
+            </div>
+            <p class="flex items-center gap-2 text-sm opacity-70">
+              <i data-lucide="hand" class="size-4"></i>
+              <span data-km="សិស្សទាំងអស់ចាប់ផ្តើមជា «មានវត្តមាន»។ ចុចលើកាតសិស្សដែលអវត្តមាន។">Everyone starts as Present. Tap the card of each student who is absent.</span>
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-6" id="tiles"></div>
+
+            <!-- Empty state for search / filter -->
+            <div id="tiles-empty" class="hidden flex-col items-center gap-2 py-10 text-center">
+              <span class="bg-base-200 grid size-12 place-items-center rounded-full"><i data-lucide="search-x" class="size-6 opacity-60"></i></span>
+              <div class="font-medium" data-km="រកមិនឃើញសិស្ស">No students found</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating action bar -->
+        <div class="sticky bottom-4 z-20">
+          <div class="bg-base-100 border-base-300 rounded-box flex flex-wrap items-center justify-between gap-3 border p-3 ps-5 shadow-lg" style="background-color: var(--glass-strong); backdrop-filter: blur(22px);">
+            <span class="text-sm" id="bar-text"></span>
+            <button class="btn btn-primary" id="review-btn"><span data-km="ពិនិត្យ និងបញ្ជូន">Review &amp; submit</span><i data-lucide="arrow-right" class="size-4"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Step 4: done ===== -->
+      <section id="view-done" class="hidden">
+        <div class="card bg-base-100 border-base-300 mx-auto max-w-lg border">
+          <div class="card-body items-center text-center">
+            <span class="bg-success/10 text-success grid size-20 place-items-center rounded-full"><i data-lucide="circle-check-big" class="size-10"></i></span>
+            <h2 class="mt-2 text-2xl font-bold" data-km="បានបញ្ជូនវត្តមានដោយជោគជ័យ">Attendance submitted</h2>
+            <p class="opacity-60" id="done-sub"></p>
+            <div class="mt-4 grid w-full grid-cols-2 gap-3">
+              <div class="bg-success/10 rounded-box p-4"><div class="text-success flex items-center justify-center gap-1 text-sm font-semibold"><i data-lucide="check" class="size-4"></i><span data-km="មានវត្តមាន">Present</span></div><div class="text-3xl font-bold" id="done-present">0</div></div>
+              <div class="bg-error/10 rounded-box p-4"><div class="text-error flex items-center justify-center gap-1 text-sm font-semibold"><i data-lucide="x" class="size-4"></i><span data-km="អវត្តមាន">Absent</span></div><div class="text-3xl font-bold" id="done-absent">0</div></div>
+            </div>
+            <div class="mt-2 flex flex-wrap justify-center gap-1" id="done-names"></div>
+            <div class="card-actions mt-6 w-full flex-col sm:flex-row">
+              <button class="btn btn-primary w-full sm:w-auto sm:grow" id="next-btn"><span id="next-label"></span><i data-lucide="arrow-right" class="size-4"></i></button>
+              <a href="monitoring.html" class="btn w-full sm:w-auto sm:grow"><i data-lucide="list-checks" class="size-4"></i><span data-km="មើលកំណត់ត្រា">View records</span></a>
+            </div>
+            <button class="btn btn-ghost btn-sm mt-1" id="edit-btn"><i data-lucide="pencil" class="size-4"></i><span data-km="កែប្រែវត្តមាននេះ">Edit this attendance</span></button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<!-- ===== Step 3: review before saving ===== -->
+<dialog id="review_modal" class="modal">
+  <div class="modal-box max-w-sm">
+    <h3 class="text-lg font-bold" data-km="ពិនិត្យមុនបញ្ជូន">Review attendance</h3>
+    <p class="mt-1 text-sm opacity-60" id="review-session"></p>
+    <div class="mt-4 grid grid-cols-2 gap-3">
+      <div class="bg-success/10 rounded-box p-4">
+        <div class="text-success flex items-center gap-1 text-sm font-semibold"><i data-lucide="check" class="size-4"></i><span data-km="មានវត្តមាន">Present</span></div>
+        <div class="text-3xl font-bold" id="review-present">0</div>
+      </div>
+      <div class="bg-error/10 rounded-box p-4">
+        <div class="text-error flex items-center gap-1 text-sm font-semibold"><i data-lucide="x" class="size-4"></i><span data-km="អវត្តមាន">Absent</span></div>
+        <div class="text-3xl font-bold" id="review-absent">0</div>
+      </div>
+    </div>
+    <div id="review-reasons" class="mt-3 hidden">
+      <div class="text-sm font-semibold"><span data-km="មូលហេតុអវត្តមាន">Absence reason</span> <span class="font-normal opacity-60" data-km="(ជម្រើស អាចបន្ថែមក្រោយបាន)">(optional, can be added later)</span></div>
+      <ul class="mt-2 max-h-52 space-y-2 overflow-y-auto" id="review-names"></ul>
+    </div>
+    <div class="modal-action">
+      <form method="dialog"><button class="btn btn-ghost" data-km="ត្រឡប់ទៅកែ">Back</button></form>
+      <button class="btn btn-primary" id="confirm-save"><i data-lucide="send" class="size-4"></i><span data-km="បញ្ជូន">Submit</span></button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<!-- Undo bar, shown for a few seconds after each tap -->
+<div class="toast toast-center toast-bottom z-50 mb-20 hidden" id="undo-toast">
+  <div class="alert bg-neutral text-neutral-content border-0 shadow-lg">
+    <span id="undo-text"></span>
+    <button class="btn btn-sm btn-ghost text-neutral-content" id="undo-btn"><i data-lucide="undo-2" class="size-4"></i><span data-km="មិនធ្វើវិញ">Undo</span></button>
+  </div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // ---------- Fake data. Laravel will send the teacher's timetable and each class roster. ----------
+  // Class rosters (ROSTER) and today's saved results (todaySessions) come from app.js
+  // A teacher sees only their own periods (same as the Android app); an admin sees the whole school's day
+  const SCHEDULE = (ROLE === 'teacher'
+    ? [
+        { period: 1, time: '07:00–08:00', cls: '10A', subject: 'Mathematics' },
+        { period: 2, time: '08:00–09:00', cls: '10B', subject: 'Mathematics' },
+        { period: 4, time: '10:15–11:15', cls: '11A', subject: 'Mathematics' },
+      ]
+    : [
+        { period: 1, time: '07:00–08:00', cls: '10A', subject: 'Mathematics' },
+        { period: 2, time: '08:00–09:00', cls: '10B', subject: 'Khmer Literature' },
+        { period: 3, time: '09:15–10:15', cls: '11B', subject: 'Physics' },
+        { period: 4, time: '10:15–11:15', cls: '12A', subject: 'English' },
+        { period: 5, time: '13:30–14:30', cls: '11A', subject: 'Chemistry' },
+      ]
+  ).map((s) => {
+    const saved = todaySessions()[sessionKey(s)];
+    const size = CLASS_SIZES[s.cls];
+    return { ...s, size, done: saved ? { present: size - saved.absent.length, absent: saved.absent.length } : null };
+  });
+
+  // ---------- State ----------
+  let session = null; // the class being marked
+  let students = []; // [{ name, id }]
+  let marks = []; // 'P' or 'A' for each student
+  let filter = 'all';
+  let lastChange = null; // for Undo
+  let undoTimer;
+
+  const $ = (id) => document.getElementById(id);
+  const t = (en, km) => (isKhmer() ? km : en);
+  const subject = (s) => (isKhmer() && kmFor(s)) || s; // subject name in the current language
+  const initials = (name) => name.split(' ').map((w) => w[0]).join('');
+  const today = new Date();
+
+  function showView(name, step) {
+    ['choose', 'mark', 'done'].forEach((v) => $('view-' + v).classList.toggle('hidden', v !== name));
+    document.querySelectorAll('#steps .step').forEach((li, i) => li.classList.toggle('step-primary', i < step));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ---------- Step 1: schedule cards ----------
+  function drawSchedule() {
+    const [day, month] = today.toDateString().split(' ');
+    $('today-label').textContent = isKhmer()
+      ? `ថ្ងៃ${DAYS_KM[day]} ទី${today.getDate()} ខែ${MONTHS_KM[month]} ឆ្នាំ${today.getFullYear()}`
+      : today.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const doneCount = SCHEDULE.filter((s) => s.done).length;
+    $('today-progress').textContent = t(`${doneCount} of ${SCHEDULE.length} classes marked`, `បានស្រង់ ${doneCount} ក្នុង ${SCHEDULE.length} ថ្នាក់`);
+    const nextIndex = SCHEDULE.findIndex((s) => !s.done);
+
+    $('schedule').innerHTML = SCHEDULE.map((s, i) => {
+      const isNext = i === nextIndex;
+      const status = s.done
+        ? `<span class="badge badge-soft badge-success"><i data-lucide="check" class="size-3.5"></i>${t('Done', 'រួចរាល់')} · ${s.done.present}/${s.size}</span>`
+        : isNext
+          ? `<span class="badge badge-soft badge-primary"><i data-lucide="clock" class="size-3.5"></i>${t('Up next', 'បន្ទាប់')}</span>`
+          : `<span class="badge badge-soft">${t('Not marked', 'មិនទាន់ស្រង់')}</span>`;
+      const action = s.done
+        ? `<button class="btn btn-sm" data-start="${i}"><i data-lucide="pencil" class="size-4"></i>${t('Edit', 'កែប្រែ')}</button>`
+        : `<button class="btn btn-sm ${isNext ? 'btn-primary' : ''}" data-start="${i}"><i data-lucide="play" class="size-4"></i>${t('Start', 'ចាប់ផ្តើម')}</button>`;
+      return `
+        <div class="card bg-base-100 border-base-300 border transition hover:-translate-y-0.5" ${isNext ? 'style="border: 2px solid var(--color-primary)"' : ''}>
+          <div class="card-body gap-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-sm font-medium opacity-60">${t('Period', 'ម៉ោងទី')} ${s.period} · ${s.time}</span>
+              ${status}
+            </div>
+            <div>
+              <div class="text-2xl font-bold">${s.cls}</div>
+              <div class="opacity-70">${s.subject}</div>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="flex items-center gap-1 text-sm opacity-60"><i data-lucide="users" class="size-4"></i>${s.size} ${t('students', 'សិស្ស')}</span>
+              ${action}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  $('schedule').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-start]');
+    if (btn) startSession(SCHEDULE[btn.dataset.start]);
+  });
+  $('other-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const [label, time] = $('o-period').value.split(' · ');
+    startSession({ period: label.replace('Period ', ''), time, cls: $('o-class').value, subject: $('o-subject').value, size: 42, done: null, date: $('o-date').value });
+  });
+
+  // ---------- Step 2: mark ----------
+  function startSession(s) {
+    reasons = {};
+    session = s;
+    students = rosterOf(s.cls);
+    // Show the saved result when the lesson was already recorded today
+    const saved = !s.date && todaySessions()[sessionKey(s)];
+    marks = students.map((st) => (saved && saved.absent.includes(st.id) ? 'A' : 'P'));
+    if (saved) students.forEach((st, i) => { if (saved.reasons[st.id]) reasons[i] = saved.reasons[st.id]; });
+    filter = 'all';
+    $('search').value = '';
+    drawMark();
+    showView('mark', 2);
+  }
+
+  function drawMark() {
+    const date = session.date || today.toISOString().slice(0, 10);
+    $('session-title').textContent = `${session.cls} · ${subject(session.subject)}`;
+    $('session-sub').textContent = `${t('Period', 'ម៉ោងទី')} ${session.period} · ${session.time} · ${date}`;
+
+    const q = $('search').value.trim().toLowerCase();
+    const visible = students
+      .map((s, i) => ({ ...s, i }))
+      .filter((s) => (filter === 'all' || marks[s.i] === filter) && (!q || s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q)));
+
+    $('tiles').innerHTML = visible.map((s) => {
+      const absent = marks[s.i] === 'A';
+      return `
+        <button class="rounded-box relative flex flex-col items-center gap-2 border-2 p-3 text-center transition active:scale-95 ${
+          absent ? 'border-error bg-error/10' : 'att-tile border-transparent bg-base-200/60'
+        }" data-i="${s.i}" aria-pressed="${absent}" aria-label="${s.name}: ${absent ? 'Absent' : 'Present'}">
+          <span class="absolute end-2 top-2 grid size-6 place-items-center rounded-full ${absent ? 'bg-error text-error-content' : 'bg-success text-success-content'}">
+            <i data-lucide="${absent ? 'x' : 'check'}" class="size-3.5"></i>
+          </span>
+          <span class="avatar avatar-placeholder"><span class="grid size-12 place-items-center rounded-full ${absent ? 'grayscale opacity-60' : ''}"><span>${initials(s.name)}</span></span></span>
+          <span class="w-full">
+            <span class="block truncate text-sm font-semibold">${s.name}</span>
+            <span class="block text-xs opacity-60">${s.id}</span>
+          </span>
+          <span class="text-xs font-semibold ${absent ? 'text-error' : 'text-success'}">${absent ? t('Absent', 'អវត្តមាន') : t('Present', 'មានវត្តមាន')}</span>
+        </button>`;
+    }).join('');
+    $('tiles-empty').classList.toggle('hidden', visible.length > 0);
+    $('tiles-empty').classList.toggle('flex', visible.length === 0);
+
+    const present = marks.filter((m) => m === 'P').length;
+    const absent = marks.length - present;
+    const rate = Math.round((present / marks.length) * 100);
+    const ring = $('ring');
+    ring.style.setProperty('--value', rate);
+    ring.setAttribute('aria-valuenow', rate);
+    ring.textContent = rate + '%';
+    ring.classList.toggle('text-success', rate >= 80);
+    ring.classList.toggle('text-warning', rate < 80);
+    $('n-present').textContent = present;
+    $('n-absent').textContent = absent;
+    $('f-all').textContent = marks.length;
+    $('f-P').textContent = present;
+    $('f-A').textContent = absent;
+    $('bar-text').innerHTML = absent === 0
+      ? `<span class="text-success font-semibold">✓ ${t('All students are present', 'សិស្សទាំងអស់មានវត្តមាន')}</span>`
+      : `<span class="font-semibold">${present}</span> ${t('present', 'មានវត្តមាន')} · <span class="text-error font-semibold">${absent}</span> ${t('absent', 'អវត្តមាន')}`;
+    lucide.createIcons();
+  }
+
+  // Tap a tile: Present ↔ Absent, with Undo
+  $('tiles').addEventListener('click', (e) => {
+    const tile = e.target.closest('[data-i]');
+    if (!tile) return;
+    const i = +tile.dataset.i;
+    lastChange = { i, from: marks[i] };
+    marks[i] = marks[i] === 'P' ? 'A' : 'P';
+    drawMark();
+    showUndo(`${students[i].name} → ${marks[i] === 'A' ? t('Absent', 'អវត្តមាន') : t('Present', 'មានវត្តមាន')}`);
+  });
+  function showUndo(text) {
+    $('undo-text').textContent = text;
+    $('undo-toast').classList.remove('hidden');
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => $('undo-toast').classList.add('hidden'), 4000);
+  }
+  $('undo-btn').addEventListener('click', () => {
+    if (!lastChange) return;
+    marks[lastChange.i] = lastChange.from;
+    lastChange = null;
+    $('undo-toast').classList.add('hidden');
+    drawMark();
+  });
+
+  $('filter-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('[data-filter]');
+    if (!tab) return;
+    filter = tab.dataset.filter;
+    document.querySelectorAll('#filter-tabs .tab').forEach((x) => x.classList.toggle('tab-active', x === tab));
+    drawMark();
+  });
+  $('search').addEventListener('input', drawMark);
+  $('all-present').addEventListener('click', () => {
+    marks = students.map(() => 'P');
+    drawMark();
+  });
+  $('back-btn').addEventListener('click', () => {
+    drawSchedule();
+    showView('choose', 1);
+  });
+
+  // ---------- Step 3: review ----------
+  // The status stays Present/Absent; an absent student can also get an optional reason
+  const REASONS = ['Not given', 'Sick', 'Family matter', 'School activity', 'Other'];
+  let reasons = {}; // student index → reason
+  const absentChips = () =>
+    students
+      .map((s, i) => ({ s, i }))
+      .filter(({ i }) => marks[i] === 'A')
+      .map(({ s, i }) => `<span class="badge badge-soft badge-error">${s.name}${reasons[i] && reasons[i] !== 'Not given' ? ` · ${reasons[i]}` : ''}</span>`)
+      .join('');
+  const reasonRows = () =>
+    students
+      .map((s, i) => ({ s, i }))
+      .filter(({ i }) => marks[i] === 'A')
+      .map(({ s, i }) => `<li class="flex items-center justify-between gap-2"><span class="text-sm font-medium">${s.name}</span>
+        <select class="select select-sm w-40" data-reason="${i}">${REASONS.map((r) => `<option value="${r}" ${reasons[i] === r ? 'selected' : ''}>${r}</option>`).join('')}</select></li>`)
+      .join('');
+  document.addEventListener('change', (e) => {
+    if (e.target.dataset.reason !== undefined) reasons[e.target.dataset.reason] = e.target.value;
+  });
+  $('review-btn').addEventListener('click', () => {
+    const absent = marks.filter((m) => m === 'A').length;
+    $('review-session').textContent = `${session.cls} · ${subject(session.subject)} · ${t('Period', 'ម៉ោងទី')} ${session.period}`;
+    $('review-present').textContent = marks.length - absent;
+    $('review-absent').textContent = absent;
+    $('review-names').innerHTML = reasonRows();
+    $('review-reasons').classList.toggle('hidden', absent === 0);
+    document.querySelectorAll('#steps .step')[2].classList.add('step-primary');
+    review_modal.showModal();
+  });
+  review_modal.addEventListener('close', () => {
+    if (!$('view-mark').classList.contains('hidden')) document.querySelectorAll('#steps .step')[2].classList.remove('step-primary');
+  });
+
+  // ---------- Step 4: done ----------
+  $('confirm-save').addEventListener('click', () => {
+    const absent = marks.filter((m) => m === 'A').length;
+    // Save today's lessons in this browser, so the dashboards and a refresh see them (Laravel will save to the database)
+    if (!session.date || session.date === DEMO_DAY) {
+      const absentIds = students.filter((s, i) => marks[i] === 'A').map((s) => s.id);
+      const savedReasons = Object.fromEntries(Object.entries(reasons).filter(([i]) => marks[i] === 'A').map(([i, r]) => [students[i].id, r]));
+      const edited = !!todaySessions()[sessionKey(session)];
+      DEMO.sessions[sessionKey(session)] = { absent: absentIds, reasons: savedReasons };
+      DEMO.audit.unshift({ time: auditStamp(), user: USER.name, action: edited ? 'Corrected' : 'Submitted', record: `${session.cls} · ${session.subject} · P${session.period} (${marks.length} students)`, change: edited ? 'Edited within 24 hours' : 'Draft → Submitted', reason: '—' });
+      saveDemo();
+      applyLive();
+    }
+    session.done = { present: marks.length - absent, absent };
+    showView('done', 4);
+    review_modal.close();
+    $('done-sub').textContent = `${session.cls} · ${subject(session.subject)} · ${t('Period', 'ម៉ោងទី')} ${session.period}`;
+    $('done-present').textContent = marks.length - absent;
+    $('done-absent').textContent = absent;
+    $('done-names').innerHTML = absentChips();
+    const next = SCHEDULE.find((s) => !s.done);
+    $('next-label').textContent = next ? `${t('Next class', 'ថ្នាក់បន្ទាប់')}: ${next.cls} · ${subject(next.subject)}` : t("Back to today's classes", 'ត្រឡប់ទៅថ្នាក់ថ្ងៃនេះ');
+    $('next-btn').onclick = () => (next ? startSession(next) : ($('back-btn').click()));
+  });
+  $('edit-btn').addEventListener('click', () => {
+    drawMark();
+    showView('mark', 2);
+  });
+
+  // Redraw the JS-made text when the language changes
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-action="lang"]')) return;
+    drawSchedule();
+    if (session) drawMark();
+  });
+
+  $('o-date').valueAsDate = today;
+  drawSchedule();
+  showView('choose', 1);
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Classes · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="classes">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm opacity-60">6 classes · grades 10 to 12 · academic year 2025–2026</p>
+        <button class="btn btn-primary" onclick="class_modal.showModal()">
+          <i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមថ្នាក់">Add class</span>
+        </button>
+      </div>
+
+      <!-- One card per class -->
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">10A</h3><p class="text-sm opacity-60">Grade 10 · Room 101</p></div>
+              <span class="badge badge-soft badge-success">96.1%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="96.1" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Homeroom teacher</dt><dd class="text-right">Pen Sovann</dd>
+              <dt class="opacity-60">Students</dt><dd class="text-right">42 (20 girls)</dd>
+            </dl>
+            <div class="card-actions mt-2 items-center justify-end">
+              <button class="btn btn-ghost btn-sm btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-sm btn-square -ms-1 me-auto" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button>
+              <a href="students.html" class="btn btn-sm">Students</a>
+              <a href="attendance.html" class="btn btn-sm">Take attendance</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">10B</h3><p class="text-sm opacity-60">Grade 10 · Room 102</p></div>
+              <span class="badge badge-soft badge-success">93.3%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="93.3" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Homeroom teacher</dt><dd class="text-right">Mao Sreyleak</dd>
+              <dt class="opacity-60">Students</dt><dd class="text-right">41 (22 girls)</dd>
+            </dl>
+            <div class="card-actions mt-2 items-center justify-end">
+              <button class="btn btn-ghost btn-sm btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-sm btn-square -ms-1 me-auto" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button>
+              <a href="students.html" class="btn btn-sm">Students</a>
+              <a href="attendance.html" class="btn btn-sm">Take attendance</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">11A</h3><p class="text-sm opacity-60">Grade 11 · Room 201</p></div>
+              <span class="badge badge-soft badge-success">94.5%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="94.5" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Homeroom teacher</dt><dd class="text-right">Ros Piseth</dd>
+              <dt class="opacity-60">Students</dt><dd class="text-right">43 (21 girls)</dd>
+            </dl>
+            <div class="card-actions mt-2 items-center justify-end">
+              <button class="btn btn-ghost btn-sm btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-sm btn-square -ms-1 me-auto" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button>
+              <a href="students.html" class="btn btn-sm">Students</a>
+              <a href="attendance.html" class="btn btn-sm">Take attendance</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">11B</h3><p class="text-sm opacity-60">Grade 11 · Room 202</p></div>
+              <span class="badge badge-soft badge-warning">88.9%</span>
+            </div>
+            <progress class="progress progress-warning mt-2" value="88.9" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Homeroom teacher</dt><dd class="text-right">Tep Mony</dd>
+              <dt class="opacity-60">Students</dt><dd class="text-right">40 (18 girls)</dd>
+            </dl>
+            <div class="card-actions mt-2 items-center justify-end">
+              <button class="btn btn-ghost btn-sm btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-sm btn-square -ms-1 me-auto" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button>
+              <a href="students.html" class="btn btn-sm">Students</a>
+              <a href="attendance.html" class="btn btn-sm">Take attendance</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">12A</h3><p class="text-sm opacity-60">Grade 12 · Room 301</p></div>
+              <span class="badge badge-soft badge-success">92.1%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="92.1" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Homeroom teacher</dt><dd class="text-right">Hak Chanthou</dd>
+              <dt class="opacity-60">Students</dt><dd class="text-right">41 (23 girls)</dd>
+            </dl>
+            <div class="card-actions mt-2 items-center justify-end">
+              <button class="btn btn-ghost btn-sm btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-sm btn-square -ms-1 me-auto" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button>
+              <a href="students.html" class="btn btn-sm">Students</a>
+              <a href="attendance.html" class="btn btn-sm">Take attendance</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">12B</h3><p class="text-sm opacity-60">Grade 12 · Room 302</p></div>
+              <span class="badge badge-soft badge-success">94.0%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="94" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Homeroom teacher</dt><dd class="text-right">Long Davin</dd>
+              <dt class="opacity-60">Students</dt><dd class="text-right">41 (20 girls)</dd>
+            </dl>
+            <div class="card-actions mt-2 items-center justify-end">
+              <button class="btn btn-ghost btn-sm btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-sm btn-square -ms-1 me-auto" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button>
+              <a href="students.html" class="btn btn-sm">Students</a>
+              <a href="attendance.html" class="btn btn-sm">Take attendance</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<dialog id="class_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមថ្នាក់">Add class</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Class name</legend><input class="input validator w-full" placeholder="10C" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Grade</legend><select class="select w-full"><option>10</option><option>11</option><option>12</option></select></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Room</legend><input class="input validator w-full" placeholder="103" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Homeroom teacher</legend><select class="select w-full"><option>Pen Sovann</option><option>Mao Sreyleak</option><option>Ros Piseth</option></select></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save class</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

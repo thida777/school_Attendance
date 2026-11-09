@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Parents · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="parents">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm opacity-60">Parents are contacts only. The school sends them absence alerts; they do not log in.</p>
+        <button class="btn btn-primary" onclick="parent_modal.showModal()">
+          <i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមអាណាព្យាបាល">Add parent</span>
+        </button>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <label class="input sm:max-w-xs">
+            <i data-lucide="search" class="size-4 opacity-50"></i>
+            <input type="search" placeholder="Search parent or child" />
+          </label>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr><th>Parent</th><th>Relation</th><th>Phone</th><th>Children</th><th>Last notified</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="font-medium">Sok Chantha</div><div class="text-xs opacity-60">សុខ ចន្ថា</div></td>
+                  <td>Father</td><td>012 111 222</td>
+                  <td><span class="badge badge-ghost">Sok Dara · 10A</span></td>
+                  <td>Fri 24 Oct 2026</td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="font-medium">Chea Sokunthea</div><div class="text-xs opacity-60">ជា សុគន្ធា</div></td>
+                  <td>Mother</td><td>017 333 444</td>
+                  <td><div class="flex flex-wrap gap-1"><span class="badge badge-ghost">Chea Rithy · 11B</span><span class="badge badge-ghost">Chea Pisey · 10B</span></div></td>
+                  <td>Wed 22 Oct 2026</td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="font-medium">Meas Samnang</div><div class="text-xs opacity-60">មាស សំណាង</div></td>
+                  <td>Father</td><td>010 555 666</td>
+                  <td><span class="badge badge-ghost">Meas Sokha · 12A</span></td>
+                  <td><span class="opacity-60">Never</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="font-medium">Ouk Sophal</div><div class="text-xs opacity-60">អ៊ុក សុផល</div></td>
+                  <td>Guardian</td><td>015 777 888</td>
+                  <td><span class="badge badge-ghost">Ouk Sreypov · 10A</span></td>
+                  <td>Mon 20 Oct 2026</td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="font-medium">Heng Vanna</div><div class="text-xs opacity-60">ហេង វណ្ណា</div></td>
+                  <td>Mother</td><td>016 999 000</td>
+                  <td><span class="badge badge-ghost">Heng Sophea · 12A</span></td>
+                  <td>Fri 17 Oct 2026</td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<dialog id="parent_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមអាណាព្យាបាល">Add parent</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Khmer)</legend><input class="input validator w-full" placeholder="សុខ ចន្ថា" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Latin)</legend><input class="input validator w-full" placeholder="Sok Chantha" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Phone (for absence alerts)</legend><input class="input validator w-full" placeholder="012 111 222" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Relation</legend><select class="select w-full"><option>Father</option><option>Mother</option><option>Guardian</option></select></fieldset>
+      <fieldset class="fieldset sm:col-span-2"><legend class="fieldset-legend">Child</legend><select class="select w-full"><option>Sok Dara · 10A</option><option>Chan Sreyneang · 10A</option><option>Ouk Sreypov · 10A</option></select><p class="label">You can link more children after saving.</p></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save parent</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

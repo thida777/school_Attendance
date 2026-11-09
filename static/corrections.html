@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Corrections & Audit Log · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="corrections">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div role="alert" class="alert alert-soft alert-info">
+        <i data-lucide="clock" class="size-5"></i>
+        <span data-km="គ្រូអាចកែវត្តមានរបស់ខ្លួនបានក្នុងរយៈពេល ២៤ ម៉ោង។ ក្រោយនោះ គ្រូផ្ញើសំណើនៅទីនេះ ហើយអ្នកគ្រប់គ្រងអនុម័ត ឬបដិសេធ។ ការផ្លាស់ប្តូរទាំងអស់ត្រូវបានកត់ត្រា ហើយមិនអាចលុបបានទេ។">Teachers can correct their own attendance for 24 hours. After that, they send a request here, and an Admin approves or rejects it. Every change is logged and can never be deleted.</span>
+      </div>
+
+      <!-- Correction requests -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="card-title text-base"><span data-km="សំណើកែតម្រូវ">Correction requests</span> <span class="badge badge-warning" id="pending-count">3</span></h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead><tr><th>Student</th><th>Session</th><th>Change</th><th>Reason</th><th>Requested by</th><th></th></tr></thead>
+              <tbody id="requests">
+                <tr><td><div class="font-medium">Kim Vannak</div><div class="text-xs opacity-60">S-11A-007</div></td><td>11A · Mathematics · P4<br /><span class="text-xs opacity-60">Mon 26 Oct 2026</span></td><td><span class="badge badge-soft badge-error">Absent</span> → <span class="badge badge-soft badge-success">Present</span></td><td>Was at the school office during roll call</td><td>Pen Sovann<br /><span class="text-xs opacity-60">Tue 27 Oct 2026, 15:10</span></td><td class="text-right whitespace-nowrap"><button class="btn btn-sm btn-success" data-decide="Approved"><i data-lucide="check" class="size-4"></i><span data-km="អនុម័ត">Approve</span></button> <button class="btn btn-sm" data-decide="Rejected"><i data-lucide="x" class="size-4"></i><span data-km="បដិសេធ">Reject</span></button></td></tr>
+                <tr><td><div class="font-medium">Heng Sophea</div><div class="text-xs opacity-60">S-12A-005</div></td><td>12A · English · P2<br /><span class="text-xs opacity-60">Sat 24 Oct 2026</span></td><td><span class="badge badge-soft badge-success">Present</span> → <span class="badge badge-soft badge-error">Absent</span></td><td>Marked by mistake; student was not in class</td><td>Hak Chanthou<br /><span class="text-xs opacity-60">Mon 26 Oct 2026, 09:40</span></td><td class="text-right whitespace-nowrap"><button class="btn btn-sm btn-success" data-decide="Approved"><i data-lucide="check" class="size-4"></i><span data-km="អនុម័ត">Approve</span></button> <button class="btn btn-sm" data-decide="Rejected"><i data-lucide="x" class="size-4"></i><span data-km="បដិសេធ">Reject</span></button></td></tr>
+                <tr><td><div class="font-medium">Chan Sreyneang</div><div class="text-xs opacity-60">S-10A-002</div></td><td>10A · Physics · P3<br /><span class="text-xs opacity-60">Fri 23 Oct 2026</span></td><td><span class="badge badge-soft badge-error">Absent</span> → <span class="badge badge-soft badge-success">Present</span></td><td>School football match (school activity)</td><td>Ros Piseth<br /><span class="text-xs opacity-60">Mon 26 Oct 2026, 07:55</span></td><td class="text-right whitespace-nowrap"><button class="btn btn-sm btn-success" data-decide="Approved"><i data-lucide="check" class="size-4"></i><span data-km="អនុម័ត">Approve</span></button> <button class="btn btn-sm" data-decide="Rejected"><i data-lucide="x" class="size-4"></i><span data-km="បដិសេធ">Reject</span></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit log -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="card-title text-base" data-km="កំណត់ហេតុការផ្លាស់ប្តូរ">Audit log</h3>
+            <div class="flex flex-wrap gap-2">
+              <label class="input w-auto"><i data-lucide="search" class="size-4 opacity-50"></i><input type="search" placeholder="Search name or ID" /></label>
+              <select class="select w-auto"><option>All actions</option><option>Corrected</option><option>Request approved</option><option>Request rejected</option><option>Submitted</option></select>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Record</th><th>Old → New</th><th>Reason</th></tr></thead>
+              <tbody id="audit">
+                <tr><td>Wed 28 Oct 2026, 07:58</td><td>Pen Sovann</td><td>Submitted</td><td>10A · Mathematics · P1 (42 students)</td><td>Draft → Submitted</td><td>—</td></tr>
+                <tr><td>Tue 27 Oct 2026, 16:20</td><td>Sok Admin</td><td>Request approved</td><td>Ly Bopha · 12B · History · P5</td><td>Absent → Present</td><td>Medical note from the clinic</td></tr>
+                <tr><td>Tue 27 Oct 2026, 11:05</td><td>Mao Sreyleak</td><td>Corrected</td><td>Duong Panha · 10B · Khmer Literature · P3</td><td>Present → Absent</td><td>Left before the lesson started</td></tr>
+                <tr><td>Tue 27 Oct 2026, 08:12</td><td>Pen Sovann</td><td>Corrected</td><td>Phan Chenda · 10B · Mathematics · P2</td><td>Absent → Present</td><td>Arrived 5 minutes after roll call</td></tr>
+                <tr><td>Mon 26 Oct 2026, 14:30</td><td>Sok Admin</td><td>Request rejected</td><td>Run Veasna · 11B · Physics · P1</td><td>Absent → Present</td><td>No evidence; record kept as Absent</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs opacity-60" data-km="កំណត់ហេតុអាចមើលបានតែប៉ុណ្ណោះ។ គ្មាននរណាម្នាក់អាចកែ ឬលុបវាបានទេ។">The audit log is read-only. Nobody can edit or delete it.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Approve or reject a request: the row moves to the audit log.
+  // Decisions and today's submissions are saved in this browser (DEMO in app.js); Laravel will save them.
+  const studentIdOf = (row) => row.querySelector('.font-medium + .text-xs').textContent.trim();
+  const countPending = () => {
+    document.getElementById('pending-count').textContent = document.querySelectorAll('#requests tr:not(.no-results)').length;
+  };
+  function drawSaved() {
+    document.querySelectorAll('#requests tr').forEach((row) => {
+      if (row.querySelector('[data-decide]') && DEMO.decided.includes(studentIdOf(row))) row.remove();
+    });
+    document.getElementById('audit').insertAdjacentHTML('afterbegin', DEMO.audit
+      .map((a) => `<tr><td>${a.time}</td><td>${a.user}</td><td>${a.action}</td><td>${a.record}</td><td>${a.change}</td><td>${a.reason}</td></tr>`)
+      .join(''));
+    countPending();
+    labelTables();
+  }
+  drawSaved();
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-decide]');
+    if (!btn) return;
+    const row = btn.closest('tr');
+    const name = row.querySelector('.font-medium').textContent;
+    const session = row.cells[1].firstChild.textContent.trim();
+    const decision = btn.dataset.decide;
+    const entry = { time: auditStamp(), user: USER.name, action: `Request ${decision.toLowerCase()}`, record: `${name} · ${session}`, change: enText(row.cells[2]).replace(/\s+/g, ' '), reason: enText(row.cells[3]) };
+    DEMO.decided.push(studentIdOf(row));
+    DEMO.audit.unshift(entry);
+    saveDemo();
+    document.getElementById('audit').insertAdjacentHTML('afterbegin',
+      `<tr><td>${entry.time}</td><td>${entry.user}</td><td>${entry.action}</td><td>${entry.record}</td><td>${entry.change}</td><td>${entry.reason}</td></tr>`);
+    labelTables();
+    row.remove();
+    countPending();
+    showToast(isKhmer() ? (decision === 'Approved' ? 'បានអនុម័ត' : 'បានបដិសេធ') : `Request ${decision.toLowerCase()}`);
+  });
+</script>
+</body>
+</html>

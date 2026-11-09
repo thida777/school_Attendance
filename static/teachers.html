@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teachers · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="teachers">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm opacity-60">16 teachers · each teacher logs in to the Android app</p>
+        <button class="btn btn-primary" onclick="teacher_modal.showModal()">
+          <i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមគ្រូ">Add teacher</span>
+        </button>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <label class="input sm:max-w-xs">
+            <i data-lucide="search" class="size-4 opacity-50"></i>
+            <input type="search" placeholder="Search teacher" />
+          </label>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr><th>Teacher</th><th>Phone</th><th>Subjects</th><th>Classes</th><th>Sessions this week</th><th>Account</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">PS</span></div></div><div><a href="teacher-details.html" class="font-medium link link-hover">Pen Sovann</a><div class="text-xs opacity-60">ប៉ែន សុវណ្ណ</div></div></div></td>
+                  <td>012 345 678</td><td>Mathematics</td><td>10A, 10B, 11A</td><td>18 of 18 recorded</td>
+                  <td><span class="badge badge-soft badge-success">Active</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">MS</span></div></div><div><a href="teacher-details.html" class="font-medium link link-hover">Mao Sreyleak</a><div class="text-xs opacity-60">ម៉ៅ ស្រីល័ក្ខ</div></div></div></td>
+                  <td>011 222 333</td><td>Khmer Literature</td><td>10A, 10B</td><td>12 of 12 recorded</td>
+                  <td><span class="badge badge-soft badge-success">Active</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">RP</span></div></div><div><a href="teacher-details.html" class="font-medium link link-hover">Ros Piseth</a><div class="text-xs opacity-60">រស់ ពិសិដ្ឋ</div></div></div></td>
+                  <td>015 678 901</td><td>Physics</td><td>11A, 11B, 12A</td><td>10 of 12 recorded</td>
+                  <td><span class="badge badge-soft badge-success">Active</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">TM</span></div></div><div><a href="teacher-details.html" class="font-medium link link-hover">Tep Mony</a><div class="text-xs opacity-60">ទេព មុនី</div></div></div></td>
+                  <td>017 890 123</td><td>Chemistry, Biology</td><td>11B, 12A, 12B</td><td>14 of 14 recorded</td>
+                  <td><span class="badge badge-soft badge-success">Active</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">HC</span></div></div><div><a href="teacher-details.html" class="font-medium link link-hover">Hak Chanthou</a><div class="text-xs opacity-60">ហាក់ ចាន់ធូ</div></div></div></td>
+                  <td>010 456 789</td><td>English</td><td>12A, 12B</td><td>8 of 8 recorded</td>
+                  <td><span class="badge badge-soft badge-success">Active</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td><div class="flex items-center gap-3"><div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">LD</span></div></div><div><a href="teacher-details.html" class="font-medium link link-hover">Long Davin</a><div class="text-xs opacity-60">ឡុង ដាវីន</div></div></div></td>
+                  <td>016 234 567</td><td>History, Computer (ICT)</td><td>10A, 11A, 12B</td><td>0 of 9 recorded</td>
+                  <td><span class="badge badge-soft">Not logged in yet</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<dialog id="teacher_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមគ្រូ">Add teacher</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Khmer)</legend><input class="input validator w-full" placeholder="ប៉ែន សុវណ្ណ" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Latin)</legend><input class="input validator w-full" placeholder="Pen Sovann" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Phone</legend><input class="input validator w-full" placeholder="012 345 678" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Email</legend><input type="email" class="input validator w-full" placeholder="teacher@school.edu.kh" required /><p class="validator-hint hidden" data-km="សូមបញ្ចូលអ៊ីមែលត្រឹមត្រូវ">Enter a valid email address</p></fieldset>
+      <fieldset class="fieldset sm:col-span-2"><legend class="fieldset-legend">First password</legend><input type="password" class="input validator w-full" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p><p class="label">The teacher can change it after the first login.</p></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save teacher</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

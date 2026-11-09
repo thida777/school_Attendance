@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teaching Assignments · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="assignments">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm opacity-60">Who teaches which subject in which class. A teacher only sees their own classes in the app.</p>
+        <button class="btn btn-primary" onclick="assign_modal.showModal()">
+          <i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមការចាត់តាំង">Add assignment</span>
+        </button>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap gap-2">
+            <select class="select w-auto"><option>All classes</option><option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option><option>12B</option></select>
+            <select class="select w-auto"><option>All teachers</option><option>Pen Sovann</option><option>Mao Sreyleak</option><option>Ros Piseth</option></select>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr><th>Class</th><th>Subject</th><th>Teacher</th><th class="num">Hours / week</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="badge badge-ghost">10A</span></td><td class="font-medium">Mathematics</td><td>Pen Sovann</td><td class="num">6</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">10A</span></td><td class="font-medium">Khmer Literature</td><td>Mao Sreyleak</td><td class="num">6</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">10A</span></td><td class="font-medium">History</td><td>Long Davin</td><td class="num">2</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">10B</span></td><td class="font-medium">Mathematics</td><td>Pen Sovann</td><td class="num">6</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">11A</span></td><td class="font-medium">Physics</td><td>Ros Piseth</td><td class="num">4</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">11B</span></td><td class="font-medium">Chemistry</td><td>Tep Mony</td><td class="num">4</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">12A</span></td><td class="font-medium">English</td><td>Hak Chanthou</td><td class="num">4</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td><span class="badge badge-ghost">12B</span></td><td class="font-medium">Computer (ICT)</td><td>Long Davin</td><td class="num">2</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<dialog id="assign_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមការចាត់តាំង">Add assignment</h3>
+    <form method="dialog" class="mt-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Class</legend><select class="select w-full"><option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option><option>12B</option></select></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Subject</legend><select class="select w-full"><option>Mathematics</option><option>Khmer Literature</option><option>Physics</option><option>Chemistry</option><option>English</option></select></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Teacher</legend><select class="select w-full"><option>Pen Sovann</option><option>Mao Sreyleak</option><option>Ros Piseth</option><option>Tep Mony</option></select></fieldset>
+      <div class="modal-action">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save assignment</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

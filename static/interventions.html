@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interventions · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="interventions">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <!-- The loop the school follows -->
+      <ul class="steps steps-horizontal w-full text-xs">
+        <li class="step step-primary" data-km="រកឃើញ">Detect</li>
+        <li class="step step-primary" data-km="ធ្វើអន្តរាគមន៍">Act</li>
+        <li class="step step-primary" data-km="វាស់វែង">Measure</li>
+        <li class="step step-primary" data-km="វាយតម្លៃ">Evaluate</li>
+        <li class="step" data-km="កែលម្អ">Improve</li>
+      </ul>
+
+      <div class="grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-warning)"><i data-lucide="circle-dot"></i></div><div class="stat-title" data-km="កំពុងដំណើរការ">Open</div><div class="stat-value">2</div><div class="stat-desc" data-km="រង់ចាំថ្ងៃតាមដាន">waiting for follow-up</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-error)"><i data-lucide="calendar-clock"></i></div><div class="stat-title" data-km="ដល់ថ្ងៃតាមដាន">Follow-up due</div><div class="stat-value">1</div><div class="stat-desc" data-km="វាស់លទ្ធផលឥឡូវ">measure the result now</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-success)"><i data-lucide="trending-up"></i></div><div class="stat-title" data-km="ប្រសើរឡើង">Improved after action</div><div class="stat-value">2 / 4</div><div class="stat-desc" data-km="ក្នុងចំណោមករណីដែលបានបិទ">of closed cases</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-primary)"><i data-lucide="chart-line"></i></div><div class="stat-title" data-km="ការផ្លាស់ប្តូរមធ្យម">Average change</div><div class="stat-value">+4.0</div><div class="stat-desc" data-km="ពិន្ទុ មុន → ក្រោយ">points, before → after</div></div></div>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap gap-2">
+              <label class="input w-auto"><i data-lucide="search" class="size-4 opacity-50"></i><input type="search" placeholder="Search name or ID" /></label>
+              <select class="select w-auto"><option>All statuses</option><option>Open</option><option>Follow-up due</option><option>Closed</option></select>
+              <select class="select w-auto"><option>All results</option><option>Improved</option><option>No clear change</option><option>Declined</option></select>
+            </div>
+            <button class="btn btn-primary" onclick="intervention_modal.showModal()"><i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមអន្តរាគមន៍">Add intervention</span></button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead><tr><th>Student</th><th>Action</th><th>Follow-up</th><th class="num">Before → After</th><th>Result</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Chea Rithy</a><div class="text-xs opacity-60">11B</div></td><td><div class="whitespace-nowrap">Meeting with parent</div><div class="text-xs opacity-60">15 Oct · Sok Admin</div></td><td class="whitespace-nowrap">29 Oct</td><td class="num">66.0% → …</td><td><span class="opacity-60">Waiting</span></td><td><span class="badge badge-soft badge-error">Follow-up due</span><div class="mt-1"><button class="btn btn-xs btn-primary" data-toast="Result measured: 66.0% → 71.5% (+5.5, Improved)"><span data-km="វាស់លទ្ធផល">Measure</span></button></div></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Ouk Sreypov</a><div class="text-xs opacity-60">10A</div></td><td><div class="whitespace-nowrap">Parent message (Telegram)</div><div class="text-xs opacity-60">24 Oct · Pen Sovann</div></td><td class="whitespace-nowrap">7 Nov</td><td class="num">78.0% → …</td><td><span class="opacity-60">Waiting</span></td><td><span class="badge badge-soft badge-warning">Open</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">San Devi</a><div class="text-xs opacity-60">12B</div></td><td><div class="whitespace-nowrap">Parent message (SMS)</div><div class="text-xs opacity-60">27 Oct · Sok Admin</div></td><td class="whitespace-nowrap">10 Nov</td><td class="num">88.0% → …</td><td><span class="opacity-60">Waiting</span></td><td><span class="badge badge-soft badge-warning">Open</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Touch Vuthy</a><div class="text-xs opacity-60">10B</div></td><td><div class="whitespace-nowrap">Phone call</div><div class="text-xs opacity-60">8 Oct · Mao Sreyleak</div></td><td class="whitespace-nowrap">22 Oct</td><td class="num">70.0% → 82.5%</td><td><span class="badge badge-success">Improved</span> <span class="text-success text-xs font-semibold">+12.5</span></td><td><span class="badge badge-soft">Closed</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Kim Vannak</a><div class="text-xs opacity-60">11A</div></td><td><div class="whitespace-nowrap">Parent message (Telegram)</div><div class="text-xs opacity-60">10 Sep · Pen Sovann</div></td><td class="whitespace-nowrap">24 Sep</td><td class="num">84.0% → 95.0%</td><td><span class="badge badge-success">Improved</span> <span class="text-success text-xs font-semibold">+11.0</span></td><td><span class="badge badge-soft">Closed</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Meas Sokha</a><div class="text-xs opacity-60">12A</div></td><td><div class="whitespace-nowrap">Talk with student</div><div class="text-xs opacity-60">1 Oct · Hak Chanthou</div></td><td class="whitespace-nowrap">15 Oct</td><td class="num">76.0% → 74.0%</td><td><span class="badge badge-ghost">No clear change</span> <span class="text-xs font-semibold opacity-70">−2.0</span></td><td><span class="badge badge-soft">Closed</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Run Veasna</a><div class="text-xs opacity-60">11B</div></td><td><div class="whitespace-nowrap">Counselling</div><div class="text-xs opacity-60">29 Sep · Sok Admin</div></td><td class="whitespace-nowrap">13 Oct</td><td class="num">81.0% → 75.5%</td><td><span class="badge badge-error">Declined</span> <span class="text-error text-xs font-semibold">−5.5</span></td><td><span class="badge badge-soft">Closed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div role="alert" class="alert alert-soft alert-info mt-2 text-sm">
+            <i data-lucide="info" class="size-5"></i>
+            <span data-km="មុន = អត្រា ១០ ថ្ងៃសិក្សាមុនសកម្មភាព។ ក្រោយ = ១០ ថ្ងៃសិក្សាបន្ទាប់។ ប្រសើរឡើង = +5 ពិន្ទុ ឬច្រើនជាង។ ធ្លាក់ចុះ = −5 ឬតិចជាង។ លទ្ធផលបង្ហាញការផ្លាស់ប្តូរ មិនមែនបញ្ជាក់ថាសកម្មភាពជាមូលហេតុទេ។">Before = rate in the 10 school days before the action. After = the 10 school days after. Improved = +5 points or more; Declined = −5 or less. The result shows a change, not proof that the action caused it.</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<!-- Add intervention -->
+<dialog id="intervention_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមអន្តរាគមន៍">Add intervention</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset sm:col-span-2"><legend class="fieldset-legend">Student</legend>
+        <select class="select validator w-full" required>
+          <option value="" disabled selected>Choose a student</option>
+          <option>Chea Rithy · 11B · Critical</option><option>San Devi · 12B · Critical</option><option>Touch Vuthy · 10B · High</option><option>Ouk Sreypov · 10A · High</option><option>Kong Mealea · 11A · High</option><option>Meas Sokha · 12A · High</option><option>Nhem Vichea · 11B · High</option><option>Duong Panha · 10B · High</option><option>Run Veasna · 11B · High</option>
+        </select>
+        <p class="validator-hint hidden" data-km="សូមជ្រើសរើសសិស្ស">Please choose a student</p>
+      </fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Action</legend>
+        <select class="select w-full"><option>Parent message (Telegram)</option><option>Parent message (SMS)</option><option>Phone call</option><option>Meeting with parent</option><option>Talk with student</option><option>Counselling</option><option>Other</option></select>
+      </fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Date</legend><input type="date" class="input validator w-full" id="action-date" required /></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Follow-up date</legend><input type="date" class="input validator w-full" id="follow-date" required /><p class="label" data-km="លំនាំដើម៖ ២ សប្តាហ៍ក្រោយ">Default: 2 weeks later</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Before rate</legend><input class="input w-full" value="Saved automatically" disabled /></fieldset>
+      <fieldset class="fieldset sm:col-span-2"><legend class="fieldset-legend">Notes</legend><textarea class="textarea w-full" placeholder="What was agreed?"></textarea></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Default dates: today, and the follow-up 2 weeks later
+  const iso = (d) => d.toISOString().slice(0, 10);
+  const setDates = () => {
+    document.getElementById('action-date').value = iso(new Date());
+    document.getElementById('follow-date').value = iso(new Date(Date.now() + 14 * 864e5));
+  };
+  document.querySelector('[onclick*="intervention_modal"]').addEventListener('click', () => setTimeout(setDates));
+  setDates();
+
+  // New interventions and measured results are saved in this browser (DEMO in app.js); Laravel will save them
+  const tbody = document.querySelector('table tbody');
+  const shortDate = (isoDate) => new Date(isoDate + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const newRow = (x) => `<tr><td><a href="student-details.html" class="font-medium link link-hover">${x.name}</a><div class="text-xs opacity-60">${x.cls}</div></td>`
+    + `<td><div class="whitespace-nowrap">${x.action}</div><div class="text-xs opacity-60">${shortDate(x.date)} · ${x.by}</div></td>`
+    + `<td class="whitespace-nowrap">${shortDate(x.follow)}</td><td class="num">${x.before.toFixed(1)}% → …</td>`
+    + `<td><span class="opacity-60">Waiting</span></td><td><span class="badge badge-soft badge-warning">Open</span></td></tr>`;
+  DEMO.interventions.forEach((x) => tbody.insertAdjacentHTML('afterbegin', newRow(x)));
+
+  document.querySelector('#intervention_modal form').addEventListener('submit', (e) => {
+    if (e.submitter && e.submitter.formNoValidate) return;
+    const form = e.target;
+    const [name, cls] = form.querySelector('select').value.split(' · ');
+    const x = {
+      name, cls,
+      action: form.querySelectorAll('select')[1].value,
+      date: document.getElementById('action-date').value,
+      follow: document.getElementById('follow-date').value,
+      by: USER.name,
+      before: riskOf(name).rate, // the rate on the day of the action, for the before/after result
+    };
+    DEMO.interventions.push(x);
+    saveDemo();
+    tbody.insertAdjacentHTML('afterbegin', newRow(x));
+  });
+
+  // Measure a due follow-up: before → after, then the row is closed
+  const measure = (btn) => {
+    const row = btn.closest('tr');
+    const [before, after] = btn.dataset.toast.match(/[\d.]+%/g);
+    const diff = parseFloat(after) - parseFloat(before);
+    row.cells[3].textContent = `${before} → ${after}`;
+    row.cells[4].innerHTML = diff >= 5
+      ? `<span class="badge badge-success">Improved</span> <span class="text-success text-xs font-semibold">+${diff.toFixed(1)}</span>`
+      : `<span class="badge badge-ghost">No clear change</span> <span class="text-xs font-semibold opacity-70">${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(1)}</span>`;
+    row.cells[5].innerHTML = '<span class="badge badge-soft">Closed</span>';
+  };
+  document.querySelectorAll('[data-toast^="Result measured"]').forEach((btn) => {
+    const name = btn.closest('tr').querySelector('a').textContent;
+    if (DEMO.measured.includes(name)) measure(btn);
+    else btn.addEventListener('click', () => { DEMO.measured.push(name); saveDemo(); setTimeout(() => measure(btn)); });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Profile · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@8.0.0/dist/apexcharts.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="student-details" data-parent="students" data-title="Student profile" data-title-km="ប្រវត្តិរូបសិស្ស">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="breadcrumbs text-sm">
+        <ul>
+          <li><a href="students.html" data-km="សិស្ស">Students</a></li>
+          <li>Ouk Sreypov</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <!-- Profile -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body items-center text-center">
+            <div class="avatar avatar-placeholder"><div class="w-20 rounded-full"><span class="text-2xl">OS</span></div></div>
+            <h2 class="mt-2 text-xl font-bold">Ouk Sreypov</h2>
+            <p class="grow-0 opacity-60">អ៊ុក ស្រីពៅ · S-10A-003</p>
+            <div class="flex flex-wrap justify-center gap-2">
+              <span class="badge badge-soft">10A</span>
+              <span class="badge badge-soft">Female</span>
+              <span class="badge badge-warning">High risk</span>
+            </div>
+            <ul class="mt-4 w-full space-y-3 text-left text-sm">
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="ថ្ងៃខែឆ្នាំកំណើត">Date of birth</span><span class="font-medium">14 Mar 2010</span></li>
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="អាណាព្យាបាល">Parent</span><span class="font-medium">Ouk Sophal</span></li>
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="ទូរស័ព្ទ">Parent phone</span><span class="font-medium">015 777 888</span></li>
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="ការផ្ញើសារ">Messages</span><span class="font-medium">Telegram</span></li>
+            </ul>
+            <div class="card-actions mt-4 w-full">
+              <button class="btn grow" onclick="student_modal.showModal()" data-admin-only><i data-lucide="pencil" class="size-4"></i><span data-km="កែប្រែ">Edit</span></button>
+              <a href="interventions.html" class="btn btn-primary grow"><i data-lucide="hand-heart" class="size-4"></i><span data-km="តាមដាន">Follow up</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance summary: rate with its trend -->
+        <div class="card bg-base-100 border-base-300 border xl:col-span-2">
+          <div class="card-body">
+            <h3 class="card-title text-base" data-km="សង្ខេបវត្តមាន">Attendance this semester</h3>
+            <div role="alert" class="alert alert-soft alert-warning mt-1">
+              <i data-lucide="triangle-alert" class="size-5"></i>
+              <span data-km="ហានិភ័យខ្ពស់៖ អវត្តមាន ៣ ថ្ងៃជាប់គ្នា ហើយវត្តមានធ្លាក់ចុះ 8.2 ពិន្ទុ ក្នុង ៤ សប្តាហ៍។">High risk: absent 3 school days in a row, and attendance fell 8.2 points in 4 weeks.</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <div class="bg-base-200 rounded-box p-4"><div class="text-sm opacity-60" data-km="អត្រាវត្តមាន">Attendance rate</div><div class="text-2xl font-bold">86.0%</div><div class="text-error text-xs font-semibold">▼ 8.2 <span data-km="ពិន្ទុ">points</span></div></div>
+              <div class="bg-base-200 rounded-box p-4"><div class="text-sm opacity-60" data-km="ជាប់គ្នា">In a row</div><div class="text-2xl font-bold">3</div><div class="text-xs opacity-60" data-km="ថ្ងៃសិក្សា">school days</div></div>
+              <div class="bg-success/10 rounded-box p-4"><div class="text-success flex items-center gap-1 text-sm font-semibold"><i data-lucide="check" class="size-4"></i><span data-km="មានវត្តមាន">Present</span></div><div class="text-2xl font-bold">80</div><div class="text-xs opacity-60">of 93</div></div>
+              <div class="bg-error/10 rounded-box p-4"><div class="text-error flex items-center gap-1 text-sm font-semibold"><i data-lucide="x" class="size-4"></i><span data-km="អវត្តមាន">Absent</span></div><div class="text-2xl font-bold">13</div><div class="text-xs opacity-60">of 93</div></div>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              <span class="text-sm font-semibold" data-km="និន្នាការប្រចាំសប្តាហ៍">Weekly trend</span>
+              <span class="text-xs opacity-60" data-km="៨ សប្តាហ៍ចុងក្រោយ">last 8 weeks</span>
+            </div>
+            <div id="chart-weeks"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <!-- Where and when absences happen -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <h3 class="card-title text-base" data-km="អវត្តមានកើតឡើងនៅពេលណា">When absences happen</h3>
+            <div class="grid grid-cols-3 gap-2 text-center text-sm">
+              <div class="bg-base-200 rounded-box p-3"><div class="text-xs opacity-60" data-km="ថ្ងៃ">Day</div><div class="font-bold" data-km="ច័ន្ទ">Monday</div><div class="text-xs opacity-60">6 of 13</div></div>
+              <div class="bg-base-200 rounded-box p-3"><div class="text-xs opacity-60" data-km="ម៉ោង">Period</div><div class="font-bold" data-km="ម៉ោងទី១">Period 1</div><div class="text-xs opacity-60">7 of 13</div></div>
+              <div class="bg-base-200 rounded-box p-3"><div class="text-xs opacity-60" data-km="មុខវិជ្ជា">Subject</div><div class="font-bold" data-km="គណិតវិទ្យា">Mathematics</div><div class="text-xs opacity-60">5 of 13</div></div>
+            </div>
+            <div id="chart-days"></div>
+            <p class="text-xs opacity-60" data-km="នេះជាលំនាំដែលគួរពិនិត្យ មិនមែនជាមូលហេតុទេ។">This is a pattern to look into, not the reason itself.</p>
+          </div>
+        </div>
+
+        <!-- Absence reasons -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <h3 class="card-title text-base" data-km="មូលហេតុអវត្តមាន">Absence reasons</h3>
+            <p class="grow-0 text-sm opacity-60" data-km="ស្ថានភាពនៅតែ មានវត្តមាន ឬ អវត្តមាន។ មូលហេតុជាជម្រើស។">The status is still Present or Absent. The reason is optional.</p>
+            <ul class="mt-2 space-y-4 text-sm">
+              <li><div class="mb-1 flex justify-between"><span data-km="មិនបានប្រាប់">Not given</span><span class="font-medium">7</span></div><progress class="progress progress-error" value="7" max="13"></progress></li>
+              <li><div class="mb-1 flex justify-between"><span data-km="ឈឺ">Sick</span><span class="font-medium">4</span></div><progress class="progress progress-warning" value="4" max="13"></progress></li>
+              <li><div class="mb-1 flex justify-between"><span data-km="រឿងគ្រួសារ">Family matter</span><span class="font-medium">2</span></div><progress class="progress progress-info" value="2" max="13"></progress></li>
+              <li><div class="mb-1 flex justify-between"><span data-km="សកម្មភាពសាលា">School activity</span><span class="font-medium">0</span></div><progress class="progress" value="0" max="13"></progress></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- What the school did, and whether attendance changed afterwards -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="card-title text-base" data-km="អន្តរាគមន៍">Interventions</h3>
+            <a href="interventions.html" class="btn btn-ghost btn-sm" data-km="មើលទាំងអស់">View all</a>
+          </div>
+          <ul class="timeline timeline-vertical timeline-compact">
+            <li>
+              <div class="timeline-middle"><i data-lucide="circle-dot" class="text-warning size-4"></i></div>
+              <div class="timeline-end mb-6 w-full">
+                <div class="text-sm opacity-60">Sat 24 Oct 2026 · Pen Sovann</div>
+                <div class="font-semibold">Parent message (Telegram)</div>
+                <div class="text-sm">Before: <b>78.0%</b> · Follow-up on <b>7 Nov</b></div>
+                <span class="badge badge-soft badge-warning mt-1">Open</span>
+              </div>
+              <hr />
+            </li>
+            <li>
+              <hr />
+              <div class="timeline-middle"><i data-lucide="circle-check" class="text-success size-4"></i></div>
+              <div class="timeline-end w-full">
+                <div class="text-sm opacity-60">Wed 2 Sep 2026 · Pen Sovann</div>
+                <div class="font-semibold">Talk with student</div>
+                <div class="text-sm">82.0% → <b>94.0%</b> after 2 weeks</div>
+                <span class="badge badge-soft badge-success mt-1">Improved +12.0</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Recent records -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <h3 class="card-title text-base" data-km="កំណត់ត្រាថ្មីៗ">Recent records</h3>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead><tr><th>Date</th><th>Period</th><th>Subject</th><th>Teacher</th><th>Status</th><th>Reason</th></tr></thead>
+              <tbody>
+                <tr><td>Sat 24 Oct 2026</td><td>P1</td><td>Mathematics</td><td>Pen Sovann</td><td><span class="badge badge-soft badge-error"><i data-lucide="x" class="size-3.5"></i>Absent</span></td><td>Not given</td></tr>
+                <tr><td>Fri 23 Oct 2026</td><td>P2</td><td>Khmer Literature</td><td>Mao Sreyleak</td><td><span class="badge badge-soft badge-error"><i data-lucide="x" class="size-3.5"></i>Absent</span></td><td>Sick</td></tr>
+                <tr><td>Thu 22 Oct 2026</td><td>P3</td><td>History</td><td>Long Davin</td><td><span class="badge badge-soft badge-error"><i data-lucide="x" class="size-3.5"></i>Absent</span></td><td>Sick</td></tr>
+                <tr><td>Wed 21 Oct 2026</td><td>P1</td><td>Mathematics</td><td>Pen Sovann</td><td><span class="badge badge-soft badge-success"><i data-lucide="check" class="size-3.5"></i>Present</span></td><td>—</td></tr>
+                <tr><td>Tue 20 Oct 2026</td><td>P2</td><td>Computer (ICT)</td><td>Long Davin</td><td><span class="badge badge-soft badge-success"><i data-lucide="check" class="size-3.5"></i>Present</span></td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <a href="monitoring.html" class="btn btn-ghost btn-sm self-start" data-km="មើលទាំងអស់">View all records</a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<!-- Edit student -->
+<dialog id="student_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="កែប្រែសិស្ស">Edit student</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Khmer)</legend><input class="input validator w-full" value="អ៊ុក ស្រីពៅ" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Latin)</legend><input class="input validator w-full" value="Ouk Sreypov" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset sm:col-span-2"><legend class="fieldset-legend">Parent phone</legend><input class="input validator w-full" value="015 777 888" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Fake numbers for the design. Laravel will send the real ones later.
+  makeChart('#chart-weeks', (c) => ({
+    chart: { type: 'area', height: 170 },
+    colors: [c.series],
+    series: [{ name: 'Attendance rate', data: [100, 96, 96, 92, 88, 84, 80, 78] }],
+    stroke: { width: 3, curve: 'smooth' },
+    fill: { type: 'gradient', gradient: { shadeIntensity: 0, opacityFrom: 0.3, opacityTo: 0, stops: [0, 100] } },
+    xaxis: { categories: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'], axisBorder: { color: c.axis }, axisTicks: { show: false } },
+    yaxis: { min: 60, max: 100, tickAmount: 4, labels: { formatter: (v) => v.toFixed(0) + '%' } },
+    tooltip: { theme: c.dark ? 'dark' : 'light', y: { formatter: (v) => v + '%' } },
+  }));
+  makeChart('#chart-days', (c) => ({
+    chart: { type: 'bar', height: 190 },
+    colors: [c.absent],
+    series: [{ name: 'Absences', data: [6, 1, 2, 1, 2, 1] }],
+    plotOptions: { bar: { columnWidth: '30%', borderRadius: 6, borderRadiusApplication: 'end' } },
+    xaxis: { categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], axisBorder: { color: c.axis }, axisTicks: { show: false } },
+    yaxis: { min: 0, tickAmount: 3, labels: { formatter: (v) => v.toFixed(0) } },
+  }));
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Students · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="students">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm opacity-60">248 students in academic year 2025–2026</p>
+        <div class="flex gap-2">
+          <button class="btn" onclick="import_modal.showModal()">
+            <i data-lucide="upload" class="size-4"></i><span data-km="នាំចូលពី Excel">Import Excel</span>
+          </button>
+          <button class="btn btn-primary" onclick="student_modal.showModal()">
+            <i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមសិស្ស">Add student</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <!-- Filters -->
+          <div class="flex flex-wrap gap-2">
+            <label class="input grow sm:max-w-xs">
+              <i data-lucide="search" class="size-4 opacity-50"></i>
+              <input type="search" placeholder="Search name or student code" />
+            </label>
+            <select class="select w-auto">
+              <option>All classes</option>
+              <option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option><option>12B</option>
+            </select>
+            <select class="select w-auto">
+              <option>All genders</option><option>Male</option><option>Female</option>
+            </select>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Code</th><th>Student</th><th>Gender</th><th>Class</th>
+                  <th>Attendance rate</th><th>Status</th><th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>S-10A-001</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Sok Dara</a><div class="text-xs opacity-60">សុខ ដារា</div></td>
+                  <td>Male</td><td>10A</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-success w-24" value="97" max="100"></progress><span>97%</span></div></td>
+                  <td><span class="badge badge-soft badge-success">Good</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-10A-002</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Chan Sreyneang</a><div class="text-xs opacity-60">ចាន់ ស្រីនាង</div></td>
+                  <td>Female</td><td>10A</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-success w-24" value="94" max="100"></progress><span>94%</span></div></td>
+                  <td><span class="badge badge-soft badge-success">Good</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-10A-003</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Ouk Sreypov</a><div class="text-xs opacity-60">អ៊ុក ស្រីពៅ</div></td>
+                  <td>Female</td><td>10A</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-warning w-24" value="86" max="100"></progress><span>86%</span></div></td>
+                  <td><span class="badge badge-soft badge-warning">Watch</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-10B-014</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Touch Vuthy</a><div class="text-xs opacity-60">ទូច វុទ្ធី</div></td>
+                  <td>Male</td><td>10B</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-error w-24" value="77" max="100"></progress><span>77%</span></div></td>
+                  <td><span class="badge badge-soft badge-error">At risk</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-11A-007</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Kim Vannak</a><div class="text-xs opacity-60">គឹម វណ្ណៈ</div></td>
+                  <td>Male</td><td>11A</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-success w-24" value="99" max="100"></progress><span>99%</span></div></td>
+                  <td><span class="badge badge-soft badge-success">Good</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-11B-021</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Chea Rithy</a><div class="text-xs opacity-60">ជា រិទ្ធី</div></td>
+                  <td>Male</td><td>11B</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-error w-24" value="68" max="100"></progress><span>68%</span></div></td>
+                  <td><span class="badge badge-soft badge-error">At risk</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-12A-005</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Heng Sophea</a><div class="text-xs opacity-60">ហេង សុភា</div></td>
+                  <td>Female</td><td>12A</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-success w-24" value="96" max="100"></progress><span>96%</span></div></td>
+                  <td><span class="badge badge-soft badge-success">Good</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+                <tr>
+                  <td>S-12B-018</td>
+                  <td><a href="student-details.html" class="font-medium link link-hover">Ly Bopha</a><div class="text-xs opacity-60">លី បុប្ផា</div></td>
+                  <td>Female</td><td>12B</td>
+                  <td><div class="flex items-center gap-2"><progress class="progress progress-success w-24" value="92" max="100"></progress><span>92%</span></div></td>
+                  <td><span class="badge badge-soft badge-success">Good</span></td>
+                  <td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-sm opacity-60">Showing 1–8 of 248</span>
+            <div class="join">
+              <button class="join-item btn btn-sm">«</button>
+              <button class="join-item btn btn-sm btn-active">1</button>
+              <button class="join-item btn btn-sm">2</button>
+              <button class="join-item btn btn-sm">3</button>
+              <button class="join-item btn btn-sm">»</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<!-- Add student -->
+<dialog id="student_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមសិស្ស">Add student</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Khmer)</legend><input class="input validator w-full" placeholder="សុខ ដារា" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Latin)</legend><input class="input validator w-full" placeholder="Sok Dara" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Student code</legend><input class="input validator w-full" placeholder="S-10A-041" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Gender</legend><select class="select w-full"><option>Male</option><option>Female</option></select></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Class</legend><select class="select w-full"><option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option><option>12B</option></select></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Date of birth</legend><input type="date" class="input validator w-full" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset sm:col-span-2"><legend class="fieldset-legend">Parent phone</legend><input class="input validator w-full" placeholder="012 345 678" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save student</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<!-- Import from Excel -->
+<dialog id="import_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="នាំចូលពី Excel">Import students from Excel</h3>
+    <p class="mt-1 text-sm opacity-60">Columns: code, Khmer name, Latin name, gender, class, date of birth.</p>
+    <form method="dialog" class="mt-4 space-y-4">
+      <input type="file" class="file-input validator w-full" required accept=".xlsx,.csv" />
+      <a class="link text-sm">Download the template file</a>
+      <div class="modal-action">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Import</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

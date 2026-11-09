@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Classes · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="my-classes">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <p class="text-sm opacity-60" data-km="ថ្នាក់ដែលអ្នកបង្រៀនគណិតវិទ្យា · ឆ្នាំសិក្សា ២០២៥–២០២៦">The classes you teach Mathematics in · academic year 2025–2026</p>
+
+      <!-- One card per class -->
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">10A</h3><p class="text-sm opacity-60">Grade 10 · Room 101</p></div>
+              <span class="badge badge-soft badge-success">96.1%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="96.1" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Students</dt><dd class="text-right">42 (20 girls)</dd>
+              <dt class="opacity-60" data-km="ម៉ោងខែនេះ">Sessions this month</dt><dd class="text-right">18</dd>
+              <dt class="opacity-60" data-km="ពេលបង្រៀន">Teaching time</dt><dd class="text-right">Mon–Sat · P1</dd>
+            </dl>
+            <div class="card-actions mt-2 justify-end">
+              <a href="monitoring.html" class="btn btn-sm" data-km="ប្រវត្តិ">History</a>
+              <a href="attendance.html" class="btn btn-primary btn-sm" data-km="ស្រង់វត្តមាន">Take attendance</a>
+            </div>
+          </div>
+        </div>
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">10B</h3><p class="text-sm opacity-60">Grade 10 · Room 102</p></div>
+              <span class="badge badge-soft badge-success">93.3%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="93.3" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Students</dt><dd class="text-right">41 (22 girls)</dd>
+              <dt class="opacity-60" data-km="ម៉ោងខែនេះ">Sessions this month</dt><dd class="text-right">18</dd>
+              <dt class="opacity-60" data-km="ពេលបង្រៀន">Teaching time</dt><dd class="text-right">Mon–Sat · P2</dd>
+            </dl>
+            <div class="card-actions mt-2 justify-end">
+              <a href="monitoring.html" class="btn btn-sm" data-km="ប្រវត្តិ">History</a>
+              <a href="attendance.html" class="btn btn-primary btn-sm" data-km="ស្រង់វត្តមាន">Take attendance</a>
+            </div>
+          </div>
+        </div>
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div><h3 class="card-title">11A</h3><p class="text-sm opacity-60">Grade 11 · Room 201</p></div>
+              <span class="badge badge-soft badge-success">94.5%</span>
+            </div>
+            <progress class="progress progress-success mt-2" value="94.5" max="100"></progress>
+            <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+              <dt class="opacity-60">Students</dt><dd class="text-right">43 (21 girls)</dd>
+              <dt class="opacity-60" data-km="ម៉ោងខែនេះ">Sessions this month</dt><dd class="text-right">18</dd>
+              <dt class="opacity-60" data-km="ពេលបង្រៀន">Teaching time</dt><dd class="text-right">Mon–Sat · P4</dd>
+            </dl>
+            <div class="card-actions mt-2 justify-end">
+              <a href="monitoring.html" class="btn btn-sm" data-km="ប្រវត្តិ">History</a>
+              <a href="attendance.html" class="btn btn-primary btn-sm" data-km="ស្រង់វត្តមាន">Take attendance</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Students of my classes (read only: admins manage student records) -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="card-title text-base" data-km="សិស្សក្នុងថ្នាក់របស់ខ្ញុំ">Students in my classes</h3>
+            <div class="flex flex-wrap gap-2">
+              <label class="input w-auto">
+                <i data-lucide="search" class="size-4 opacity-50"></i>
+                <input type="search" placeholder="Search name or ID" />
+              </label>
+              <select class="select w-auto"><option>All classes</option><option>10A</option><option>10B</option><option>11A</option></select>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead><tr><th>Student</th><th>Code</th><th>Class</th><th>Attendance rate</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Sok Dara</a><div class="text-xs opacity-60">សុខ ដារា</div></td><td>S-10A-001</td><td>10A</td><td><div class="flex items-center gap-2"><progress class="progress progress-success w-20" value="97" max="100"></progress><span>97%</span></div></td><td><span class="badge badge-soft badge-success">Good</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Ouk Sreypov</a><div class="text-xs opacity-60">អ៊ុក ស្រីពៅ</div></td><td>S-10A-003</td><td>10A</td><td><div class="flex items-center gap-2"><progress class="progress progress-warning w-20" value="86" max="100"></progress><span>86%</span></div></td><td><span class="badge badge-soft badge-warning">Watch</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Heng Sophea</a><div class="text-xs opacity-60">ហេង សុភា</div></td><td>S-10A-005</td><td>10A</td><td><div class="flex items-center gap-2"><progress class="progress progress-success w-20" value="96" max="100"></progress><span>96%</span></div></td><td><span class="badge badge-soft badge-success">Good</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Touch Vuthy</a><div class="text-xs opacity-60">ទូច វុទ្ធី</div></td><td>S-10B-014</td><td>10B</td><td><div class="flex items-center gap-2"><progress class="progress progress-error w-20" value="77" max="100"></progress><span>77%</span></div></td><td><span class="badge badge-soft badge-error">At risk</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Phan Chenda</a><div class="text-xs opacity-60">ផាន ចិន្តា</div></td><td>S-10B-002</td><td>10B</td><td><div class="flex items-center gap-2"><progress class="progress progress-success w-20" value="93" max="100"></progress><span>93%</span></div></td><td><span class="badge badge-soft badge-success">Good</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Kim Vannak</a><div class="text-xs opacity-60">គឹម វណ្ណៈ</div></td><td>S-11A-007</td><td>11A</td><td><div class="flex items-center gap-2"><progress class="progress progress-success w-20" value="99" max="100"></progress><span>99%</span></div></td><td><span class="badge badge-soft badge-success">Good</span></td></tr>
+                <tr><td><a href="student-details.html" class="font-medium link link-hover">Kong Mealea</a><div class="text-xs opacity-60">គង់ មាលា</div></td><td>S-11A-012</td><td>11A</td><td><div class="flex items-center gap-2"><progress class="progress progress-warning w-20" value="88" max="100"></progress><span>88%</span></div></td><td><span class="badge badge-soft badge-warning">Watch</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs opacity-60" data-km="មានតែអ្នកគ្រប់គ្រងទេដែលអាចបន្ថែម ឬកែប្រែព័ត៌មានសិស្ស។">Only admins can add or edit student records.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

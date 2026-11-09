@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="profile">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 p-4 lg:p-6">
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 lg:grid-cols-3">
+
+        <!-- Who is logged in -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body items-center text-center">
+            <div class="avatar avatar-placeholder">
+              <div class="bg-neutral text-neutral-content w-20 rounded-full"><span class="text-2xl" data-user="initials">SA</span></div>
+            </div>
+            <h2 class="mt-2 text-lg font-semibold" data-user="name">Sok Admin</h2>
+            <p class="grow-0 text-sm opacity-60" data-user="email">admin@school.edu.kh</p>
+            <span class="badge badge-soft badge-primary" data-user="role">Administrator</span>
+            <a href="login.html" class="btn btn-block mt-4"><i data-lucide="log-out" class="size-4"></i><span data-km="ចាកចេញ">Log out</span></a>
+          </div>
+        </div>
+
+        <div class="space-y-4 lg:col-span-2">
+          <!-- Personal details -->
+          <div class="card bg-base-100 border-base-300 border">
+            <form class="card-body" data-save>
+              <h3 class="card-title text-base" data-km="ព័ត៌មានផ្ទាល់ខ្លួន">Personal details</h3>
+              <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+                <fieldset class="fieldset"><legend class="fieldset-legend">Name (Latin)</legend><input class="input validator w-full" value="Sok Admin" data-user="name" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+                <fieldset class="fieldset"><legend class="fieldset-legend">Name (Khmer)</legend><input class="input validator w-full" value="សុខ អេតមីន" data-user="nameKm" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+                <fieldset class="fieldset"><legend class="fieldset-legend">Email</legend><input type="email" class="input validator w-full" value="admin@school.edu.kh" data-user="email" required /><p class="validator-hint hidden" data-km="សូមបញ្ចូលអ៊ីមែលត្រឹមត្រូវ">Enter a valid email address</p></fieldset>
+                <fieldset class="fieldset"><legend class="fieldset-legend">Phone</legend><input class="input validator w-full" value="012 000 111" data-user="phone" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+              </div>
+              <div class="card-actions mt-2 justify-end"><button class="btn btn-primary">Save changes</button></div>
+            </form>
+          </div>
+
+          <!-- Language and theme -->
+          <div class="card bg-base-100 border-base-300 border">
+            <div class="card-body">
+              <h3 class="card-title text-base" data-km="ភាសា និងរូបរាង">Language and appearance</h3>
+              <div class="flex items-center justify-between gap-4 py-2">
+                <div><div class="font-medium" data-km="ភាសា">Language</div><div class="text-sm opacity-60">English or Khmer for every screen.</div></div>
+                <button class="btn btn-sm" data-action="lang"></button>
+              </div>
+              <div class="border-base-300 flex items-center justify-between gap-4 border-t py-2">
+                <div><div class="font-medium" data-km="រូបរាង">Theme</div><div class="text-sm opacity-60">Light or dark colours.</div></div>
+                <button class="btn btn-sm btn-square" data-action="theme" aria-label="switch theme"></button>
+              </div>
+              <div class="border-base-300 flex items-center justify-between gap-4 border-t py-2">
+                <div><div class="font-medium" data-km="កំណត់ទិន្នន័យសាកល្បងឡើងវិញ">Reset demo data</div><div class="text-sm opacity-60" data-km="លុបវត្តមាន អន្តរាគមន៍ និងការកែតម្រូវ ដែលបានរក្សាទុកថ្ងៃនេះ។">Remove today's saved attendance, interventions and corrections.</div></div>
+                <button class="btn btn-sm" data-action="reset-demo"><i data-lucide="rotate-ccw" class="size-4"></i><span data-km="កំណត់ឡើងវិញ">Reset</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="card bg-base-100 border-base-300 border">
+            <form class="card-body" data-save>
+              <h3 class="card-title text-base" data-km="ប្តូរពាក្យសម្ងាត់">Change password</h3>
+              <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
+                <fieldset class="fieldset"><legend class="fieldset-legend">Current password</legend><input type="password" class="input validator w-full" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+                <fieldset class="fieldset"><legend class="fieldset-legend">New password</legend><input type="password" id="new-password" class="input validator w-full" minlength="8" required /><p class="validator-hint hidden" data-km="យ៉ាងហោចណាស់ ៨ តួអក្សរ">At least 8 characters</p></fieldset>
+                <fieldset class="fieldset"><legend class="fieldset-legend">Repeat new password</legend><input type="password" id="repeat-password" class="input validator w-full" required /><p class="validator-hint hidden" data-km="ពាក្យសម្ងាត់មិនដូចគ្នា">Passwords do not match</p></fieldset>
+              </div>
+              <div class="card-actions mt-2 justify-end"><button class="btn">Update password</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Insights · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="insights">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <!-- What the data says this month, in plain words -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="card-title text-base"><i data-lucide="lightbulb" class="text-warning size-5"></i><span data-km="អ្វីដែលទិន្នន័យបង្ហាញខែនេះ">What the data shows this month</span></h3>
+            <span class="text-sm opacity-60" data-km="៤ សប្តាហ៍ចុងក្រោយ ធៀបនឹង ៤ សប្តាហ៍មុន">last 4 weeks vs the 4 weeks before</span>
+          </div>
+          <ul class="mt-1 space-y-2">
+            <li class="flex gap-3"><span class="badge badge-error badge-sm mt-0.5">▼</span><span data-km="ថ្នាក់ទី១១ ធ្លាក់ចុះច្រើនជាងគេ (−3.0 ពិន្ទុ) ភាគច្រើននៅថ្នាក់ 11B (−6.2)។">Grade 11 shows the largest decline (−3.0 points), mostly in 11B (−6.2).</span></li>
+            <li class="flex gap-3"><span class="badge badge-warning badge-sm mt-0.5">!</span><span data-km="ថ្ងៃច័ន្ទ ម៉ោងទី១ ជាពេលទាបបំផុត (84.2%) ទាបជាងមធ្យមភាគសាលា 8.8 ពិន្ទុ។">Monday Period 1 is the lowest time slot (84.2%), 8.8 points below the school average.</span></li>
+            <li class="flex gap-3"><span class="badge badge-warning badge-sm mt-0.5">!</span><span data-km="រូបវិទ្យានៅថ្នាក់ 11B មានអត្រាទាបបំផុត (79.4%)។">Physics in 11B has the lowest subject rate (79.4%).</span></li>
+            <li class="flex gap-3"><span class="badge badge-info badge-sm mt-0.5">i</span><span data-km="សិស្ស ៩ នាក់ស្ថិតក្នុងហានិភ័យខ្ពស់ ឬធ្ងន់ធ្ងរ ហើយ ៤ នាក់អវត្តមាន ៣ ថ្ងៃជាប់គ្នា ឬច្រើនជាងនេះ។">9 students are at High or Critical risk, and 4 are absent 3+ days in a row.</span></li>
+          </ul>
+          <p class="text-xs opacity-60" data-km="ទាំងនេះជាលំនាំដែលគួរពិនិត្យ មិនមែនជាមូលហេតុ ឬការបន្ទោសនរណាម្នាក់ទេ។">These are patterns to look into, not causes, and they never blame a teacher or student.</p>
+        </div>
+      </div>
+
+      <!-- Drill-down: School → Grade → Class -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="breadcrumbs text-sm" id="crumbs"></div>
+            <span class="text-xs opacity-60" data-km="ចុចលើកាត ដើម្បីមើលលម្អិត">Click a card to see more</span>
+          </div>
+          <div id="drill"></div>
+        </div>
+      </div>
+
+      <!-- Hotspots: day × period -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="card-title text-base" data-km="ចំណុចក្តៅ៖ ថ្ងៃ × ម៉ោង">Hotspots: day × period</h3>
+              <p class="text-sm opacity-60" data-km="អត្រាវត្តមានខែនេះ។ ពណ៌ក្រហមកាន់តែខ្លាំង = ទាបជាងមធ្យមភាគ (93.0%) កាន់តែច្រើន។">Attendance rate this month. Darker red = further below the school average (93.0%).</p>
+            </div>
+            <span class="flex items-center gap-2 text-xs"><span class="inline-block size-3 rounded border-2 border-error"></span><span data-km="ចំណុចក្តៅ (ទាបជាង ៥ ពិន្ទុ ឬច្រើនជាង)">Hotspot (5+ points below)</span></span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[520px] border-separate border-spacing-1 text-center text-sm" id="heatmap" data-no-cards></table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Fake numbers for the design. Laravel will calculate them from submitted sessions.
+  const GRADES = [
+    { grade: 10, rate: 94.7, trend: -0.8, risk: 3, classes: ['10A', '10B'] },
+    { grade: 11, rate: 91.7, trend: -3.0, risk: 4, classes: ['11A', '11B'] },
+    { grade: 12, rate: 93.1, trend: -0.3, risk: 2, classes: ['12A', '12B'] },
+  ];
+  const CLASSES = {
+    '10A': { rate: 96.1, trend: 0.8, risk: 1, students: 42, day: 'Mon', period: 1, subjects: { Mathematics: 95.8, 'Khmer Literature': 97.1, English: 96.4, Physics: 94.2, History: 97.0 }, watch: ['Ouk Sreypov'] },
+    '10B': { rate: 93.3, trend: -2.4, risk: 2, students: 41, day: 'Mon', period: 1, subjects: { Mathematics: 90.1, 'Khmer Literature': 94.6, English: 93.8, Physics: 93.0, History: 95.0 }, watch: ['Touch Vuthy', 'Duong Panha'] },
+    '11A': { rate: 94.5, trend: 0.3, risk: 1, students: 43, day: 'Wed', period: 4, subjects: { Mathematics: 95.0, 'Khmer Literature': 95.2, English: 93.9, Physics: 93.1, History: 95.4 }, watch: ['Kong Mealea'] },
+    '11B': { rate: 88.9, trend: -6.2, risk: 3, students: 40, day: 'Mon', period: 1, subjects: { Mathematics: 90.2, 'Khmer Literature': 91.0, English: 89.5, Physics: 79.4, History: 92.1 }, watch: ['Chea Rithy', 'Nhem Vichea', 'Run Veasna'] },
+    '12A': { rate: 92.1, trend: -1.1, risk: 1, students: 41, day: 'Sat', period: 1, subjects: { Mathematics: 92.4, 'Khmer Literature': 93.0, English: 90.6, Physics: 91.8, History: 92.9 }, watch: ['Meas Sokha'] },
+    '12B': { rate: 94.0, trend: 0.5, risk: 1, students: 41, day: 'Sat', period: 1, subjects: { Mathematics: 94.6, 'Khmer Literature': 95.1, English: 93.2, Physics: 92.8, History: 94.4 }, watch: ['San Devi'] },
+  };
+  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const AVG = 93.0;
+  const HEAT = [ // rows = periods 1–5, columns = Mon–Sat
+    [84.2, 92.8, 93.5, 93.1, 92.6, 87.6],
+    [90.1, 94.6, 95.0, 94.8, 94.1, 92.4],
+    [93.4, 95.2, 94.4, 95.6, 94.0, 93.0],
+    [93.8, 94.9, 90.6, 95.1, 93.7, 91.5],
+    [92.7, 94.1, 93.9, 94.6, 92.2, 88.9],
+  ];
+
+  const km = () => isKhmer();
+  const trendBadge = (t) =>
+    `<span class="${t <= -5 ? 'text-error' : t >= 5 ? 'text-success' : 'opacity-70'} text-sm font-semibold">${t < 0 ? '▼' : '▲'} ${Math.abs(t).toFixed(1)}</span>`;
+  const rateColor = (r) => (r >= 93 ? 'progress-success' : r >= 90 ? 'progress-warning' : 'progress-error');
+  const card = (key, title, sub, rate, trend, risk) => `
+    <button class="card bg-base-200/60 hover:bg-base-200 border-base-300 border text-left transition" data-go="${key}">
+      <div class="card-body gap-1 p-4">
+        <div class="flex items-start justify-between"><span class="text-lg font-bold">${title}</span>${trendBadge(trend)}</div>
+        <div class="text-3xl font-extrabold">${rate.toFixed(1)}%</div>
+        <progress class="progress ${rateColor(rate)}" value="${rate}" max="100"></progress>
+        <div class="text-xs opacity-70">${sub} · <span class="text-error font-semibold">${risk}</span> <span data-km="ហានិភ័យខ្ពស់">high risk</span></div>
+      </div>
+    </button>`;
+
+  let view = { level: 'school' };
+  function crumbs() {
+    const parts = [`<li><a data-go="school" class="cursor-pointer" data-km="សាលាទាំងមូល">Whole school</a></li>`];
+    if (view.grade) parts.push(`<li><a data-go="g${view.grade}" class="cursor-pointer">Grade ${view.grade}</a></li>`);
+    if (view.cls) parts.push(`<li>${view.cls}</li>`);
+    document.getElementById('crumbs').innerHTML = `<ul>${parts.join('')}</ul>`;
+  }
+  function draw() {
+    const box = document.getElementById('drill');
+    if (view.level === 'school') {
+      box.innerHTML = `<div class="grid grid-cols-1 gap-3 md:grid-cols-3">${GRADES.map((g) => card('g' + g.grade, `Grade ${g.grade}`, `${g.classes.length} classes`, g.rate, g.trend, g.risk)).join('')}</div>`;
+    } else if (view.level === 'grade') {
+      const g = GRADES.find((x) => x.grade === view.grade);
+      box.innerHTML = `<div class="grid grid-cols-1 gap-3 md:grid-cols-2">${g.classes.map((n) => card('c' + n, n, `${CLASSES[n].students} students`, CLASSES[n].rate, CLASSES[n].trend, CLASSES[n].risk)).join('')}</div>`;
+    } else {
+      const c = CLASSES[view.cls];
+      const subjects = Object.entries(c.subjects).sort((a, b) => a[1] - b[1]);
+      const lowest = subjects[0];
+      box.innerHTML = `
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div class="space-y-3">
+            <div class="bg-base-200 rounded-box p-4"><div class="text-sm opacity-60" data-km="អត្រាវត្តមាន">Attendance rate</div><div class="text-3xl font-extrabold">${c.rate.toFixed(1)}%</div>${trendBadge(c.trend)} <span class="text-xs opacity-60" data-km="ពិន្ទុ ក្នុង ៤ សប្តាហ៍">points in 4 weeks</span></div>
+            <div class="grid grid-cols-3 gap-2 text-center text-sm">
+              <div class="bg-base-200 rounded-box p-2"><div class="text-xs opacity-60" data-km="ថ្ងៃទាបបំផុត">Lowest day</div><div class="font-bold">${c.day}</div></div>
+              <div class="bg-base-200 rounded-box p-2"><div class="text-xs opacity-60" data-km="ម៉ោងទាបបំផុត">Lowest period</div><div class="font-bold">P${c.period}</div></div>
+              <div class="bg-base-200 rounded-box p-2"><div class="text-xs opacity-60" data-km="មុខវិជ្ជាទាបបំផុត">Lowest subject</div><div class="font-bold">${lowest[0]}</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="mb-2 text-sm font-semibold" data-km="អត្រាតាមមុខវិជ្ជា">Rate by subject</div>
+            <ul class="space-y-2 text-sm">${subjects.map(([s, r]) => `<li><div class="flex justify-between"><span>${s}</span><span class="font-medium">${r.toFixed(1)}%</span></div><progress class="progress ${rateColor(r)}" value="${r}" max="100"></progress></li>`).join('')}</ul>
+          </div>
+          <div>
+            <div class="mb-2 text-sm font-semibold" data-km="សិស្សហានិភ័យខ្ពស់">High-risk students</div>
+            <ul class="space-y-2">${c.watch.map((n) => `<li><a href="student-details.html" class="bg-base-200 hover:bg-base-300 rounded-box flex items-center justify-between p-3 text-sm"><span class="font-medium">${n}</span><i data-lucide="chevron-right" class="size-4 opacity-60"></i></a></li>`).join('')}</ul>
+            <a href="at-risk.html" class="btn btn-ghost btn-sm mt-2" data-km="មើលបញ្ជីហានិភ័យ">Open the risk list</a>
+          </div>
+        </div>`;
+    }
+    crumbs();
+    lucide.createIcons();
+  }
+  document.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-go]');
+    if (!go) return;
+    const key = go.dataset.go;
+    if (key === 'school') view = { level: 'school' };
+    else if (key[0] === 'g') view = { level: 'grade', grade: +key.slice(1) };
+    else {
+      const name = key.slice(1);
+      view = { level: 'class', grade: +name.slice(0, 2), cls: name };
+    }
+    draw();
+  });
+  draw();
+
+  // Heatmap: colour by how far below the school average each cell is
+  function drawHeat() {
+    const head = `<tr><th></th>${DAYS.map((d) => `<th class="text-xs font-semibold opacity-70">${d}</th>`).join('')}</tr>`;
+    const rows = HEAT.map((row, p) => `<tr><th class="text-xs font-semibold whitespace-nowrap opacity-70">Period ${p + 1}</th>${row
+      .map((v) => {
+        const gap = AVG - v;
+        const strength = Math.max(0, Math.min(60, gap * 7));
+        const hot = gap >= 5;
+        const outline = hot ? 'outline: 2px solid var(--color-error); outline-offset: -2px;' : '';
+        return `<td class="rounded-lg py-3 font-semibold" style="${outline} background: color-mix(in oklab, var(--color-error) ${strength}%, var(--color-base-200))" title="${v}%">${v.toFixed(1)}</td>`;
+      })
+      .join('')}</tr>`).join('');
+    document.getElementById('heatmap').innerHTML = `<thead>${head}</thead><tbody>${rows}</tbody>`;
+  }
+  drawHeat();
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teacher Details · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="teacher-details" data-parent="teachers" data-title="Teacher details" data-title-km="ព័ត៌មានគ្រូ">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="breadcrumbs text-sm">
+        <ul>
+          <li><a href="teachers.html" data-km="គ្រូបង្រៀន">Teachers</a></li>
+          <li>Pen Sovann</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <!-- Profile -->
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body items-center text-center">
+            <div class="avatar avatar-placeholder"><div class="w-20 rounded-full"><span class="text-2xl">PS</span></div></div>
+            <h2 class="mt-2 text-xl font-bold">Pen Sovann</h2>
+            <p class="opacity-60">ប៉ែន សុវណ្ណ · TCH-0001</p>
+            <span class="badge badge-soft badge-success" data-km="សកម្ម">Active</span>
+            <ul class="mt-4 w-full space-y-3 text-left text-sm">
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="ទូរស័ព្ទ">Phone</span><span class="font-medium">012 345 678</span></li>
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="អ៊ីមែល">Email</span><span class="font-medium">sovann@school.edu.kh</span></li>
+              <li class="flex justify-between gap-2"><span class="opacity-60" data-km="ចូលប្រើចុងក្រោយ">Last login</span><span class="font-medium">Today, 07:02 · Android</span></li>
+            </ul>
+            <div class="card-actions mt-4 w-full">
+              <a href="assignments.html" class="btn btn-primary grow"><i data-lucide="calendar-check" class="size-4"></i><span data-km="ចាត់តាំងថ្នាក់">Assign classes</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4 xl:col-span-2">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-title" data-km="ថ្នាក់">Classes</div><div class="stat-value">3</div><div class="stat-desc">126 students</div></div></div>
+            <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-title" data-km="ម៉ោងសប្តាហ៍នេះ">Sessions this week</div><div class="stat-value">18/18</div><div class="stat-desc">all recorded</div></div></div>
+            <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-title" data-km="អត្រាវត្តមាន">Attendance rate</div><div class="stat-value">94.6%</div><div class="stat-desc">in this teacher's classes</div></div></div>
+          </div>
+
+          <!-- Teaching assignments -->
+          <div class="card bg-base-100 border-base-300 border">
+            <div class="card-body">
+              <h3 class="card-title text-base" data-km="ការចាត់តាំងបង្រៀន">Teaching assignments</h3>
+              <div class="overflow-x-auto">
+                <table class="table">
+                  <thead><tr><th>Class</th><th>Subject</th><th class="num">Students</th><th class="num">Rate</th></tr></thead>
+                  <tbody>
+                    <tr><td class="font-medium">10A</td><td>Mathematics</td><td class="num">42</td><td class="num">96.1%</td></tr>
+                    <tr><td class="font-medium">10B</td><td>Mathematics</td><td class="num">41</td><td class="num">93.3%</td></tr>
+                    <tr><td class="font-medium">11A</td><td>Mathematics</td><td class="num">43</td><td class="num">94.5%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent sessions -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <h3 class="card-title text-base" data-km="ម៉ោងបង្រៀនថ្មីៗ">Recent sessions</h3>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead><tr><th>Date</th><th>Class</th><th>Subject</th><th class="num">Present</th><th class="num">Absent</th><th class="num">Rate</th></tr></thead>
+              <tbody>
+                <tr><td>Fri 24 Oct 2026</td><td>10A</td><td>Mathematics</td><td class="num">40</td><td class="num">2</td><td class="num">95.2%</td></tr>
+                <tr><td>Fri 24 Oct 2026</td><td>11A</td><td>Mathematics</td><td class="num">42</td><td class="num">1</td><td class="num">97.7%</td></tr>
+                <tr><td>Thu 23 Oct 2026</td><td>10B</td><td>Mathematics</td><td class="num">38</td><td class="num">3</td><td class="num">92.7%</td></tr>
+                <tr><td>Wed 22 Oct 2026</td><td>10A</td><td>Mathematics</td><td class="num">41</td><td class="num">1</td><td class="num">97.6%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

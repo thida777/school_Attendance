@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Dashboard · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@8.0.0/dist/apexcharts.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="teacher-dashboard">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-6 p-4 lg:p-6">
+      <!-- Greeting -->
+      <div class="hero-panel flex flex-wrap items-end justify-between gap-6 p-6 lg:p-8">
+        <div>
+          <span class="hero-chip"><i data-lucide="book-open" class="size-3.5"></i><span data-km="គណិតវិទ្យា · ៣ ថ្នាក់">Mathematics · 3 classes</span></span>
+          <h2 class="mt-4 text-2xl font-bold lg:text-3xl" data-km="សួស្តី Pen Sovann">Good morning, Pen Sovann</h2>
+          <p class="mt-1 opacity-85" data-km="នេះជាថ្ងៃបង្រៀនរបស់អ្នកថ្ងៃនេះ">Here is your teaching day.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-6">
+          <div>
+            <div class="text-4xl font-extrabold">95.2%</div>
+            <div class="text-sm opacity-85" data-km="វត្តមានក្នុងថ្នាក់របស់ខ្ញុំថ្ងៃនេះ">attendance in my classes today</div>
+          </div>
+          <a href="attendance.html" class="btn btn-lg">
+            <i data-lucide="clipboard-check" class="size-5"></i>
+            <span data-km="ស្រង់វត្តមាន">Take attendance</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4 headline numbers -->
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="stats bg-base-100 border-base-300 border">
+          <div class="stat">
+            <div class="stat-figure"><i data-lucide="school" class="size-7"></i></div>
+            <div class="stat-title" data-km="ថ្នាក់របស់ខ្ញុំ">My classes</div>
+            <div class="stat-value">3</div>
+            <div class="stat-desc">10A · 10B · 11A</div>
+          </div>
+        </div>
+        <div class="stats bg-base-100 border-base-300 border">
+          <div class="stat">
+            <div class="stat-figure"><i data-lucide="users" class="size-7"></i></div>
+            <div class="stat-title" data-km="សិស្សរបស់ខ្ញុំ">My students</div>
+            <div class="stat-value">126</div>
+            <div class="stat-desc" data-km="ក្នុងថ្នាក់ទាំង ៣">in 3 classes</div>
+          </div>
+        </div>
+        <div class="stats bg-base-100 border-base-300 border">
+          <div class="stat">
+            <div class="stat-figure"><i data-lucide="user-x" class="size-7"></i></div>
+            <div class="stat-title" data-km="អវត្តមានថ្ងៃនេះ">Absent today</div>
+            <div class="stat-value" data-today="absent">2</div>
+            <div class="stat-desc" data-today="absent-where">10A, period 1</div>
+          </div>
+        </div>
+        <div class="stats bg-base-100 border-base-300 border">
+          <div class="stat">
+            <div class="stat-figure"><i data-lucide="calendar-check" class="size-7"></i></div>
+            <div class="stat-title" data-km="ម៉ោងបានស្រង់ថ្ងៃនេះ">Marked today</div>
+            <div class="stat-value" data-today="marked">1/3</div>
+            <div class="stat-desc" data-today="left">2 periods still to mark</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's schedule + students to watch -->
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <div class="card bg-base-100 border-base-300 border xl:col-span-2">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <h3 class="card-title text-base" data-km="កាលវិភាគថ្ងៃនេះ">Today's schedule</h3>
+              <a href="attendance.html" class="btn btn-ghost btn-sm" data-km="ស្រង់វត្តមាន">Take attendance</a>
+            </div>
+            <ul>
+              <li class="border-base-300 flex flex-wrap items-center gap-3 border-b py-3 last:border-0" data-session="10A|Mathematics|1">
+                <span class="bg-success/10 text-success grid size-11 place-items-center rounded-2xl font-bold">P1</span>
+                <div class="min-w-0 grow">
+                  <div class="font-semibold">10A · <span data-km="គណិតវិទ្យា">Mathematics</span></div>
+                  <div class="text-sm opacity-60">07:00–08:00 · Room 101</div>
+                </div>
+                <span class="badge badge-soft badge-success"><i data-lucide="check" class="size-3.5"></i><span data-km="រួចរាល់ 40/42">Done 40/42</span></span>
+                <a href="attendance.html" class="btn btn-sm" data-km="កែប្រែ">Edit</a>
+              </li>
+              <li class="border-base-300 flex flex-wrap items-center gap-3 border-b py-3 last:border-0" data-session="10B|Mathematics|2">
+                <span class="bg-primary/10 text-primary grid size-11 place-items-center rounded-2xl font-bold">P2</span>
+                <div class="min-w-0 grow">
+                  <div class="font-semibold">10B · <span data-km="គណិតវិទ្យា">Mathematics</span></div>
+                  <div class="text-sm opacity-60">08:00–09:00 · Room 102</div>
+                </div>
+                <span class="badge badge-soft badge-primary" data-km="បន្ទាប់">Up next</span>
+                <a href="attendance.html" class="btn btn-primary btn-sm"><i data-lucide="play" class="size-4"></i><span data-km="ចាប់ផ្តើម">Start</span></a>
+              </li>
+              <li class="border-base-300 flex flex-wrap items-center gap-3 border-b py-3 last:border-0" data-session="11A|Mathematics|4">
+                <span class="bg-base-200 grid size-11 place-items-center rounded-2xl font-bold opacity-70">P4</span>
+                <div class="min-w-0 grow">
+                  <div class="font-semibold">11A · <span data-km="គណិតវិទ្យា">Mathematics</span></div>
+                  <div class="text-sm opacity-60">10:15–11:15 · Room 201</div>
+                </div>
+                <span class="badge badge-soft" data-km="មិនទាន់ស្រង់">Not marked</span>
+                <a href="attendance.html" class="btn btn-sm"><i data-lucide="play" class="size-4"></i><span data-km="ចាប់ផ្តើម">Start</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <h3 class="card-title text-base" data-km="សិស្សដែលត្រូវតាមដាន">Students to watch</h3>
+            <p class="grow-0 text-sm opacity-60" data-km="ក្នុងថ្នាក់របស់ខ្ញុំ">In my classes</p>
+            <ul class="mt-2 space-y-3">
+              <li class="flex items-center gap-3" data-risk="Ouk Sreypov">
+                <div class="avatar avatar-placeholder"><div class="w-9 rounded-full"><span class="text-xs">OS</span></div></div>
+                <div class="min-w-0 grow"><a href="student-details.html" class="link link-hover font-medium whitespace-nowrap">Ouk Sreypov</a><div class="text-xs opacity-60">10A · <span data-live="rate">86.0%</span> · <span class="text-error" data-live="trend">▼ 8.2</span><span data-live="streak-text"></span></div></div>
+                <span class="badge badge-warning badge-sm" data-live="level">High</span>
+              </li>
+              <li class="flex items-center gap-3" data-risk="Touch Vuthy">
+                <div class="avatar avatar-placeholder"><div class="w-9 rounded-full"><span class="text-xs">TV</span></div></div>
+                <div class="min-w-0 grow"><a href="student-details.html" class="link link-hover font-medium whitespace-nowrap">Touch Vuthy</a><div class="text-xs opacity-60">10B · <span data-live="rate">77.5%</span> · <span class="text-error" data-live="trend">▼ 11.3</span><span data-live="streak-text"></span></div></div>
+                <span class="badge badge-warning badge-sm" data-live="level">High</span>
+              </li>
+              <li class="flex items-center gap-3" data-risk="Kong Mealea">
+                <div class="avatar avatar-placeholder"><div class="w-9 rounded-full"><span class="text-xs">KM</span></div></div>
+                <div class="min-w-0 grow"><a href="student-details.html" class="link link-hover font-medium whitespace-nowrap">Kong Mealea</a><div class="text-xs opacity-60">11A · <span data-live="rate">88.5%</span> · <span class="text-error" data-live="trend">▼ 6.0</span><span data-live="streak-text"></span></div></div>
+                <span class="badge badge-warning badge-sm" data-live="level">High</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- My analytics -->
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <div class="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h3 class="card-title text-base" data-km="និន្នាការវត្តមានរបស់ថ្នាក់ខ្ញុំ">My attendance trend</h3>
+                <p class="text-sm opacity-60" data-km="ថ្នាក់ទាំង ៣ · ៨ សប្តាហ៍ចុងក្រោយ">3 classes · last 8 weeks</p>
+              </div>
+              <div class="flex gap-4 text-sm">
+                <span class="flex items-center gap-1.5"><span class="status status-success"></span><span data-km="មានវត្តមាន">Present</span></span>
+                <span class="flex items-center gap-1.5"><span class="status status-error"></span><span data-km="អវត្តមាន">Absent</span></span>
+              </div>
+            </div>
+            <div id="chart-trend"></div>
+          </div>
+        </div>
+        <div class="card bg-base-100 border-base-300 border">
+          <div class="card-body">
+            <h3 class="card-title text-base" data-km="អត្រាវត្តមានតាមថ្នាក់">Attendance rate by class</h3>
+            <p class="text-sm opacity-60" data-km="ខែនេះ">This month</p>
+            <div id="chart-classes"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Fake numbers for the design. Laravel will send this teacher's real numbers.
+  const presentPct = [95.1, 94.6, 93.2, 92.8, 94.9, 95.4, 94.1, 95.2];
+  makeChart('#chart-trend', (c) => ({
+    chart: { type: 'area', height: 260 },
+    colors: [c.present, c.absent],
+    series: [
+      { name: 'Present', data: presentPct },
+      { name: 'Absent', data: presentPct.map((p) => +(100 - p).toFixed(1)) },
+    ],
+    stroke: { width: 3, curve: 'smooth' },
+    fill: { type: 'gradient', gradient: { shadeIntensity: 0, opacityFrom: 0.3, opacityTo: 0, stops: [0, 100] } },
+    markers: { size: 0, hover: { size: 6 } },
+    xaxis: { categories: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'], axisBorder: { color: c.axis }, axisTicks: { show: false } },
+    yaxis: { min: 0, max: 100, tickAmount: 4, labels: { formatter: (v) => v.toFixed(0) + '%' } },
+    tooltip: { theme: c.dark ? 'dark' : 'light', shared: true, y: { formatter: (v) => v + '%' } },
+  }));
+
+  makeChart('#chart-classes', (c) => ({
+    chart: { type: 'bar', height: 260 },
+    series: [{ name: 'Attendance rate', data: [96.1, 93.3, 94.5] }],
+    plotOptions: { bar: { columnWidth: '30%', borderRadius: 8, borderRadiusApplication: 'end' } },
+    fill: { opacity: 1 },
+    xaxis: { categories: ['10A', '10B', '11A'], axisBorder: { color: c.axis }, axisTicks: { show: false } },
+    yaxis: { min: 0, max: 100, tickAmount: 4, labels: { formatter: (v) => v.toFixed(0) + '%' } },
+    tooltip: { theme: c.dark ? 'dark' : 'light', y: { formatter: (v) => v + '%' } },
+  }));
+</script>
+</body>
+</html>

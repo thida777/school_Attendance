@@ -1,0 +1,410 @@
+/* Shared styles for every page.
+   Plus Jakarta Sans = Latin letters, Kantumruy Pro = Khmer letters. */
+body {
+  font-family: "Plus Jakarta Sans", "Kantumruy Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: -0.005em;
+}
+h1, h2, h3, .stat-value, .card-title {
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Theme: soft teal glass ----------
+   No pure white page, no pure black text, softer status colours,
+   big round corners and flat (no 3D edge) controls. */
+[data-theme="light"],
+[data-theme="dark"] {
+  --radius-box: 1.5rem;
+  --radius-field: 0.9rem;
+  --radius-selector: 1rem;
+  --depth: 0;
+  --noise: 0;
+}
+[data-theme="light"] {
+  --color-primary: #1f877b;
+  --color-primary-content: #ffffff;
+  --color-base-100: #ffffff;
+  --color-base-200: #eef5f4;
+  --color-base-300: #d7e4e2;
+  --color-base-content: #1f2d3a;
+  --color-neutral: #1f2d3a;
+  --color-neutral-content: #ffffff;
+  --color-success: #3aa876;
+  --color-success-content: #0b2318;
+  --color-warning: #e0a83a;
+  --color-warning-content: #2b1d03;
+  --color-error: #dc6b6b;
+  --color-error-content: #2e0b0b;
+  --color-info: #7c8fd6;
+  --color-info-content: #0f1633;
+  --brand-gradient: linear-gradient(135deg, #14998a 0%, #2b7fb8 100%);
+  --brand-glow: 0 10px 24px -8px rgb(31 135 140 / 0.55);
+  --glass: rgb(255 255 255 / 0.5);
+  --glass-strong: rgb(255 255 255 / 0.88);
+  --glass-field: rgb(255 255 255 / 0.6);
+  --glass-border: rgb(255 255 255 / 0.8);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 20px 40px -20px rgb(31 80 90 / 0.25);
+  --hairline: rgb(31 45 58 / 0.08);
+  --page-bg:
+    radial-gradient(55rem 38rem at 0% 0%, #9be0d2 0%, transparent 62%),
+    radial-gradient(48rem 38rem at 100% 8%, #abc8f5 0%, transparent 62%),
+    radial-gradient(40rem 30rem at 85% 95%, #c9c3f3 0%, transparent 60%),
+    radial-gradient(50rem 36rem at 25% 100%, #b9ecd0 0%, transparent 60%),
+    #eef5f4;
+}
+[data-theme="dark"] {
+  --color-primary: #3fb8a9;
+  --color-primary-content: #06231f;
+  --color-base-100: #1e2b4a;
+  --color-base-200: #17223d;
+  --color-base-300: #31416b;
+  --color-base-content: #e3eaf6;
+  --color-neutral: #3a4b75;
+  --color-neutral-content: #eef3f6;
+  --color-success: #4fb888;
+  --color-success-content: #06180f;
+  --color-warning: #e0a83a;
+  --color-warning-content: #2b1d03;
+  --color-error: #e07a7a;
+  --color-error-content: #2e0b0b;
+  --color-info: #8c9ee0;
+  --color-info-content: #0f1633;
+  --brand-gradient: linear-gradient(135deg, #3fc4b2 0%, #5aa9e6 100%);
+  --brand-glow: 0 10px 24px -8px rgb(63 184 169 / 0.5);
+  --glass: rgb(44 62 108 / 0.5);
+  --glass-strong: rgb(28 40 72 / 0.92);
+  --glass-field: rgb(255 255 255 / 0.05);
+  --glass-border: rgb(170 195 255 / 0.16);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 20px 40px -20px rgb(6 12 32 / 0.55);
+  --hairline: rgb(255 255 255 / 0.07);
+  --page-bg:
+    radial-gradient(55rem 38rem at 0% 0%, #1b6a86 0%, transparent 62%),
+    radial-gradient(48rem 38rem at 100% 8%, #2f55b0 0%, transparent 62%),
+    radial-gradient(40rem 30rem at 85% 95%, #4a45a0 0%, transparent 60%),
+    radial-gradient(50rem 36rem at 25% 100%, #1a5f78 0%, transparent 60%),
+    #17223d;
+}
+
+/* ---------- Page background ---------- */
+body {
+  background: var(--page-bg);
+  background-attachment: fixed;
+}
+
+/* ---------- Glass panels ---------- */
+.card.bg-base-100,
+.stats.bg-base-100,
+#sidebar aside,
+#topbar .navbar {
+  background-color: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+}
+/* Panels that sit on top of other content stay more solid so text is easy to read */
+.modal-box,
+.dropdown-content,
+.card .sticky {
+  background-color: var(--glass-strong);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+}
+
+/* ---------- Floating sidebar ---------- */
+#sidebar aside {
+  margin: 1rem 0 1rem 1rem;
+  min-height: calc(100dvh - 2rem);
+  border-radius: 1.75rem;
+}
+#sidebar .menu {
+  gap: 0.25rem;
+}
+#sidebar .menu-title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  padding-top: 1rem;
+}
+#sidebar .menu a {
+  border-radius: 0.9rem;
+  padding: 0.65rem 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.15s, transform 0.15s;
+}
+#sidebar .menu a:hover {
+  background-color: var(--glass-field);
+  transform: translateX(2px);
+}
+.menu .menu-active,
+#sidebar .menu a.menu-active:hover {
+  background: var(--brand-gradient);
+  color: var(--color-primary-content);
+  box-shadow: var(--brand-glow);
+  transform: none;
+}
+.brand-mark {
+  background: var(--brand-gradient);
+  box-shadow: var(--brand-glow);
+}
+
+/* ---------- Floating top bar ---------- */
+#topbar {
+  padding: 0.75rem 1rem 0;
+}
+#topbar .navbar {
+  border-radius: 1.25rem;
+  min-height: 3.75rem;
+}
+@media (min-width: 1024px) {
+  #topbar {
+    padding: 1rem 1.5rem 0;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-weight: 600;
+  transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+.btn:not(.btn-ghost, .btn-primary, .btn-success, .btn-error, .btn-warning, .btn-info, .btn-active, .join-item) {
+  background-color: var(--glass-field);
+  border-color: var(--hairline);
+}
+.btn-primary {
+  background: var(--brand-gradient);
+  border-color: transparent;
+  box-shadow: var(--brand-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- Inputs ---------- */
+.input,
+.select,
+.file-input {
+  background-color: var(--glass-field);
+  border-color: var(--hairline);
+}
+.fieldset-legend {
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+/* ---------- Number tiles ---------- */
+.stats {
+  overflow: hidden;
+}
+.stat-title {
+  font-weight: 500;
+}
+.stat-value {
+  font-size: 2.1rem;
+  font-weight: 700;
+}
+.stat-desc {
+  white-space: normal;
+}
+/* the icon sits in a soft coloured chip; each tile gets its own colour */
+.stat-figure {
+  --chip: var(--color-primary);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  opacity: 1 !important;
+  color: var(--chip);
+  background-color: color-mix(in oklab, var(--chip) 15%, transparent);
+}
+.stat-figure svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.stats:nth-child(2) .stat-figure { --chip: var(--color-info); }
+.stats:nth-child(3) .stat-figure { --chip: var(--color-error); }
+.stats:nth-child(4) .stat-figure { --chip: var(--color-warning); }
+
+/* ---------- Tables ---------- */
+.table :where(thead th) {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.table :where(thead tr, tbody tr:not(:last-child), tfoot tr) {
+  border-color: var(--hairline);
+}
+.table tbody tr {
+  transition: background-color 0.15s;
+}
+.table tbody tr:hover {
+  background-color: color-mix(in oklab, var(--color-primary) 7%, transparent);
+}
+.table td.num,
+.table th.num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ---------- Avatars with initials ---------- */
+.avatar-placeholder > * {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ---------- Hero panel (top of dashboard, left side of login) ---------- */
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0f8f82 0%, #2b7fb8 55%, #6b6fd6 100%);
+  box-shadow: 0 24px 48px -24px rgb(31 110 150 / 0.7);
+}
+.hero-panel::before,
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.16);
+  filter: blur(2px);
+}
+.hero-panel::before {
+  width: 18rem;
+  height: 18rem;
+  right: -5rem;
+  top: -8rem;
+}
+.hero-panel::after {
+  width: 11rem;
+  height: 11rem;
+  right: 9rem;
+  bottom: -7rem;
+}
+.hero-panel > * {
+  position: relative;
+  z-index: 1;
+}
+.hero-panel .btn {
+  background: rgb(255 255 255 / 0.2);
+  border-color: rgb(255 255 255 / 0.35);
+  color: #ffffff;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+}
+.hero-panel .btn:hover {
+  background: rgb(255 255 255 / 0.3);
+}
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgb(255 255 255 / 0.18);
+  border: 1px solid rgb(255 255 255 / 0.3);
+}
+
+/* The sidebar can scroll on short screens, without showing a scrollbar */
+.drawer-side {
+  scrollbar-width: none;
+}
+.drawer-side::-webkit-scrollbar {
+  display: none;
+}
+
+/* Take Attendance: a present tile shows a soft green edge on hover */
+.att-tile:hover {
+  border-color: color-mix(in oklab, var(--color-success) 50%, transparent);
+}
+
+/* ---------- Tables become cards on phones ----------
+   app.js gives every cell data-label="<column header>". */
+@media (max-width: 639px) {
+  .table-cards thead {
+    display: none;
+  }
+  .table-cards tbody tr:not([hidden]),
+  .table-cards tfoot tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-box);
+    background-color: var(--glass-field);
+  }
+  .table-cards :where(td, th) {
+    display: block;
+    padding: 0;
+    border: 0 !important;
+    text-align: left !important;
+  }
+  /* the name goes to the top of the card, without its "Student" label */
+  .table-cards tr > :has(> .font-medium, > div > div > .font-medium) {
+    order: -1;
+  }
+  .table-cards tr > :has(> .font-medium, > div > div > .font-medium)::before {
+    display: none !important;
+  }
+  .table-cards :where(td, th)[data-label]:not([data-label=""])::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.1rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+  /* first column (the name) and the action buttons use the full width */
+  .table-cards tr > .font-medium:first-child,
+  .table-cards tr > :has(> .font-medium, > div > div > .font-medium),
+  .table-cards tr > [data-label=""] {
+    grid-column: 1 / -1;
+  }
+  .table-cards tr > .font-medium:first-child {
+    font-size: 1rem;
+  }
+  .table-cards tr > [data-label=""]:last-child {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+}
+
+/* ---------- Keep short values on one line inside tables ---------- */
+.table td.num,
+.table td .badge,
+.table td .btn,
+.table td:first-child > a.font-medium {
+  white-space: nowrap;
+}
+
+/* ---------- Readable small text ----------
+   Faded grey text was too light on glass and on a projector,
+   so secondary text never goes below 75%. */
+.opacity-50,
+.opacity-60 {
+  opacity: 0.75;
+}
+.opacity-70 {
+  opacity: 0.82;
+}
+#sidebar .menu-title,
+.table :where(thead th) {
+  opacity: 0.75;
+}
+.stat-title,
+.stat-desc {
+  color: color-mix(in oklab, var(--color-base-content) 78%, transparent);
+}

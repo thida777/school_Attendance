@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Log in · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="login">
+<div class="grid min-h-screen grid-cols-1 lg:grid-cols-2">
+
+  <!-- Left: brand panel (hidden on phones) -->
+  <div class="hero-panel m-4 hidden flex-col justify-between p-12 lg:flex">
+    <div class="flex items-center gap-3">
+      <span class="bg-base-100 text-primary rounded-box grid size-10 place-items-center">
+        <i data-lucide="clipboard-check" class="size-5"></i>
+      </span>
+      <span class="text-lg font-semibold">Attendance</span>
+    </div>
+    <div>
+      <h1 class="text-4xl leading-tight font-semibold" data-km="ប្រព័ន្ធវិភាគវត្តមានសិស្ស">Student Attendance Analytics System</h1>
+      <p class="mt-4 max-w-md opacity-80" data-km="ស្រង់វត្តមានក្នុងមួយនាទី និងរកឃើញសិស្សដែលត្រូវការជំនួយបានទាន់ពេល។">Take attendance in one minute, and find the students who need help before it is too late.</p>
+    </div>
+    <p class="text-sm opacity-70">Demo High School · Academic year 2025–2026</p>
+  </div>
+
+  <!-- Right: login form -->
+  <div class="flex flex-col p-6">
+    <div class="flex justify-end gap-1">
+      <button class="btn btn-ghost btn-sm" data-action="lang"></button>
+      <button class="btn btn-ghost btn-sm btn-square" data-action="theme" aria-label="switch theme"></button>
+    </div>
+
+    <div class="flex grow items-center justify-center">
+      <div class="card bg-base-100 border-base-300 w-full max-w-sm border">
+        <form class="card-body" id="login-form">
+          <h2 class="text-2xl font-semibold" data-km="ចូលប្រើប្រាស់">Log in</h2>
+          <p class="grow-0 text-sm opacity-60" data-km="សូមបញ្ចូលគណនីរបស់អ្នក">Enter your account to continue.</p>
+
+          <!-- Laravel reads the role from the account; in this prototype you pick it -->
+          <div role="tablist" class="tabs tabs-box mt-2 grid grid-cols-2" id="role-tabs">
+            <button type="button" role="tab" class="tab tab-active gap-2" data-role="admin"><i data-lucide="shield-check" class="size-4"></i><span data-km="អ្នកគ្រប់គ្រង">Admin</span></button>
+            <button type="button" role="tab" class="tab gap-2" data-role="teacher"><i data-lucide="graduation-cap" class="size-4"></i><span data-km="គ្រូបង្រៀន">Teacher</span></button>
+          </div>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend" data-km="អ៊ីមែល ឬ លេខទូរស័ព្ទ">Email or phone</legend>
+            <label class="input w-full">
+              <i data-lucide="mail" class="size-4 opacity-50"></i>
+              <input type="text" id="login-email" placeholder="admin@school.edu.kh" value="admin@school.edu.kh" required />
+            </label>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend" data-km="ពាក្យសម្ងាត់">Password</legend>
+            <label class="input w-full">
+              <i data-lucide="lock" class="size-4 opacity-50"></i>
+              <input type="password" id="password" placeholder="••••••••" value="password" required />
+              <button type="button" class="btn btn-ghost btn-xs btn-square -me-1" id="toggle-password" aria-label="show password">
+                <i data-lucide="eye" class="size-4"></i>
+              </button>
+            </label>
+          </fieldset>
+
+          <div class="mt-1 flex items-center justify-between gap-2">
+            <label class="label text-sm">
+              <input type="checkbox" class="checkbox checkbox-sm" checked />
+              <span data-km="ចងចាំខ្ញុំ">Remember me</span>
+            </label>
+            <a href="forgot-password.html" class="link link-primary text-sm" data-km="ភ្លេចពាក្យសម្ងាត់?">Forgot password?</a>
+          </div>
+
+          <button class="btn btn-primary mt-4 w-full" data-km="ចូល">Log in</button>
+
+          <p class="mt-4 grow-0 text-center text-xs opacity-60" data-km="អ្នកគ្រប់គ្រងឃើញសាលាទាំងមូល។ គ្រូឃើញតែថ្នាក់របស់ខ្លួន។">
+            Admins see the whole school. Teachers see only their own classes.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Admin / Teacher choice
+  let role = ROLE;
+  const emails = { admin: 'admin@school.edu.kh', teacher: 'sovann@school.edu.kh' };
+  function pickRole(r) {
+    role = r;
+    document.querySelectorAll('#role-tabs .tab').forEach((t) => t.classList.toggle('tab-active', t.dataset.role === r));
+    document.getElementById('login-email').value = emails[r];
+  }
+  document.getElementById('role-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('[data-role]');
+    if (tab) pickRole(tab.dataset.role);
+  });
+  pickRole(role);
+  document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    try { localStorage.setItem('role', role); } catch { /* private mode: stays admin */ }
+    location.href = role === 'teacher' ? 'teacher-dashboard.html' : 'index.html';
+  });
+
+  // Show / hide the password
+  const password = document.getElementById('password');
+  const toggle = document.getElementById('toggle-password');
+  toggle.addEventListener('click', () => {
+    const show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    toggle.setAttribute('aria-label', show ? 'hide password' : 'show password');
+    toggle.innerHTML = `<i data-lucide="${show ? 'eye-off' : 'eye'}" class="size-4"></i>`;
+    lucide.createIcons();
+  });
+</script>
+</body>
+</html>

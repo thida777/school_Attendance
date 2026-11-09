@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subjects · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="subjects">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm opacity-60">8 subjects taught in grades 10 to 12</p>
+        <button class="btn btn-primary" onclick="subject_modal.showModal()">
+          <i data-lucide="plus" class="size-4"></i><span data-km="បន្ថែមមុខវិជ្ជា">Add subject</span>
+        </button>
+      </div>
+
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr><th>Code</th><th>Subject</th><th>Khmer name</th><th class="num">Hours / week</th><th class="num">Teachers</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr><td>KHM</td><td class="font-medium">Khmer Literature</td><td>អក្សរសាស្ត្រខ្មែរ</td><td class="num">6</td><td class="num">3</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>MAT</td><td class="font-medium">Mathematics</td><td>គណិតវិទ្យា</td><td class="num">6</td><td class="num">3</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>PHY</td><td class="font-medium">Physics</td><td>រូបវិទ្យា</td><td class="num">4</td><td class="num">2</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>CHE</td><td class="font-medium">Chemistry</td><td>គីមីវិទ្យា</td><td class="num">4</td><td class="num">2</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>BIO</td><td class="font-medium">Biology</td><td>ជីវវិទ្យា</td><td class="num">3</td><td class="num">2</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>HIS</td><td class="font-medium">History</td><td>ប្រវត្តិវិទ្យា</td><td class="num">2</td><td class="num">1</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>ENG</td><td class="font-medium">English</td><td>ភាសាអង់គ្លេស</td><td class="num">4</td><td class="num">2</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+                <tr><td>ICT</td><td class="font-medium">Computer (ICT)</td><td>កុំព្យូទ័រ</td><td class="num">2</td><td class="num">1</td><td class="text-right"><button class="btn btn-ghost btn-xs btn-square" aria-label="edit"><i data-lucide="pencil" class="size-4"></i></button><button class="btn btn-ghost btn-xs btn-square" aria-label="delete"><i data-lucide="trash-2" class="size-4"></i></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<dialog id="subject_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold" data-km="បន្ថែមមុខវិជ្ជា">Add subject</h3>
+    <form method="dialog" class="mt-2 grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <fieldset class="fieldset"><legend class="fieldset-legend">Code</legend><input class="input validator w-full" placeholder="GEO" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Hours per week</legend><input type="number" class="input validator w-full" placeholder="2" min="1" max="10" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (English)</legend><input class="input validator w-full" placeholder="Geography" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <fieldset class="fieldset"><legend class="fieldset-legend">Name (Khmer)</legend><input class="input validator w-full" placeholder="ភូមិវិទ្យា" required /><p class="validator-hint hidden" data-km="សូមបំពេញព័ត៌មាននេះ">This field is required</p></fieldset>
+      <div class="modal-action sm:col-span-2">
+        <button class="btn" formnovalidate>Cancel</button>
+        <button class="btn btn-primary">Save subject</button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

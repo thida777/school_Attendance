@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Attendance Monitoring · Student Attendance</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';</script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.47/daisyui.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="assets/app.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@1.55.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-base-200" data-page="monitoring">
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex min-h-screen flex-col">
+    <header id="topbar" class="sticky top-0 z-30"></header>
+
+    <main class="flex-1 space-y-4 p-4 lg:p-6">
+      <!-- Filters -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2 xl:grid-cols-5">
+            <fieldset class="fieldset"><legend class="fieldset-legend" data-km="កាលបរិច្ឆេទ">Date</legend><input type="date" id="f-date" class="input w-full" /></fieldset>
+            <fieldset class="fieldset"><legend class="fieldset-legend" data-km="ថ្នាក់">Class</legend><select id="f-class" class="select w-full"><option value="">All classes</option></select></fieldset>
+            <fieldset class="fieldset"><legend class="fieldset-legend" data-km="មុខវិជ្ជា">Subject</legend><select id="f-subject" class="select w-full"><option value="">All subjects</option></select></fieldset>
+            <fieldset class="fieldset"><legend class="fieldset-legend" data-km="ស្ថានភាព">Status</legend><select id="f-status" class="select w-full"><option value="">All statuses</option><option value="P">Present</option><option value="A">Absent</option></select></fieldset>
+            <fieldset class="fieldset"><legend class="fieldset-legend" data-km="ស្វែងរក">Search</legend>
+              <label class="input w-full"><i data-lucide="search" class="size-4 opacity-50"></i><input type="search" id="f-search" placeholder="Name or student ID" /></label>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <!-- Totals for the current filter -->
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-primary)"><i data-lucide="list-checks"></i></div><div class="stat-title" data-km="កំណត់ត្រា">Records</div><div class="stat-value" id="t-total">0</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-success)"><i data-lucide="circle-check"></i></div><div class="stat-title" data-km="មានវត្តមាន">Present</div><div class="stat-value" id="t-present">0</div></div></div>
+        <div class="stats bg-base-100 border-base-300 border"><div class="stat"><div class="stat-figure" style="--chip: var(--color-error)"><i data-lucide="circle-x"></i></div><div class="stat-title" data-km="អវត្តមាន">Absent</div><div class="stat-value" id="t-absent">0</div></div></div>
+      </div>
+
+      <!-- Records -->
+      <div class="card bg-base-100 border-base-300 border">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="card-title text-base" data-km="កំណត់ត្រាវត្តមាន">Attendance records</h3>
+            <button class="btn btn-sm" id="clear-filters"><i data-lucide="filter-x" class="size-4"></i><span data-km="សម្អាតតម្រង">Clear filters</span></button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr><th>Student</th><th>Student ID</th><th>Class</th><th>Subject</th><th>Date</th><th>Teacher</th><th>Status</th></tr>
+              </thead>
+              <tbody id="records"></tbody>
+            </table>
+          </div>
+
+          <!-- Empty state -->
+          <div id="empty" class="hidden flex-col items-center gap-2 py-12 text-center">
+            <span class="bg-base-200 grid size-14 place-items-center rounded-full"><i data-lucide="search-x" class="size-7 opacity-60"></i></span>
+            <div class="font-semibold" data-km="មិនមានកំណត់ត្រាត្រូវនឹងតម្រងទេ">No records match these filters</div>
+            <p class="text-sm opacity-60" data-km="សាកល្បងប្តូរកាលបរិច្ឆេទ ឬថ្នាក់">Try another date or class.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40" id="sidebar"></div>
+</div>
+
+<script src="assets/km.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  // Fake records. Laravel will query the attendance table with these filters.
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+  // A teacher sees only their own sessions ("Attendance History"); an admin sees everyone's
+  const SESSIONS = ROLE === 'teacher'
+    ? [
+        { cls: '10A', subject: 'Mathematics', teacher: 'Pen Sovann', date: today },
+        { cls: '10A', subject: 'Mathematics', teacher: 'Pen Sovann', date: yesterday },
+        { cls: '10B', subject: 'Mathematics', teacher: 'Pen Sovann', date: yesterday },
+        { cls: '11A', subject: 'Mathematics', teacher: 'Pen Sovann', date: yesterday },
+      ]
+    : [
+        { cls: '10A', subject: 'Mathematics', teacher: 'Pen Sovann', date: today },
+        { cls: '10B', subject: 'Khmer Literature', teacher: 'Mao Sreyleak', date: today },
+        { cls: '11B', subject: 'Physics', teacher: 'Ros Piseth', date: today },
+        { cls: '12A', subject: 'English', teacher: 'Hak Chanthou', date: yesterday },
+      ];
+  const STUDENTS = [
+    ['Sok Dara', 'S-10A-001'], ['Chan Sreyneang', 'S-10A-002'], ['Ouk Sreypov', 'S-10A-003'], ['Touch Vuthy', 'S-10B-014'],
+    ['Kim Vannak', 'S-11A-007'], ['Chea Rithy', 'S-11B-021'], ['Heng Sophea', 'S-12A-005'], ['Ly Bopha', 'S-12B-018'],
+  ];
+  const ABSENT = new Set(['S-10A-003|Mathematics', 'S-10B-014|Khmer Literature', 'S-11B-021|Physics', 'S-11B-021|Mathematics', 'S-12B-018|English']);
+  const RECORDS = SESSIONS.flatMap((s) =>
+    STUDENTS.map(([name, id]) => ({ name, id, ...s, status: ABSENT.has(id + '|' + s.subject) ? 'A' : 'P' }))
+  );
+
+  const $ = (id) => document.getElementById(id);
+  const fill = (select, values) => values.forEach((v) => select.insertAdjacentHTML('beforeend', `<option>${v}</option>`));
+  fill($('f-class'), [...new Set(SESSIONS.map((s) => s.cls))]);
+  fill($('f-subject'), [...new Set(SESSIONS.map((s) => s.subject))]);
+
+  function badge(status) {
+    return status === 'P'
+      ? `<span class="badge badge-soft badge-success"><i data-lucide="check" class="size-3.5"></i>${isKhmer() ? 'មានវត្តមាន' : 'Present'}</span>`
+      : `<span class="badge badge-soft badge-error"><i data-lucide="x" class="size-3.5"></i>${isKhmer() ? 'អវត្តមាន' : 'Absent'}</span>`;
+  }
+
+  function draw() {
+    const q = $('f-search').value.trim().toLowerCase();
+    const rows = RECORDS.filter(
+      (r) =>
+        (!$('f-date').value || r.date === $('f-date').value) &&
+        (!$('f-class').value || r.cls === $('f-class').value) &&
+        (!$('f-subject').value || r.subject === $('f-subject').value) &&
+        (!$('f-status').value || r.status === $('f-status').value) &&
+        (!q || r.name.toLowerCase().includes(q) || r.id.toLowerCase().includes(q))
+    );
+    $('records').innerHTML = rows
+      .map(
+        (r) => `<tr>
+          <td><a href="student-details.html" class="font-medium link link-hover">${r.name}</a></td>
+          <td>${r.id}</td><td>${r.cls}</td><td>${r.subject}</td><td>${r.date}</td><td>${r.teacher}</td><td>${badge(r.status)}</td>
+        </tr>`
+      )
+      .join('');
+    $('empty').classList.toggle('hidden', rows.length > 0);
+    $('empty').classList.toggle('flex', rows.length === 0);
+    $('t-total').textContent = rows.length;
+    $('t-present').textContent = rows.filter((r) => r.status === 'P').length;
+    $('t-absent').textContent = rows.filter((r) => r.status === 'A').length;
+    lucide.createIcons();
+  }
+
+  document.querySelectorAll('main select, main input').forEach((el) => el.addEventListener('input', draw));
+  $('clear-filters').addEventListener('click', () => {
+    document.querySelectorAll('main select, main input').forEach((el) => (el.value = ''));
+    draw();
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-action="lang"]')) draw();
+  });
+  $('f-date').value = ROLE === 'teacher' ? '' : today; // a teacher's history starts with all dates
+  draw();
+</script>
+</body>
+</html>
