@@ -74,7 +74,7 @@
                         data-title="{{ __('Edit student') }}" data-values="{{ json_encode($student->formValues()) }}">
                         <i data-lucide="pencil" class="size-4"></i>{{ __('Edit') }}
                     </button>
-                    <a href="{{ route('interventions', ['student' => $student->id]) }}" class="btn btn-primary grow">
+                    <a href="{{ route('interventions', ['student' => $student->id, 'add' => 1]) }}" class="btn btn-primary grow">
                         <i data-lucide="hand-heart" class="size-4"></i>{{ __('Follow up') }}
                     </a>
                 </div>
@@ -193,7 +193,7 @@
             @else
                 <ul class="timeline timeline-vertical timeline-compact">
                     @foreach ($interventions as $item)
-                        @php $change = $item->rate_after !== null && $item->rate_before !== null ? round($item->rate_after - $item->rate_before, 1) : null; @endphp
+                        @php $change = $item->change(); $result = $item->result(); $state = $item->state(); @endphp
                         <li>
                             @unless ($loop->first)<hr />@endunless
                             <div class="timeline-middle">
@@ -201,7 +201,7 @@
                             </div>
                             <div class="timeline-end mb-6 w-full">
                                 <div class="text-sm opacity-60">{{ $item->action_date->translatedFormat('D j M Y') }} · {{ $item->createdBy->name }}</div>
-                                <div class="font-semibold">{{ $item->action }}</div>
+                                <div class="font-semibold">{{ $item->actionLabel() }}</div>
                                 <div class="text-sm">
                                     @if ($item->status === 'open')
                                         {{ __('Before') }}: <b>{{ $item->rate_before ?? '—' }}%</b>
@@ -210,12 +210,17 @@
                                         {{ $item->rate_before ?? '—' }}% → <b>{{ $item->rate_after ?? '—' }}%</b>
                                     @endif
                                 </div>
-                                @if ($item->status === 'open')
+                                @if ($state === 'due')
+                                    <span class="badge badge-soft badge-error mt-1">{{ __('Follow-up due') }}</span>
+                                @elseif ($state === 'open')
                                     <span class="badge badge-soft badge-warning mt-1">{{ __('Open') }}</span>
-                                @elseif ($change !== null)
-                                    <span @class(['badge badge-soft mt-1', 'badge-success' => $change > 0, 'badge-error' => $change < 0, 'badge-ghost' => $change == 0])>
-                                        {{ $change > 0 ? __('Improved') : ($change < 0 ? __('Worse') : __('No change')) }} {{ $change > 0 ? '+' : '' }}{{ $change }}
+                                @elseif ($result)
+                                    <span @class(['badge badge-soft mt-1', 'badge-success' => $result === 'improved', 'badge-error' => $result === 'declined', 'badge-ghost' => $result === 'none'])>
+                                        {{ ['improved' => __('Improved'), 'declined' => __('Declined'), 'none' => __('No clear change')][$result] }} {{ $change > 0 ? '+' : '' }}{{ $change }}
                                     </span>
+                                @endif
+                                @if ($item->outcome)
+                                    <div class="mt-1 text-sm opacity-70">{{ $item->outcome }}</div>
                                 @endif
                             </div>
                             @unless ($loop->last)<hr />@endunless

@@ -112,7 +112,7 @@
                                         @endif
                                     </td>
                                     <td class="text-right">
-                                        <a href="{{ route('interventions', ['student' => $s->id]) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('interventions', ['student' => $s->id, 'add' => 1]) }}" class="btn btn-sm btn-primary">
                                             <i data-lucide="hand-heart" class="size-4"></i>{{ __('Follow up') }}
                                         </a>
                                     </td>

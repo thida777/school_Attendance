@@ -7,10 +7,12 @@ use App\Http\Controllers\CorrectionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InsightsController;
+use App\Http\Controllers\InterventionController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MyClassesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentController;
@@ -49,15 +51,19 @@ Route::middleware('auth')->group(function () {
         Route::post('/attendance/corrections/{correction}/reject', [CorrectionController::class, 'reject'])->name('attendance.corrections.reject');
         Route::get('/insights', [InsightsController::class, 'index'])->name('insights');
         Route::get('/at-risk', [AtRiskController::class, 'index'])->name('at-risk');
-        Route::view('/interventions', 'pages.coming-soon', ['title' => 'Interventions', 'when' => 'Day 5'])->name('interventions');
-        Route::view('/reports', 'pages.coming-soon', ['title' => 'Reports', 'when' => 'Day 5'])->name('reports');
+        Route::get('/interventions', [InterventionController::class, 'index'])->name('interventions');
+        Route::post('/interventions', [InterventionController::class, 'store'])->name('interventions.store');
+        Route::post('/interventions/{intervention}/close', [InterventionController::class, 'close'])->name('interventions.close');
+        Route::delete('/interventions/{intervention}', [InterventionController::class, 'destroy'])->name('interventions.destroy');
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+        Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
 
         // School data: list, add, edit and delete on one page with pop-up forms
         $crud = ['index', 'store', 'update', 'destroy'];
         Route::resource('students', StudentController::class)->only([...$crud, 'show']);
         Route::resource('classes', SchoolClassController::class)->only($crud);
         Route::resource('subjects', SubjectController::class)->only($crud);
-        Route::resource('teachers', TeacherController::class)->only($crud);
+        Route::resource('teachers', TeacherController::class)->only([...$crud, 'show']);
         Route::resource('parents', GuardianController::class)->only($crud);
         Route::delete('/parents/{parent}/students/{student}', [GuardianController::class, 'unlink'])->name('parents.unlink');
         Route::resource('assignments', TeachingAssignmentController::class)->only($crud);

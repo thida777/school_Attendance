@@ -96,6 +96,7 @@ document.addEventListener('change', (e) => {
 
 /* ---------- Chart helper (ApexCharts) ----------
    makeChart('#id', (c) => options) draws a chart and redraws it when the theme changes.
+   It returns { redraw() } for charts whose data changes on the page.
    "c" holds the colours for the current theme. */
 function chartColors() {
     const dark = currentTheme() === 'dark';
@@ -141,6 +142,8 @@ window.makeChart = function makeChart(selector, build) {
     };
     draw();
     document.addEventListener('themechange', draw);
+    // e.g. Daily / Weekly / Monthly tabs: change what build() reads, then redraw()
+    return { redraw: draw };
 };
 
 drawThemeButtons();

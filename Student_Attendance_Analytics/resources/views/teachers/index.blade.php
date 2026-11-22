@@ -55,7 +55,7 @@
                                         <div class="flex items-center gap-3">
                                             @include('partials.avatar', ['person' => $teacher, 'size' => 'w-9', 'tone' => 'bg-base-300'])
                                             <div>
-                                                <div class="font-medium">{{ $km ? $teacher->name_km : $teacher->name }}</div>
+                                                <a href="{{ route('teachers.show', $teacher) }}" class="link link-hover font-medium">{{ $km ? $teacher->name_km : $teacher->name }}</a>
                                                 <div class="text-xs opacity-60">{{ $km ? $teacher->name : $teacher->name_km }}</div>
                                             </div>
                                         </div>
