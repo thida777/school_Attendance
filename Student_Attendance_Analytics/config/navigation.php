@@ -21,6 +21,7 @@ return [
             ['route' => 'insights', 'icon' => 'lightbulb', 'label' => 'Insights'],
             ['route' => 'at-risk', 'icon' => 'triangle-alert', 'label' => 'At-Risk Students'],
             ['route' => 'interventions', 'icon' => 'hand-heart', 'label' => 'Interventions'],
+            ['route' => 'messages', 'icon' => 'send', 'label' => 'Parent Messages'],
             ['route' => 'reports', 'icon' => 'chart-column', 'label' => 'Reports'],
         ],
         'School data' => [

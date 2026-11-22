@@ -11,6 +11,7 @@ use App\Http\Controllers\InterventionController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MyClassesController;
+use App\Http\Controllers\ParentMessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GuardianController;
@@ -55,6 +56,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/interventions', [InterventionController::class, 'store'])->name('interventions.store');
         Route::post('/interventions/{intervention}/close', [InterventionController::class, 'close'])->name('interventions.close');
         Route::delete('/interventions/{intervention}', [InterventionController::class, 'destroy'])->name('interventions.destroy');
+        Route::get('/messages', [ParentMessageController::class, 'index'])->name('messages');
+        Route::post('/students/{student}/messages', [ParentMessageController::class, 'store'])->name('messages.store');
+        Route::post('/messages/{message}/resend', [ParentMessageController::class, 'resend'])->name('messages.resend');
         Route::get('/reports', [ReportController::class, 'index'])->name('reports');
         Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
 

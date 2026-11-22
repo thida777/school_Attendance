@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['guardian_id', 'student_id', 'sent_by', 'type', 'channel', 'body', 'status', 'error', 'sent_at'])]
+#[Fillable(['guardian_id', 'student_id', 'sent_by', 'type', 'channel', 'body', 'status', 'simulated', 'error', 'sent_at'])]
 class ParentMessage extends Model
 {
     protected function casts(): array
     {
         return [
             'sent_at' => 'datetime',
+            'simulated' => 'boolean',
         ];
     }
 

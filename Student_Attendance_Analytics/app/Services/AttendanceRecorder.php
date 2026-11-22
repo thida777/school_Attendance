@@ -161,7 +161,7 @@ class AttendanceRecorder
             throw ValidationException::withMessages(['correction_reason' => __('Write why this past attendance is being changed.')]);
         }
 
-        return DB::transaction(function () use ($user, $session, $classId, $subjectId, $period, $date, $students, $statuses, $records, $data, $reason) {
+        $saved = DB::transaction(function () use ($user, $session, $classId, $subjectId, $period, $date, $students, $statuses, $records, $data, $reason) {
             $session ??= AttendanceSession::create([
                 'school_class_id' => $classId,
                 'subject_id' => $subjectId,
@@ -189,6 +189,19 @@ class AttendanceRecorder
 
             return $session;
         });
+
+        // After the attendance is safely saved: tell parents about 3+ school days absent in a row.
+        // A message problem must never stop a teacher from saving, so errors are only written to the log.
+        try {
+            $absent = $students->filter(fn ($s) => $this->statusOf($statuses, $s->id) === 'absent')->pluck('id');
+            if ($absent->isNotEmpty()) {
+                app(ParentMessenger::class)->afterLesson($absent, $date);
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        return $saved;
     }
 
     // ------------------------------------------------------------------ corrections

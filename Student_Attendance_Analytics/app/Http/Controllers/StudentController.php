@@ -6,6 +6,7 @@ use App\Http\Requests\StudentRequest;
 use App\Models\Guardian;
 use App\Models\SchoolClass;
 use App\Models\Student;
+use App\Services\ParentMessenger;
 use App\Services\RiskAnalyzer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -93,6 +94,11 @@ class StudentController extends Controller
             'recent' => $records->take(8),
             'interventions' => $student->interventions()->with('createdBy')->latest('action_date')->get(),
             'classes' => SchoolClass::orderBy('name')->get(),
+            // "Message parent": the starting text (attendance this month), and the last messages
+            'messageText' => ($guardian = $student->guardians->first())
+                ? app(ParentMessenger::class)->summaryText($student->loadMissing('schoolClass.homeroomTeacher'), $guardian)
+                : null,
+            'messages' => $student->parentMessages()->latest('id')->take(3)->get(),
         ]);
     }
 

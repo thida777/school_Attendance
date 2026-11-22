@@ -78,6 +78,17 @@
                         <i data-lucide="hand-heart" class="size-4"></i>{{ __('Follow up') }}
                     </a>
                 </div>
+                @if ($messageText)
+                    <button class="btn btn-soft btn-primary mt-2 w-full" onclick="document.getElementById('message-form').showModal()">
+                        <i data-lucide="send" class="size-4"></i>{{ __('Message parent') }}
+                    </button>
+                @endif
+                @if ($messages->isNotEmpty())
+                    <a href="{{ route('messages', ['q' => $student->student_code]) }}" class="link link-hover mt-1 text-xs opacity-70">
+                        {{ __('Last message: :when', ['when' => $messages->first()->created_at->translatedFormat('j M, H:i')]) }}
+                        ({{ trans_choice('{1} :count message|[0,*] :count messages', $student->parentMessages()->count()) }})
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -267,6 +278,35 @@
     </div>
 
     @include('students._form')
+
+    {{-- Message parent: the text starts with this month's attendance and can be changed before sending --}}
+    @if ($messageText)
+        <dialog id="message-form" class="modal">
+            <div class="modal-box max-w-xl">
+                <h3 class="text-lg font-semibold">{{ __('Message parent') }}</h3>
+                <p class="mt-1 text-sm opacity-70">
+                    {{ __('To') }}: {{ $guardian->name }} ·
+                    {{ $guardian->telegram_chat_id ? 'Telegram' : 'SMS '.$guardian->phone }}
+                </p>
+                <form method="POST" action="{{ route('messages.store', $student) }}" class="mt-3">
+                    @csrf
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend">{{ __('Message (Khmer and English)') }}</legend>
+                        <textarea name="body" rows="9" maxlength="2000" class="textarea w-full" required>{{ old('body', $messageText) }}</textarea>
+                    </fieldset>
+                    <label class="label mt-2 cursor-pointer gap-2 whitespace-normal">
+                        <input type="checkbox" name="follow_up" value="1" class="checkbox checkbox-sm checkbox-primary" checked />
+                        <span class="text-sm">{{ __('Also add a follow-up, to check the result in 2 weeks') }}</span>
+                    </label>
+                    <div class="modal-action">
+                        <button type="button" class="btn" onclick="this.closest('dialog').close()">{{ __('Cancel') }}</button>
+                        <button class="btn btn-primary"><i data-lucide="send" class="size-4"></i>{{ __('Send') }}</button>
+                    </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop"><button>{{ __('Close') }}</button></form>
+        </dialog>
+    @endif
 @endsection
 
 @push('scripts')
