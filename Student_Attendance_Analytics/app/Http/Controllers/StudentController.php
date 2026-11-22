@@ -6,6 +6,7 @@ use App\Http\Requests\StudentRequest;
 use App\Models\Guardian;
 use App\Models\SchoolClass;
 use App\Models\Student;
+use App\Services\RiskAnalyzer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,9 +38,61 @@ class StudentController extends Controller
 
         return view('students.index', [
             'students' => $students,
+            // Risk with the full rules (rate, days in a row, trend) for the students on this page
+            'risks' => app(RiskAnalyzer::class)->forStudents($students->getCollection()->pluck('id')),
             'classes' => SchoolClass::orderBy('name')->get(),
             'filters' => $filters,
             'total' => Student::count(),
+        ]);
+    }
+
+    /**
+     * Student details: profile, risk with the reason, weekly trend (8 weeks), when absences happen,
+     * absence reasons, follow-ups, and recent records.
+     */
+    public function show(Student $student, RiskAnalyzer $analyzer): View
+    {
+        $student->load(['schoolClass', 'guardians']);
+        $risk = $analyzer->forStudent($student->id);
+
+        $records = $student->attendanceRecords()
+            ->with(['session.subject', 'session.teacher'])
+            ->get()
+            ->sortByDesc(fn ($r) => $r->session->date->toDateString().sprintf('%02d', $r->session->period))
+            ->values();
+        $absences = $records->where('status', 'absent');
+
+        // Weekly rate for the last 8 weeks (Monday to Saturday); null = no lessons that week
+        $thisMonday = today()->startOfWeek();
+        $weeks = collect(range(7, 0))->map(function (int $back) use ($records, $thisMonday) {
+            $start = $thisMonday->copy()->subWeeks($back);
+            $week = $records->filter(fn ($r) => $r->session->date->between($start, $start->copy()->addDays(6)));
+
+            return [
+                'label' => $start->translatedFormat('j M'),
+                'rate' => $week->isEmpty() ? null : round(100 * $week->where('status', 'present')->count() / $week->count(), 1),
+            ];
+        });
+
+        $byDay = collect(range(1, 6))->mapWithKeys(fn ($d) => [$d => $absences->filter(fn ($r) => $r->session->date->dayOfWeekIso === $d)->count()]);
+        $bySubject = $absences->groupBy(fn ($r) => $r->session->subject_id)->sortByDesc(fn ($g) => $g->count());
+        $topSubject = $bySubject->first()?->first()->session->subject;
+
+        return view('students.show', [
+            'student' => $student,
+            'risk' => $risk,
+            'weeks' => $weeks,
+            'byDay' => $byDay,
+            'when' => [
+                'day' => $risk->patternDay ? [$risk->patternDay, $byDay[$risk->patternDay]] : null,
+                'period' => $risk->patternPeriod ? [$risk->patternPeriod, $absences->where('session.period', $risk->patternPeriod)->count()] : null,
+                'subject' => $topSubject && $bySubject->first()->count() >= 2 ? [$topSubject, $bySubject->first()->count()] : null,
+            ],
+            'reasons' => collect(\App\Models\AttendanceRecord::ABSENCE_REASONS)
+                ->mapWithKeys(fn ($code) => [$code => $absences->filter(fn ($r) => ($r->absence_reason ?? 'not_given') === $code)->count()]),
+            'recent' => $records->take(8),
+            'interventions' => $student->interventions()->with('createdBy')->latest('action_date')->get(),
+            'classes' => SchoolClass::orderBy('name')->get(),
         ]);
     }
 

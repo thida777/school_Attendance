@@ -141,6 +141,10 @@ class TakeAttendanceTest extends TestCase
         $this->travel(25)->hours(); // now Tuesday
 
         $this->post('/attendance', $monday)->assertSessionHasErrors('date');
+
+        // Opening the lesson again shows the reason on the Take Attendance page
+        $this->from('/attendance')->get('/attendance/mark?'.http_build_query($monday))->assertRedirect('/attendance');
+        $this->get('/attendance')->assertSee('submitted more than 24 hours ago');
     }
 
     public function test_a_teacher_cannot_record_another_teachers_class(): void

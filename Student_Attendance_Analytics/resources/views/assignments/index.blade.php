@@ -15,7 +15,7 @@
         </button>
     </div>
 
-    <div class="card bg-base-100 border-base-300 border">
+    <div class="card bg-base-100 border-base-300 border scroll-mt-4" data-list>
         <div class="card-body">
             <form method="GET" action="{{ route('assignments.index') }}" class="flex flex-wrap gap-2" data-auto-submit>
                 <select name="class" class="select w-auto" aria-label="{{ __('Class') }}">

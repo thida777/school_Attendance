@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v2 (short) · Student Attendance Analytics System</title>
+<title>ERD v3 (short) · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -60,6 +60,8 @@ erDiagram
   students ||--o{ attendance_records : "has"
   attendance_records ||--o{ attendance_corrections : "corrected in"
   users ||--o{ attendance_corrections : "made"
+  users |o--o{ attendance_corrections : "approved or rejected"
+  users |o--o{ attendance_sessions : "submitted"
   students ||--o{ interventions : "followed up by"
   users ||--o{ interventions : "created"
   guardians ||--o{ parent_messages : "receives"
@@ -75,9 +77,11 @@ erDiagram
     string name_km "Khmer name"
     string email UK "nullable"
     string phone UK "nullable"
+    string photo_path "nullable, profile photo"
     string password
     enum role "admin, teacher"
     string locale "en or km"
+    timestamp last_login_at "nullable"
   }
   academic_years {
     bigint id PK
@@ -144,7 +148,8 @@ erDiagram
     bigint id PK
     bigint school_class_id FK
     bigint subject_id FK
-    bigint teacher_id FK "users.id"
+    bigint teacher_id FK "users.id, the lesson's teacher"
+    bigint recorded_by FK "users.id, who pressed Submit"
     date date
     tinyint period
   }
@@ -162,7 +167,11 @@ erDiagram
     bigint changed_by FK "users.id"
     enum old_status
     enum new_status
-    string reason
+    enum status "applied, pending, approved, rejected"
+    string reason "nullable"
+    bigint decided_by FK "users.id, nullable"
+    timestamp decided_at "nullable"
+    string decision_note "nullable"
   }
   interventions {
     bigint id PK
@@ -233,9 +242,11 @@ erDiagram
         <tr><td>name_km</td><td>varchar</td><td>Name in Khmer</td></tr>
         <tr><td>email</td><td>varchar</td><td>Unique, optional</td></tr>
         <tr><td>phone</td><td>varchar</td><td>Unique, optional; can be used to log in</td></tr>
+        <tr><td>photo_path</td><td>varchar</td><td>Optional profile photo; empty = show the initials</td></tr>
         <tr><td>password</td><td>varchar</td><td>Hashed (bcrypt), never plain text</td></tr>
         <tr><td>role</td><td>enum</td><td>admin or teacher</td></tr>
         <tr><td>locale</td><td>varchar</td><td>Preferred language: en or km</td></tr>
+        <tr><td>last_login_at</td><td>timestamp</td><td>Optional; last login (web or app)</td></tr>
         <tr><td>email_verified_at</td><td>timestamp</td><td>Laravel default, optional</td></tr>
         <tr><td>remember_token</td><td>varchar</td><td>For "Remember me"</td></tr>
       </table>
@@ -368,7 +379,8 @@ erDiagram
         <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
         <tr><td class="k">school_class_id</td><td>bigint</td><td>FK → school_classes.id</td></tr>
         <tr><td class="k">subject_id</td><td>bigint</td><td>FK → subjects.id</td></tr>
-        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (who recorded it)</td></tr>
+        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (the teacher of the lesson)</td></tr>
+        <tr><td class="k">recorded_by</td><td>bigint</td><td>FK → users.id, optional (who pressed Submit)</td></tr>
         <tr><td>date</td><td>date</td><td>Day of the lesson</td></tr>
         <tr><td>period</td><td>tinyint</td><td>Lesson period, 1 to 8</td></tr>
       </table>
@@ -398,10 +410,14 @@ erDiagram
         <tr><td class="k">changed_by</td><td>bigint</td><td>FK → users.id (who made the change)</td></tr>
         <tr><td>old_status</td><td>enum</td><td>present or absent, before</td></tr>
         <tr><td>new_status</td><td>enum</td><td>present or absent, after</td></tr>
-        <tr><td>reason</td><td>varchar</td><td>Why it was changed</td></tr>
+        <tr><td>status</td><td>enum</td><td>applied, pending (teacher's request after 24 h), approved, rejected</td></tr>
+        <tr><td>reason</td><td>varchar</td><td>Why it was changed; required after 24 hours</td></tr>
+        <tr><td class="k">decided_by</td><td>bigint</td><td>FK → users.id, optional (admin who decided)</td></tr>
+        <tr><td>decided_at</td><td>timestamp</td><td>Optional; when it was decided</td></tr>
+        <tr><td>decision_note</td><td>varchar</td><td>Optional; the admin's note</td></tr>
         <tr><td>created_at</td><td>timestamp</td><td>When the change was made</td></tr>
       </table>
-      <p>Audit log. Teachers correct on the same day; the admin corrects past days. Records are never changed silently.</p>
+      <p>Audit log. Within 24 hours a teacher's change is applied at once; after 24 hours it becomes a request the admin approves or rejects. Records are never changed silently.</p>
     </div>
 
     <div class="tbl">

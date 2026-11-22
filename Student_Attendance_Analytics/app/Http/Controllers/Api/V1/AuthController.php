@@ -71,6 +71,25 @@ class AuthController extends Controller
         return UserResource::make($request->user()->load('homeroomClasses'));
     }
 
+    /** Profile screen: new photo from the gallery or camera (multipart field "photo"). */
+    public function photo(Request $request): UserResource
+    {
+        $request->validate([
+            'photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=64,min_height=64'],
+        ], [], ['photo' => __('Photo')]);
+        $request->user()->replacePhoto($request->file('photo'));
+
+        return UserResource::make($request->user()->load('homeroomClasses'));
+    }
+
+    /** Profile screen: remove the photo (the app shows the initials again). */
+    public function removePhoto(Request $request): UserResource
+    {
+        $request->user()->replacePhoto(null);
+
+        return UserResource::make($request->user()->load('homeroomClasses'));
+    }
+
     /** Change password screen. Other phones are logged out; this one stays. */
     public function password(Request $request): JsonResponse
     {

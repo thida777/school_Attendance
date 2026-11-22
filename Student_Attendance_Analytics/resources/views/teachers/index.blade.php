@@ -47,15 +47,13 @@
                                 @php
                                     $subjects = $teacher->teachingAssignments->pluck('subject')->unique('id')
                                         ->map(fn ($s) => $km ? $s->name_km : $s->name_en)->sort()->join(', ');
-                                    $classNames = $teacher->teachingAssignments->pluck('schoolClass.name')->unique()->sort()->join(', ');
-                                    $initials = collect(explode(' ', $teacher->name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->join('');
-                                    $done = $recorded[$teacher->id] ?? 0;
+                                    $classNames = $teacher->teachingAssignments->pluck('schoolClass.name')->unique()->sort()->join(', ');                                    $done = $recorded[$teacher->id] ?? 0;
                                     $due = $planned[$teacher->id] ?? 0;
                                 @endphp
                                 <tr>
                                     <td>
                                         <div class="flex items-center gap-3">
-                                            <div class="avatar avatar-placeholder"><div class="bg-base-300 w-9 rounded-full"><span class="text-xs">{{ $initials }}</span></div></div>
+                                            @include('partials.avatar', ['person' => $teacher, 'size' => 'w-9', 'tone' => 'bg-base-300'])
                                             <div>
                                                 <div class="font-medium">{{ $km ? $teacher->name_km : $teacher->name }}</div>
                                                 <div class="text-xs opacity-60">{{ $km ? $teacher->name : $teacher->name_km }}</div>

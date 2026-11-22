@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(SchoolSeeder::class);
+        // About 11 weeks of attendance until yesterday, for the analytics pages (tests use SchoolSeeder only)
+        $this->call(DemoAttendanceSeeder::class);
     }
 }

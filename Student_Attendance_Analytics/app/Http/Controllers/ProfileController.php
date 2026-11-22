@@ -40,6 +40,26 @@ class ProfileController extends Controller
         return back()->with('status', __('Your details were saved.'));
     }
 
+    /** New profile photo (JPG, PNG or WebP, up to 2 MB). The old file is deleted. */
+    public function photo(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:min_width=64,min_height=64'],
+        ], [], ['photo' => __('Photo')]);
+
+        $request->user()->replacePhoto($request->file('photo'));
+
+        return back()->with('status', __('Profile photo saved.'));
+    }
+
+    /** Back to the initials. */
+    public function removePhoto(Request $request): RedirectResponse
+    {
+        $request->user()->replacePhoto(null);
+
+        return back()->with('status', __('Profile photo removed.'));
+    }
+
     /** New password. The Android app must log in again with it. */
     public function password(Request $request): RedirectResponse
     {

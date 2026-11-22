@@ -16,6 +16,8 @@ class UserResource extends JsonResource
             'name_km' => $this->name_km,
             'email' => $this->email,
             'phone' => $this->phone,
+            'photo_url' => $this->photoUrl(), // null = show the initials
+            'initials' => $this->initials(),
             'role' => $this->role,
             'locale' => $this->locale,
             'homeroom_class' => $this->whenLoaded('homeroomClasses', fn () => $this->homeroomClasses->first()?->only(['id', 'name'])),

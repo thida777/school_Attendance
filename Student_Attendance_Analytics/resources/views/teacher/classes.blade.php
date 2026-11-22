@@ -40,28 +40,38 @@
                 @php $rate = Risk::rate($class->records_present, $class->records_total); @endphp
                 <div class="card bg-base-100 border-base-300 border">
                     <div class="card-body">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <h3 class="card-title">{{ $class->name }}
-                                    @if ($homeroomIds->contains($class->id))<span class="badge badge-soft badge-primary badge-sm">{{ __('Homeroom') }}</span>@endif
-                                </h3>
-                                <p class="text-sm opacity-60">{{ __('Grade') }} {{ $class->grade }}@if ($class->room) · {{ __('Room') }} {{ $class->room }}@endif</p>
-                            </div>
-                            @if ($rate === null)
-                                <span class="badge badge-soft badge-ghost">{{ __('No records yet') }}</span>
-                            @else
-                                <span class="badge badge-soft {{ Risk::badge(Risk::level($rate)) }}">{{ $rate }}%</span>
-                            @endif
+                        <div>
+                            <h3 class="card-title">{{ $class->name }}
+                                @if ($homeroomIds->contains($class->id))<span class="badge badge-soft badge-primary badge-sm">{{ __('Homeroom') }}</span>@endif
+                            </h3>
+                            <p class="text-sm opacity-60">{{ __('Grade') }} {{ $class->grade }}@if ($class->room) · {{ __('Room') }} {{ $class->room }}@endif</p>
                         </div>
-                        <progress class="progress {{ Risk::progress($rate) }} mt-2" value="{{ $rate ?? 0 }}" max="100"></progress>
-                        <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+                        @include('partials.class-rate', [
+                            'rate' => $rate,
+                            'atRisk' => $atRisk[$class->id] ?? 0,
+                            'riskLink' => route('teacher.classes', ['class' => $class->id]),
+                        ])
+                        <dl class="mt-3 grid grid-cols-2 gap-y-1 text-sm">
                             <dt class="opacity-60">{{ __('Students') }}</dt>
                             <dd class="text-right">{{ __(':count (:girls girls)', ['count' => $class->students_count, 'girls' => $class->girls_count]) }}</dd>
                             <dt class="opacity-60">{{ __('Sessions this month') }}</dt>
                             <dd class="text-right">{{ $sessionsThisMonth[$class->id] ?? 0 }}</dd>
-                            <dt class="opacity-60">{{ __('Teaching time') }}</dt>
-                            <dd class="text-right">{{ $teachingTimes[$class->id] ?? '—' }}</dd>
                         </dl>
+
+                        {{-- My lessons each week: one chip per school day, with the periods --}}
+                        <div class="mt-3">
+                            <div class="mb-1.5 text-xs opacity-60">{{ __('My lessons each week') }}</div>
+                            <div class="grid grid-cols-6 gap-1">
+                                @foreach ([1 => __('Mon'), 2 => __('Tue'), 3 => __('Wed'), 4 => __('Thu'), 5 => __('Fri'), 6 => __('Sat')] as $day => $dayName)
+                                    @php $periods = $teachingDays[$class->id][$day] ?? null; @endphp
+                                    <div @class(['rounded-lg py-1 text-center', 'bg-primary/10 text-primary' => $periods, 'bg-base-200/60 opacity-40' => ! $periods])
+                                        title="{{ $periods ? __('Period').' '.implode(', ', $periods) : __('No lesson') }}">
+                                        <div class="text-xs font-semibold">{{ $dayName }}</div>
+                                        <div class="text-[11px]">{{ $periods ? 'P'.implode(', P', $periods) : '—' }}</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                         <div class="card-actions mt-2 justify-end">
                             <a href="{{ route('attendance.monitoring', ['class' => $class->id]) }}" class="btn btn-sm">{{ __('History') }}</a>
                             <a href="{{ route('attendance.take') }}" class="btn btn-primary btn-sm">{{ __('Take attendance') }}</a>
@@ -72,7 +82,7 @@
         </div>
 
         {{-- Students of my classes (read only) --}}
-        <div class="card bg-base-100 border-base-300 border">
+        <div class="card bg-base-100 border-base-300 border scroll-mt-4" data-list>
             <div class="card-body">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <h3 class="card-title text-base">{{ __('Students in my classes') }}</h3>
@@ -100,7 +110,7 @@
                                 @foreach ($students as $student)
                                     @php
                                         $rate = Risk::rate($student->records_present, $student->records_total);
-                                        [$badge, $label] = $simple(Risk::level($rate));
+                                        [$badge, $label] = $simple($risks->get($student->id)?->level);
                                     @endphp
                                     <tr>
                                         <td>

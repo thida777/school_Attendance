@@ -1,0 +1,12 @@
+<resources>
+    <!--
+        Android 12 and newer show their own splash first (the app icon on a colour).
+        Use our logo on a white circle over the teal, so it flows into our SplashActivity.
+    -->
+    <style name="Theme.AttendanceApp.Splash" parent="Theme.AttendanceApp">
+        <item name="android:windowBackground">@drawable/bg_header_gradient</item>
+        <item name="android:windowSplashScreenBackground">@color/header_start</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
+    </style>
+</resources>

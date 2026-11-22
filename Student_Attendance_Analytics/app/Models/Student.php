@@ -45,4 +45,23 @@ class Student extends Model
     {
         return $this->hasMany(ParentMessage::class);
     }
+
+    /** The values that fill the Edit student form (Students page and Student details page). */
+    public function formValues(): array
+    {
+        $guardian = $this->guardians->first();
+
+        return [
+            'name_km' => $this->name_km,
+            'name_latin' => $this->name_latin,
+            'student_code' => $this->student_code,
+            'gender' => $this->gender,
+            'school_class_id' => $this->school_class_id,
+            'date_of_birth' => $this->date_of_birth?->toDateString(),
+            'status' => $this->status,
+            'guardian_name' => $guardian?->name,
+            'guardian_phone' => $guardian?->phone,
+            'guardian_relation' => $guardian?->pivot->relation ?? 'guardian',
+        ];
+    }
 }

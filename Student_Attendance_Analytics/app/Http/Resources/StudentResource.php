@@ -27,7 +27,8 @@ class StudentResource extends JsonResource
             'active' => $this->status === 'active',
             $this->mergeWhen(isset($this->records_total), fn () => [
                 'attendance_rate' => $rate,
-                'risk' => Risk::level($rate),
+                // Set by the controller with RiskAnalyzer (full rules); the rate alone is the fallback
+                'risk' => $this->resource->offsetExists('risk_level') ? $this->risk_level : Risk::level($rate),
             ]),
             $this->mergeWhen($this->relationLoaded('guardians'), fn () => [
                 'parent' => $guardian ? [

@@ -11,6 +11,13 @@
 @section('content')
     @include('attendance._steps', ['step' => 1])
 
+    @if ($errors->any())
+        <div role="alert" class="alert alert-warning alert-soft">
+            <i data-lucide="circle-alert" class="size-5"></i>
+            <span>{{ $errors->first() }}</span>
+        </div>
+    @endif
+
     {{-- ===== Step 1: today's lessons ===== --}}
     <section class="space-y-4">
         <div class="flex flex-wrap items-end justify-between gap-2">
@@ -77,22 +84,36 @@
                 <span class="flex items-center gap-2"><i data-lucide="calendar-search" class="size-4"></i>{{ $isTeacher ? __('Other class today') : __('Other class or date') }}</span>
             </div>
             <div class="collapse-content">
-                <form method="GET" action="{{ route('attendance.mark') }}" class="grid grid-cols-1 items-start gap-x-4 sm:grid-cols-2 xl:grid-cols-5">
-                    @include('partials.field', ['name' => 'school_class_id', 'label' => __('Class'), 'options' => $classes->pluck('name', 'id')->all()])
-                    @include('partials.field', ['name' => 'subject_id', 'label' => __('Subject'), 'options' => $subjects->pluck($km ? 'name_km' : 'name_en', 'id')->all()])
+                <p class="-mt-1 mb-2 text-sm opacity-60">{{ __('For a lesson that is not on the timetable, e.g. a make-up class.') }}</p>
+                <form method="GET" action="{{ route('attendance.mark') }}">
+                  <div class="grid grid-cols-1 items-start gap-x-4 sm:grid-cols-2 xl:grid-cols-4">
+                    @include('partials.field', ['name' => 'school_class_id', 'label' => __('Class'), 'icon' => 'school', 'options' => $classes->pluck('name', 'id')->all()])
+                    @include('partials.field', ['name' => 'subject_id', 'label' => __('Subject'), 'icon' => 'book-open', 'options' => $subjects->pluck($km ? 'name_km' : 'name_en', 'id')->all()])
                     @if ($isTeacher)
                         <input type="hidden" name="date" value="{{ today()->toDateString() }}">
-                        <fieldset class="fieldset"><legend class="fieldset-legend">{{ __('Date') }}</legend><input class="input w-full" value="{{ today()->translatedFormat('j M Y') }}" disabled></fieldset>
+                        <fieldset class="fieldset"><legend class="fieldset-legend">{{ __('Date') }}</legend>
+                            <div class="input w-full gap-2 opacity-70"><i data-lucide="calendar-days" class="size-4"></i><span data-label>{{ today()->translatedFormat('D, j M Y') }}</span><span class="badge badge-ghost badge-sm ms-auto">{{ __('Today') }}</span></div>
+                        </fieldset>
                     @else
                         <fieldset class="fieldset">
                             <legend class="fieldset-legend">{{ __('Date') }}</legend>
-                            <input type="date" name="date" value="{{ old('date', today()->toDateString()) }}" max="{{ today()->toDateString() }}" @class(['input w-full', 'input-error' => $errors->has('date')]) required>
+                            <input type="date" name="date" value="{{ old('date', today()->toDateString()) }}" max="{{ today()->toDateString() }}" @class(['input w-full', 'input-error' => $errors->has('date')]) required data-date-picker>
                             @error('date')<p class="label text-error whitespace-normal">{{ $message }}</p>@enderror
                         </fieldset>
                     @endif
-                    @include('partials.field', ['name' => 'period', 'label' => __('Period'),
-                        'options' => collect($periods)->mapWithKeys(fn ($t, $p) => [$p => __('Period').' '.$p.' · '.$t[0]])->all()])
-                    <button class="btn btn-primary mt-8"><i data-lucide="play" class="size-4"></i>{{ __('Start') }}</button>
+                    @include('partials.field', ['name' => 'period', 'label' => __('Period'), 'icon' => 'clock',
+                        'options' => collect($periods)->mapWithKeys(fn ($t, $p) => [$p => __('Period').' '.$p])->all(),
+                        'hints' => collect($periods)->map(fn ($t) => $t[0].' – '.$t[1])->all()])
+                  </div>
+
+                  {{-- What will start, in one line, then the button --}}
+                  <div class="bg-base-200/60 rounded-box mt-3 flex flex-col gap-3 p-3 sm:flex-row sm:items-center">
+                      <div class="flex min-w-0 flex-1 items-center gap-2 text-sm">
+                          <i data-lucide="info" class="size-4 shrink-0 text-primary"></i>
+                          <span class="truncate font-medium" data-summary></span>
+                      </div>
+                      <button class="btn btn-primary w-full sm:w-auto"><i data-lucide="play" class="size-4"></i>{{ __('Start') }}</button>
+                  </div>
                 </form>
                 @if ($isTeacher)
                     <p class="text-sm opacity-60">{{ __('Teachers take attendance for today only. To fix a past day, ask the admin.') }}</p>

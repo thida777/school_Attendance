@@ -1,6 +1,8 @@
 import ApexCharts from 'apexcharts';
 import { createIcons, icons } from 'lucide';
 import { initAttendance } from './attendance';
+import { initDatePickers } from './date-picker';
+import { initSelectPickers } from './select-picker';
 
 /* ---------- Icons: <i data-lucide="name"> becomes an SVG icon ---------- */
 const drawIcons = () => createIcons({ icons });
@@ -100,6 +102,10 @@ function chartColors() {
     return {
         dark,
         series: dark ? '#3fb8a9' : '#1f877b',
+        present: dark ? '#4fb888' : '#3aa876',
+        absent: dark ? '#e07a7a' : '#dc6b6b',
+        warning: '#e0a83a',
+        text: dark ? '#e3eaf6' : '#1f2d3a',
         muted: '#898781',
         grid: dark ? '#2c3a5c' : '#e1e0d9',
         axis: dark ? '#3a4b75' : '#c3c2b7',
@@ -139,6 +145,118 @@ window.makeChart = function makeChart(selector, build) {
 
 drawThemeButtons();
 
+/* ---------- Date boxes with a modern calendar ---------- */
+initDatePickers(drawIcons);
+initSelectPickers(drawIcons);
+
+/* Live summary under a form: <p data-summary> lists what is picked, e.g. "10A · Biology · Mon, 9 Nov 2026 · Period 1" */
+document.querySelectorAll('form [data-summary]').forEach((summary) => {
+    const form = summary.closest('form');
+    const draw = () => (summary.textContent = [...form.querySelectorAll('[data-label]')].map((l) => l.textContent.trim()).filter(Boolean).join(' · '));
+    form.addEventListener('change', () => setTimeout(draw));
+    draw();
+});
+
 /* ---------- Take Attendance page ---------- */
 const attendanceForm = document.querySelector('form[data-attendance]');
 if (attendanceForm) initAttendance(attendanceForm, drawIcons);
+
+/* ---------- Page numbers without reloading the page ----------
+   A click on 2, 3, « or » under a list (<div data-list> … <div data-pagination>) loads only that list
+   and swaps it in place: no refresh, no jump to the top. The address bar follows, so Refresh and Back work.
+   If anything fails, the link simply opens the normal way. */
+document.addEventListener('click', async (e) => {
+    const link = e.target.closest('[data-pagination] a[href]');
+    if (!link || link.getAttribute('href') === '#' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const list = link.closest('[data-list]');
+    if (!list) return;
+    e.preventDefault();
+
+    const index = [...document.querySelectorAll('[data-list]')].indexOf(list);
+    list.classList.add('opacity-60', 'pointer-events-none');
+    try {
+        const response = await fetch(link.href, { headers: { Accept: 'text/html' } });
+        const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+        const fresh = page.querySelectorAll('[data-list]')[index];
+        if (!response.ok || !fresh) throw new Error('list not found');
+
+        list.replaceWith(fresh);
+        history.pushState({ list: true }, '', link.href);
+        drawIcons();
+        // Bring the top of the list into view only when it is above the screen
+        if (fresh.getBoundingClientRect().top < 0) fresh.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch {
+        location.href = link.href;
+    }
+});
+// Back / Forward after a swapped page: show that page
+window.addEventListener('popstate', (e) => {
+    if (e.state?.list || document.querySelector('[data-list]')) location.reload();
+});
+
+/* ---------- Stay in the same place after a pop-up form or a delete ----------
+   Saving reloads the page; remember where we were and scroll back there. */
+const scrollKey = `scroll:${location.pathname}`;
+document.addEventListener('submit', (e) => {
+    if (!e.target.matches('form[data-dialog-form], #confirm-delete-form')) return;
+    try {
+        sessionStorage.setItem(scrollKey, String(window.scrollY));
+    } catch {
+        // private mode: the page opens at the top as before
+    }
+});
+try {
+    const savedScroll = sessionStorage.getItem(scrollKey);
+    if (savedScroll !== null) {
+        sessionStorage.removeItem(scrollKey);
+        window.addEventListener('load', () => window.scrollTo(0, Number(savedScroll)));
+    }
+} catch {
+    // nothing saved
+}
+
+/* ---------- Profile photo: preview before saving ----------
+   Choosing a picture shows it in the circle at once, with Save / Cancel.
+   Too big or wrong type is caught here, before anything is uploaded. */
+document.querySelectorAll('form[data-photo-form]').forEach((form) => {
+    const input = form.querySelector('[data-photo-input]');
+    const img = form.querySelector('[data-photo-preview]');
+    const initials = form.querySelector('[data-photo-initials]');
+    const actions = form.querySelector('[data-photo-actions]');
+    const error = form.querySelector('[data-photo-error]');
+    const original = { src: img.getAttribute('src'), hadPhoto: !img.classList.contains('hidden') };
+    let previewUrl = null;
+
+    const show = (src) => {
+        img.classList.toggle('hidden', !src);
+        initials.classList.toggle('hidden', !!src);
+        if (src) img.src = src;
+    };
+    const reset = () => {
+        input.value = '';
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+        show(original.hadPhoto ? original.src : null);
+        actions.classList.replace('flex', 'hidden');
+    };
+
+    input.addEventListener('change', () => {
+        const file = input.files[0];
+        error.classList.add('hidden');
+        if (!file) return reset();
+        const problem = !['image/jpeg', 'image/png', 'image/webp'].includes(file.type) ? error.dataset.wrongType
+            : file.size > 2 * 1024 * 1024 ? error.dataset.tooBig : null;
+        if (problem) {
+            reset();
+            error.textContent = problem;
+            error.classList.remove('hidden');
+            return;
+        }
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = URL.createObjectURL(file);
+        show(previewUrl);
+        actions.classList.replace('hidden', 'flex');
+    });
+    form.querySelector('[data-photo-cancel]').addEventListener('click', reset);
+    form.addEventListener('submit', () => form.querySelector('button:not([type])')?.classList.add('btn-disabled'));
+});

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v2 · Student Attendance Analytics System</title>
+<title>ERD v3 · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -60,6 +60,8 @@ erDiagram
   students ||--o{ attendance_records : "has"
   attendance_records ||--o{ attendance_corrections : "corrected in"
   users ||--o{ attendance_corrections : "made"
+  users |o--o{ attendance_corrections : "approved or rejected"
+  users |o--o{ attendance_sessions : "submitted"
   students ||--o{ interventions : "followed up by"
   users ||--o{ interventions : "created"
   guardians ||--o{ parent_messages : "receives"
@@ -75,9 +77,11 @@ erDiagram
     string name_km "Khmer name"
     string email UK "nullable"
     string phone UK "nullable"
+    string photo_path "nullable, profile photo"
     string password
     enum role "admin, teacher"
     string locale "en or km"
+    timestamp last_login_at "nullable"
   }
   academic_years {
     bigint id PK
@@ -144,7 +148,8 @@ erDiagram
     bigint id PK
     bigint school_class_id FK
     bigint subject_id FK
-    bigint teacher_id FK "users.id"
+    bigint teacher_id FK "users.id, the lesson's teacher"
+    bigint recorded_by FK "users.id, who pressed Submit"
     date date
     tinyint period
   }
@@ -162,7 +167,11 @@ erDiagram
     bigint changed_by FK "users.id"
     enum old_status
     enum new_status
-    string reason
+    enum status "applied, pending, approved, rejected"
+    string reason "nullable"
+    bigint decided_by FK "users.id, nullable"
+    timestamp decided_at "nullable"
+    string decision_note "nullable"
   }
   interventions {
     bigint id PK
@@ -242,6 +251,8 @@ erDiagram
   students ||--o{ attendance_records : "has"
   attendance_records ||--o{ attendance_corrections : "corrected"
   users ||--o{ attendance_corrections : "made"
+  users |o--o{ attendance_corrections : "decided"
+  users |o--o{ attendance_sessions : "submitted"
   students ||--o{ interventions : "followed up"
   users ||--o{ interventions : "created"
   guardians ||--o{ parent_messages : "receives"
@@ -297,6 +308,7 @@ erDiagram
     bigint school_class_id FK
     bigint subject_id FK
     bigint teacher_id FK
+    bigint recorded_by FK
   }
   attendance_records {
     bigint id PK
@@ -306,6 +318,7 @@ erDiagram
   attendance_corrections {
     bigint attendance_record_id FK
     bigint changed_by FK
+    bigint decided_by FK
   }
   interventions {
     bigint student_id FK
@@ -364,9 +377,11 @@ erDiagram
         <tr><td>name_km</td><td>varchar</td><td>Name in Khmer</td></tr>
         <tr><td>email</td><td>varchar</td><td>Unique, optional</td></tr>
         <tr><td>phone</td><td>varchar</td><td>Unique, optional; can be used to log in</td></tr>
+        <tr><td>photo_path</td><td>varchar</td><td>Optional profile photo (file in storage/app/public/avatars); empty = show the initials</td></tr>
         <tr><td>password</td><td>varchar</td><td>Hashed (bcrypt), never plain text</td></tr>
         <tr><td>role</td><td>enum</td><td>admin or teacher</td></tr>
         <tr><td>locale</td><td>varchar</td><td>Preferred language: en or km</td></tr>
+        <tr><td>last_login_at</td><td>timestamp</td><td>Optional; last time this user logged in (web or app)</td></tr>
         <tr><td>email_verified_at</td><td>timestamp</td><td>Laravel default, optional</td></tr>
         <tr><td>remember_token</td><td>varchar</td><td>For "Remember me"</td></tr>
       </table>
@@ -499,7 +514,8 @@ erDiagram
         <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
         <tr><td class="k">school_class_id</td><td>bigint</td><td>FK → school_classes.id</td></tr>
         <tr><td class="k">subject_id</td><td>bigint</td><td>FK → subjects.id</td></tr>
-        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (who recorded it)</td></tr>
+        <tr><td class="k">teacher_id</td><td>bigint</td><td>FK → users.id (the teacher of the lesson)</td></tr>
+        <tr><td class="k">recorded_by</td><td>bigint</td><td>FK → users.id, optional (who pressed Submit: the teacher or the admin)</td></tr>
         <tr><td>date</td><td>date</td><td>Day of the lesson</td></tr>
         <tr><td>period</td><td>tinyint</td><td>Lesson period, 1 to 8</td></tr>
       </table>
@@ -529,10 +545,14 @@ erDiagram
         <tr><td class="k">changed_by</td><td>bigint</td><td>FK → users.id (who made the change)</td></tr>
         <tr><td>old_status</td><td>enum</td><td>present or absent, before</td></tr>
         <tr><td>new_status</td><td>enum</td><td>present or absent, after</td></tr>
-        <tr><td>reason</td><td>varchar</td><td>Why it was changed</td></tr>
-        <tr><td>created_at</td><td>timestamp</td><td>When the change was made</td></tr>
+        <tr><td>status</td><td>enum</td><td>applied (done at once), pending (teacher's request after 24 h), approved, rejected</td></tr>
+        <tr><td>reason</td><td>varchar</td><td>Why it was changed; optional within 24 hours, required after</td></tr>
+        <tr><td class="k">decided_by</td><td>bigint</td><td>FK → users.id, optional (the admin who approved or rejected)</td></tr>
+        <tr><td>decided_at</td><td>timestamp</td><td>Optional; when the request was decided</td></tr>
+        <tr><td>decision_note</td><td>varchar</td><td>Optional; the admin's note, e.g. why it was rejected</td></tr>
+        <tr><td>created_at</td><td>timestamp</td><td>When the change was made or requested</td></tr>
       </table>
-      <p>Audit log. Teachers correct on the same day; the admin corrects past days. Records are never changed silently.</p>
+      <p>Audit log and change requests. Within 24 hours a teacher's change is applied at once; after 24 hours it becomes a pending request that the admin approves or rejects. The admin can change any record, with a reason. Never changed silently.</p>
     </div>
 
     <div class="tbl">
@@ -614,7 +634,7 @@ erDiagram
         <tr><td>last_used_at</td><td>timestamp</td><td>Last request from the app</td></tr>
         <tr><td>expires_at</td><td>timestamp</td><td>Optional expiry</td></tr>
       </table>
-      <p>Lets the teacher's Android app log in. Added in Step 3 with Laravel Sanctum. Linked to users by a polymorphic key, not a foreign key.</p>
+      <p>Lets the teacher's Android app log in. Added with Laravel Sanctum. Linked to users by a polymorphic key, not a foreign key.</p>
     </div>
 
     <div class="tbl">
@@ -778,6 +798,8 @@ erDiagram
         <tr><td>27</td><td>users</td><td>alerts.handled_by</td><td>0..1 : N</td><td>Who handled the alert</td></tr>
         <tr><td>28</td><td>users</td><td>personal_access_tokens.tokenable_id</td><td>1 : N</td><td>A teacher can log in on several phones</td></tr>
         <tr><td>29</td><td>users</td><td>sessions.user_id</td><td>0..1 : N</td><td>Web login sessions</td></tr>
+        <tr><td>30</td><td>users</td><td>attendance_sessions.recorded_by</td><td>0..1 : N</td><td>Who submitted the lesson (teacher or admin)</td></tr>
+        <tr><td>31</td><td>users</td><td>attendance_corrections.decided_by</td><td>0..1 : N</td><td>The admin who approved or rejected a request</td></tr>
       </table>
     </div>
 
@@ -800,7 +822,7 @@ erDiagram
         <tr><td>13</td><td>interventions</td><td>Project</td><td>Built ✓</td></tr>
         <tr><td>14</td><td>parent_messages</td><td>Project</td><td>Built ✓</td></tr>
         <tr><td>15</td><td>alerts</td><td>Project</td><td>Built ✓</td></tr>
-        <tr><td>16</td><td>personal_access_tokens</td><td>Framework</td><td>Step 3 (Sanctum)</td></tr>
+        <tr><td>16</td><td>personal_access_tokens</td><td>Framework</td><td>Built ✓ (Sanctum)</td></tr>
         <tr><td>17</td><td>sessions</td><td>Framework</td><td>Laravel default ✓</td></tr>
         <tr><td>18</td><td>password_reset_tokens</td><td>Framework</td><td>Laravel default ✓</td></tr>
         <tr><td>19</td><td>cache</td><td>Framework</td><td>Laravel default ✓</td></tr>
@@ -810,7 +832,7 @@ erDiagram
         <tr><td>23</td><td>failed_jobs</td><td>Framework</td><td>Laravel default ✓</td></tr>
         <tr><td>24</td><td>migrations</td><td>Framework</td><td>Laravel default ✓</td></tr>
       </table>
-      <p>✓ = already in attendance_db. personal_access_tokens is created in Step 3.</p>
+      <p>✓ = already in attendance_db. personal_access_tokens was added with Laravel Sanctum for the Android app.</p>
     </div>
   </div>
 </section>

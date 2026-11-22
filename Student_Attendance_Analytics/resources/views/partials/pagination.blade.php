@@ -1,5 +1,5 @@
 {{-- Page numbers under a table, in the daisyUI "join" style of the design --}}
-<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex flex-wrap items-center justify-between gap-2" data-pagination>
     <span class="text-sm opacity-60">
         {{ __('Showing :from–:to of :total', ['from' => $paginator->firstItem() ?? 0, 'to' => $paginator->lastItem() ?? 0, 'total' => $paginator->total()]) }}
     </span>

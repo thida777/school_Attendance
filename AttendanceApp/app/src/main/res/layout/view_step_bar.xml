@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 1 Choose class · 2 Mark · 3 Review · 4 Done (Figma: StepBar). Colours are set in StepBar.java -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stepBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card"
+    android:orientation="horizontal"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="10dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/step1"
+            style="@style/Attendance.StepCircle"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/stepLabel1"
+            style="@style/Attendance.StepLabel"
+            android:text="@string/step_choose" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/step2"
+            style="@style/Attendance.StepCircle"
+            android:text="2" />
+
+        <TextView
+            android:id="@+id/stepLabel2"
+            style="@style/Attendance.StepLabel"
+            android:text="@string/step_mark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/step3"
+            style="@style/Attendance.StepCircle"
+            android:text="3" />
+
+        <TextView
+            android:id="@+id/stepLabel3"
+            style="@style/Attendance.StepLabel"
+            android:text="@string/step_review" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/step4"
+            style="@style/Attendance.StepCircle"
+            android:text="4" />
+
+        <TextView
+            android:id="@+id/stepLabel4"
+            style="@style/Attendance.StepLabel"
+            android:text="@string/step_done" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,205 @@
+<resources>
+    <!-- English. The Khmer text is in values-km/strings.xml with the same names. -->
+    <string name="app_name">Attendance</string>
+    <string name="app_full_name">Student Attendance Analytics System</string>
+    <string name="school_name">High School</string>
+
+    <!-- Login -->
+    <string name="sign_in">Sign In</string>
+    <string name="teacher_account">Teacher account</string>
+    <string name="phone_label">Phone number</string>
+    <string name="phone_hint">012 345 678</string>
+    <string name="password_label">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="forgot_info">Ask the school admin to reset your password.</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="login_footer">High School · 2026</string>
+    <string name="fill_all">Please enter your phone number and password.</string>
+    <string name="switch_theme">Switch light or dark</string>
+    <string name="lang_en">EN</string>
+    <string name="lang_km">ខ្មែរ</string>
+
+    <!-- Errors -->
+    <string name="error_network">Cannot connect to the server. Check the internet, and that Laravel is running (php artisan serve).</string>
+    <string name="error_too_many">Too many tries. Please wait one minute and try again.</string>
+    <string name="error_session">Your session has ended. Please sign in again.</string>
+    <string name="error_unknown">Something went wrong (code %1$d). Please try again.</string>
+
+    <!-- Home (for now) -->
+    <string name="welcome_back">Welcome back 👋</string>
+    <string name="signed_in_as">Signed in as</string>
+    <string name="role_teacher">Teacher</string>
+    <string name="homeroom_class">Homeroom class: %1$s</string>
+    <string name="log_out">Log out</string>
+    <string name="logging_out">Logging out…</string>
+
+    <!-- Bottom menu -->
+    <string name="nav_home">Home</string>
+    <string name="nav_classes">Classes</string>
+    <string name="nav_attendance">Attendance</string>
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Dashboard -->
+    <string name="absent_today">%1$d absent today</string>
+    <string name="classes_marked">%1$d/%2$d classes marked</string>
+    <string name="next_class">NEXT CLASS</string>
+    <string name="period_time">Period %1$d · %2$s–%3$s</string>
+    <string name="subject_students">%1$s · %2$d students</string>
+    <string name="start_marking">Start marking</string>
+    <string name="all_done_title">All classes for today are done 🎉</string>
+    <string name="view_history">View history</string>
+    <string name="no_lessons_title">No lessons today</string>
+    <string name="no_lessons_text">Lessons on your timetable will show here.</string>
+    <string name="todays_schedule">Today\'s schedule</string>
+    <string name="done_count">%1$d/%2$d done</string>
+    <string name="up_next">Up next</string>
+    <string name="later">Later</string>
+    <string name="period_short">Period %1$d</string>
+    <string name="coming_in_part">This comes in Part %1$s.</string>
+    <string name="retry">Try again</string>
+
+    <!-- Screens that come later -->
+    <string name="placeholder_text">This screen comes in Part %1$s.</string>
+
+    <!-- Profile -->
+    <string name="stat_classes">Classes</string>
+    <string name="stat_students">Students</string>
+    <string name="stat_rate">Rate</string>
+    <string name="language">Language</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="personal_info">Personal information</string>
+    <string name="change_password">Change password</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_out_question">Sign out?</string>
+    <string name="sign_out_text">You will return to the sign-in screen.</string>
+    <string name="cancel">Cancel</string>
+    <string name="profile_photo">Profile photo</string>
+    <string name="photo_choose">Choose from gallery</string>
+    <string name="photo_take">Take a photo</string>
+    <string name="photo_remove">Remove photo</string>
+    <string name="photo_uploading">Uploading photo…</string>
+    <string name="photo_saved">Profile photo saved.</string>
+    <string name="photo_removed">Profile photo removed.</string>
+    <string name="photo_unreadable">Could not read this picture. Please choose another one.</string>
+    <string name="no_camera">No camera app was found on this phone.</string>
+
+    <!-- Personal information -->
+    <string name="name_latin">Name (Latin)</string>
+    <string name="name_khmer">Name (Khmer)</string>
+    <string name="email">Email</string>
+    <string name="homeroom">Homeroom class</string>
+    <string name="role">Role</string>
+    <string name="admin_only_note">Only the school admin can change these details.</string>
+
+    <!-- Change password -->
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_password">Repeat new password</string>
+    <string name="password_min">At least 8 characters</string>
+    <string name="update_password">Update password</string>
+    <string name="saving">Saving…</string>
+    <string name="password_changed">Password changed.</string>
+    <string name="passwords_not_match">The new passwords do not match.</string>
+    <string name="fill_all_password">Please fill in all three boxes.</string>
+    <string name="password_note">Other phones signed in to your account will be signed out.</string>
+
+    <!-- Mark attendance -->
+    <string name="mark_attendance">Mark attendance</string>
+    <string name="review_attendance">Review attendance</string>
+    <string name="step_choose">Choose class</string>
+    <string name="step_mark">Mark</string>
+    <string name="step_review">Review</string>
+    <string name="step_done">Done</string>
+    <string name="todays_classes">Today\'s classes</string>
+    <string name="done_present">Done · %1$d/%2$d</string>
+    <string name="not_marked">Not marked</string>
+    <string name="start">Start</string>
+    <string name="edit">Edit</string>
+    <string name="present">Present</string>
+    <string name="absent">Absent</string>
+    <string name="present_count">✓ %1$d present</string>
+    <string name="absent_count">✗ %1$d absent</string>
+    <string name="search_student">Search name or ID</string>
+    <string name="filter_all">All %1$d</string>
+    <string name="filter_present">Present %1$d</string>
+    <string name="filter_absent">Absent %1$d</string>
+    <string name="mark_all_present">Mark all present</string>
+    <string name="mark_hint">Everyone starts as Present. Tap ✗ for each absent student.</string>
+    <string name="no_students_found">No students found. Try another name or filter.</string>
+    <string name="all_present_bar">✓ All students are present</string>
+    <string name="summary_bar">%1$d present · %2$d absent</string>
+    <string name="review_submit">Review &amp; submit</string>
+    <string name="undo">Undo</string>
+    <string name="marked_as">%1$s → %2$s</string>
+    <string name="absent_students">Absent students</string>
+    <string name="reason_optional">The reason is optional. You can add it later.</string>
+    <string name="nobody_absent">Nobody is absent today. 🎉</string>
+    <string name="reason_not_given">Not given</string>
+    <string name="reason_sick">Sick</string>
+    <string name="reason_family_matter">Family matter</string>
+    <string name="reason_school_activity">School activity</string>
+    <string name="reason_other">Other</string>
+    <string name="submit_attendance">Submit attendance</string>
+    <string name="submit_question">Submit attendance?</string>
+    <string name="submit_note">You can still edit it for 24 hours.</string>
+    <string name="submit">Submit</string>
+    <string name="submitting">Submitting…</string>
+    <string name="already_taken">Already recorded. Your changes will update it.</string>
+    <string name="success_title">Attendance submitted</string>
+    <string name="success_updated">Attendance updated</string>
+    <string name="next_lesson">Next: %1$s · %2$s</string>
+    <string name="back_home">Back to home</string>
+    <string name="lesson_line">%1$s · %2$s · Period %3$d</string>
+    <string name="leave_question">Leave without submitting?</string>
+    <string name="leave_text">The marks you made will be lost.</string>
+    <string name="leave">Leave</string>
+    <string name="keep_marking">Keep marking</string>
+    <string name="students_count">%1$d students</string>
+
+    <!-- My Classes -->
+    <string name="classes_title">My classes</string>
+    <string name="classes_count">%1$d classes assigned</string>
+    <string name="grade_room">Grade %1$d · Room %2$s</string>
+    <string name="grade_only">Grade %1$d</string>
+    <string name="homeroom_badge">Homeroom</string>
+    <string name="attendance_label">Attendance</string>
+    <string name="subjects_count">%1$d subjects</string>
+    <string name="no_records_yet">No records yet</string>
+    <string name="class_details">Class details</string>
+    <string name="attendance_rate">Attendance rate</string>
+    <string name="mark_period">Mark attendance · Period %1$d</string>
+    <string name="no_lesson_today">No lesson with this class today</string>
+    <string name="students_title">Students (%1$d)</string>
+    <string name="my_subjects_here">My subjects in this class</string>
+    <string name="risk_good">Good</string>
+    <string name="risk_watch">Watch</string>
+    <string name="risk_at_risk">At risk</string>
+    <string name="parent_line">Parent: %1$s</string>
+    <string name="call_parent">Call parent</string>
+    <string name="inactive">Inactive</string>
+
+    <!-- History -->
+    <string name="history_title">Attendance history</string>
+    <string name="records_total">%1$d records</string>
+    <string name="all_classes">All classes</string>
+    <string name="all_statuses">All</string>
+    <string name="absent_only">Absent only</string>
+    <string name="no_history">No attendance records found.</string>
+    <string name="change">Change</string>
+    <string name="request_change">Request</string>
+    <string name="request_pending">Pending</string>
+    <string name="change_title">Change attendance</string>
+    <string name="request_title">Request a change</string>
+    <string name="change_note_direct">Within 24 hours: the change is saved at once and kept in the audit log.</string>
+    <string name="change_note_request">This lesson is older than 24 hours, so your change becomes a request. The admin approves or rejects it on the website.</string>
+    <string name="new_status">New status</string>
+    <string name="reason_label">Reason</string>
+    <string name="reason_optional_label">Reason (optional)</string>
+    <string name="reason_hint">e.g. Arrived after roll call</string>
+    <string name="reason_required">Please write a reason for the admin.</string>
+    <string name="save_change">Save change</string>
+    <string name="send_request">Send request</string>
+    <string name="same_status">Choose a different status first.</string>
+</resources>

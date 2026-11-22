@@ -89,9 +89,9 @@
                 <input type="search" id="search" placeholder="Search name or ID" />
               </label>
               <div role="tablist" class="tabs tabs-box tabs-sm" id="filter-tabs">
-                <button role="tab" class="tab tab-active" data-filter="all"><span data-km="ទាំងអស់">All</span>&nbsp;<span id="f-all"></span></button>
-                <button role="tab" class="tab" data-filter="P"><span data-km="មានវត្តមាន">Present</span>&nbsp;<span id="f-P"></span></button>
-                <button role="tab" class="tab" data-filter="A"><span data-km="អវត្តមាន">Absent</span>&nbsp;<span id="f-A"></span></button>
+                <button role="tab" class="tab tab-active gap-1.5" data-filter="all"><span data-km="ទាំងអស់">All</span><span class="badge badge-sm badge-neutral" id="f-all"></span></button>
+                <button role="tab" class="tab gap-1.5" data-filter="P"><span data-km="មានវត្តមាន">Present</span><span class="badge badge-sm badge-success" id="f-P"></span></button>
+                <button role="tab" class="tab gap-1.5" data-filter="A"><span data-km="អវត្តមាន">Absent</span><span class="badge badge-sm badge-error" id="f-A"></span></button>
               </div>
               <button class="btn btn-sm ms-auto" id="all-present"><i data-lucide="check-check" class="size-4"></i><span data-km="ទាំងអស់មានវត្តមាន">Mark all present</span></button>
             </div>
@@ -100,7 +100,7 @@
               <span data-km="សិស្សទាំងអស់ចាប់ផ្តើមជា «មានវត្តមាន»។ ចុចលើកាតសិស្សដែលអវត្តមាន។">Everyone starts as Present. Tap the card of each student who is absent.</span>
             </p>
 
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-6" id="tiles"></div>
+            <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8" id="tiles"></div>
 
             <!-- Empty state for search / filter -->
             <div id="tiles-empty" class="hidden flex-col items-center gap-2 py-10 text-center">
@@ -145,25 +145,61 @@
 </div>
 
 <!-- ===== Step 3: review before saving ===== -->
-<dialog id="review_modal" class="modal">
-  <div class="modal-box max-w-sm">
-    <h3 class="text-lg font-bold" data-km="ពិនិត្យមុនបញ្ជូន">Review attendance</h3>
-    <p class="mt-1 text-sm opacity-60" id="review-session"></p>
-    <div class="mt-4 grid grid-cols-2 gap-3">
-      <div class="bg-success/10 rounded-box p-4">
-        <div class="text-success flex items-center gap-1 text-sm font-semibold"><i data-lucide="check" class="size-4"></i><span data-km="មានវត្តមាន">Present</span></div>
-        <div class="text-3xl font-bold" id="review-present">0</div>
+<dialog id="review_modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box max-w-md overflow-hidden p-0">
+    <!-- Header -->
+    <div class="flex items-start gap-3 p-5 pb-4">
+      <span class="bg-primary/10 text-primary grid size-11 shrink-0 place-items-center rounded-2xl"><i data-lucide="clipboard-check" class="size-5"></i></span>
+      <div class="min-w-0 grow">
+        <h3 class="text-lg leading-tight font-bold" data-km="ពិនិត្យមុនបញ្ជូន">Review attendance</h3>
+        <p class="truncate text-sm opacity-60" id="review-session"></p>
       </div>
-      <div class="bg-error/10 rounded-box p-4">
-        <div class="text-error flex items-center gap-1 text-sm font-semibold"><i data-lucide="x" class="size-4"></i><span data-km="អវត្តមាន">Absent</span></div>
-        <div class="text-3xl font-bold" id="review-absent">0</div>
+      <form method="dialog"><button class="btn btn-ghost btn-sm btn-circle" aria-label="close"><i data-lucide="x" class="size-4"></i></button></form>
+    </div>
+
+    <!-- Summary: rate, present, absent -->
+    <div class="px-5">
+      <div class="rounded-box bg-base-200/70 p-4">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <div class="text-xs font-medium tracking-wide uppercase opacity-60" data-km="អត្រាវត្តមាន">Attendance rate</div>
+            <div class="text-4xl leading-none font-bold" id="review-rate">100%</div>
+          </div>
+          <div class="flex gap-5 text-right">
+            <div>
+              <div class="text-success flex items-center justify-end gap-1 text-xs font-semibold"><i data-lucide="check" class="size-3.5"></i><span data-km="មានវត្តមាន">Present</span></div>
+              <div class="text-2xl font-bold" id="review-present">0</div>
+            </div>
+            <div>
+              <div class="text-error flex items-center justify-end gap-1 text-xs font-semibold"><i data-lucide="x" class="size-3.5"></i><span data-km="អវត្តមាន">Absent</span></div>
+              <div class="text-2xl font-bold" id="review-absent">0</div>
+            </div>
+          </div>
+        </div>
+        <progress class="progress progress-success mt-3 w-full" id="review-bar" value="100" max="100"></progress>
       </div>
     </div>
-    <div id="review-reasons" class="mt-3 hidden">
-      <div class="text-sm font-semibold"><span data-km="មូលហេតុអវត្តមាន">Absence reason</span> <span class="font-normal opacity-60" data-km="(ជម្រើស អាចបន្ថែមក្រោយបាន)">(optional, can be added later)</span></div>
-      <ul class="mt-2 max-h-52 space-y-2 overflow-y-auto" id="review-names"></ul>
+
+    <!-- Absent students, each with a one-tap reason -->
+    <div id="review-reasons" class="hidden px-5 pt-4">
+      <div class="flex items-baseline justify-between gap-2">
+        <span class="text-sm font-semibold" data-km="សិស្សអវត្តមាន">Absent students</span>
+        <span class="text-xs opacity-60" data-km="មូលហេតុជាជម្រើស">Reason is optional</span>
+      </div>
+      <ul class="mt-2 max-h-64 space-y-2 overflow-y-auto pe-1" id="review-names"></ul>
     </div>
-    <div class="modal-action">
+
+    <!-- Nobody absent -->
+    <div id="review-all-present" class="hidden px-5 pt-4">
+      <div class="rounded-box bg-success/10 text-success flex items-center gap-3 p-4">
+        <i data-lucide="party-popper" class="size-6 shrink-0"></i>
+        <span class="font-medium" data-km="សិស្សទាំងអស់មានវត្តមាន!">Everyone is present!</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-base-300 bg-base-200/40 mt-5 flex flex-wrap items-center gap-2 border-t px-5 py-4">
+      <span class="grow text-xs opacity-60" data-km="អាចកែបានក្នុងរយៈពេល ២៤ ម៉ោង">You can change it for 24 hours.</span>
       <form method="dialog"><button class="btn btn-ghost" data-km="ត្រឡប់ទៅកែ">Back</button></form>
       <button class="btn btn-primary" id="confirm-save"><i data-lucide="send" class="size-4"></i><span data-km="បញ្ជូន">Submit</span></button>
     </div>
@@ -216,6 +252,8 @@
   const t = (en, km) => (isKhmer() ? km : en);
   const subject = (s) => (isKhmer() && kmFor(s)) || s; // subject name in the current language
   const initials = (name) => name.split(' ').map((w) => w[0]).join('');
+  // One of 8 avatar colours, always the same for a student (from the student ID)
+  const colourOf = (id) => [...id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 8;
   const today = new Date();
 
   function showView(name, step) {
@@ -303,13 +341,13 @@
     $('tiles').innerHTML = visible.map((s) => {
       const absent = marks[s.i] === 'A';
       return `
-        <button class="rounded-box relative flex flex-col items-center gap-2 border-2 p-3 text-center transition active:scale-95 ${
+        <button class="rounded-box relative flex flex-col items-center gap-1.5 border-2 px-2 py-2.5 text-center transition active:scale-95 ${
           absent ? 'border-error bg-error/10' : 'att-tile border-transparent bg-base-200/60'
         }" data-i="${s.i}" aria-pressed="${absent}" aria-label="${s.name}: ${absent ? 'Absent' : 'Present'}">
-          <span class="absolute end-2 top-2 grid size-6 place-items-center rounded-full ${absent ? 'bg-error text-error-content' : 'bg-success text-success-content'}">
-            <i data-lucide="${absent ? 'x' : 'check'}" class="size-3.5"></i>
+          <span class="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-full ${absent ? 'bg-error text-error-content' : 'bg-success text-success-content'}">
+            <i data-lucide="${absent ? 'x' : 'check'}" class="size-3"></i>
           </span>
-          <span class="avatar avatar-placeholder"><span class="grid size-12 place-items-center rounded-full ${absent ? 'grayscale opacity-60' : ''}"><span>${initials(s.name)}</span></span></span>
+          <span class="avatar avatar-placeholder"><span class="av-${colourOf(s.id)} grid size-10 place-items-center rounded-full text-sm ${absent ? 'grayscale opacity-60' : ''}"><span>${initials(s.name)}</span></span></span>
           <span class="w-full">
             <span class="block truncate text-sm font-semibold">${s.name}</span>
             <span class="block text-xs opacity-60">${s.id}</span>
@@ -391,12 +429,21 @@
       .filter(({ i }) => marks[i] === 'A')
       .map(({ s, i }) => `<span class="badge badge-soft badge-error">${s.name}${reasons[i] && reasons[i] !== 'Not given' ? ` · ${reasons[i]}` : ''}</span>`)
       .join('');
+  const REASONS_KM = { 'Not given': 'មិនបានប្រាប់', Sick: 'ឈឺ', 'Family matter': 'កិច្ចការគ្រួសារ', 'School activity': 'សកម្មភាពសាលា', Other: 'ផ្សេងៗ' };
+  // One card per absent student; the reason is a row of one-tap chips (radio buttons)
   const reasonRows = () =>
     students
       .map((s, i) => ({ s, i }))
       .filter(({ i }) => marks[i] === 'A')
-      .map(({ s, i }) => `<li class="flex items-center justify-between gap-2"><span class="text-sm font-medium">${s.name}</span>
-        <select class="select select-sm w-40" data-reason="${i}">${REASONS.map((r) => `<option value="${r}" ${reasons[i] === r ? 'selected' : ''}>${r}</option>`).join('')}</select></li>`)
+      .map(({ s, i }) => `<li class="rounded-box border-base-300 border p-3">
+        <div class="flex items-center gap-3">
+          <span class="bg-error/10 text-error grid size-9 shrink-0 place-items-center rounded-full text-xs font-semibold">${initials(s.name)}</span>
+          <div class="min-w-0"><div class="truncate text-sm font-medium">${s.name}</div><div class="text-xs opacity-60">${s.id}</div></div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1.5">${REASONS.map((r) => `<input type="radio" name="reason-${i}" value="${r}" data-reason="${i}"
+          class="btn btn-xs rounded-full" aria-label="${t(r, REASONS_KM[r])}"
+          ${(reasons[i] || 'Not given') === r ? 'checked' : ''}>`).join('')}</div>
+      </li>`)
       .join('');
   document.addEventListener('change', (e) => {
     if (e.target.dataset.reason !== undefined) reasons[e.target.dataset.reason] = e.target.value;
@@ -404,10 +451,16 @@
   $('review-btn').addEventListener('click', () => {
     const absent = marks.filter((m) => m === 'A').length;
     $('review-session').textContent = `${session.cls} · ${subject(session.subject)} · ${t('Period', 'ម៉ោងទី')} ${session.period}`;
+    const rate = Math.round((100 * (marks.length - absent)) / marks.length);
     $('review-present').textContent = marks.length - absent;
     $('review-absent').textContent = absent;
+    $('review-rate').textContent = rate + '%';
+    $('review-bar').value = rate;
+    $('review-bar').className = `progress mt-3 w-full ${rate >= 90 ? 'progress-success' : rate >= 80 ? 'progress-warning' : 'progress-error'}`;
     $('review-names').innerHTML = reasonRows();
     $('review-reasons').classList.toggle('hidden', absent === 0);
+    $('review-all-present').classList.toggle('hidden', absent > 0);
+    lucide.createIcons();
     document.querySelectorAll('#steps .step')[2].classList.add('step-primary');
     review_modal.showModal();
   });

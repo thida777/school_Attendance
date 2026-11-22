@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'name_km', 'email', 'phone', 'password', 'role', 'locale', 'last_login_at'])]
+#[Fillable(['name', 'name_km', 'email', 'phone', 'photo_path', 'password', 'role', 'locale', 'last_login_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -75,5 +77,30 @@ class User extends Authenticatable
     public function alerts(): HasMany
     {
         return $this->hasMany(Alert::class, 'teacher_id');
+    }
+
+    /**
+     * Web address of the profile photo, or null when there is none (then show the initials).
+     * asset() uses the address the visitor came in on, so it also works for the Android emulator (10.0.2.2).
+     */
+    public function photoUrl(): ?string
+    {
+        return $this->photo_path ? asset('storage/'.$this->photo_path) : null;
+    }
+
+    /** Save a new photo (or none) and delete the old file. Used by the website and the Android app. */
+    public function replacePhoto(?UploadedFile $file): void
+    {
+        $old = $this->photo_path;
+        $this->update(['photo_path' => $file?->store('avatars', 'public')]);
+        if ($old) {
+            Storage::disk('public')->delete($old);
+        }
+    }
+
+    /** Two letters for the round avatar when there is no photo, e.g. "Pen Sovann" → "PS". */
+    public function initials(): string
+    {
+        return collect(explode(' ', trim($this->name)))->map(fn ($w) => mb_strtoupper(mb_substr($w, 0, 1)))->take(2)->join('');
     }
 }

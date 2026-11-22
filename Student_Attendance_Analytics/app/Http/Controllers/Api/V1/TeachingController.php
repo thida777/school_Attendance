@@ -8,6 +8,7 @@ use App\Http\Resources\StudentResource;
 use App\Http\Resources\SubjectResource;
 use App\Models\SchoolClass;
 use App\Services\AttendanceRecorder;
+use App\Services\RiskAnalyzer;
 use App\Support\Risk;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -81,6 +82,10 @@ class TeachingController extends Controller
             ])
             ->orderBy('name_latin')
             ->get();
+
+        // Risk with the full rules (rate, days in a row, trend), the same as on the website
+        $risks = app(RiskAnalyzer::class)->forStudents($students->pluck('id'));
+        $students->each(fn ($s) => $s->risk_level = $risks->get($s->id)?->level);
 
         return StudentResource::collection($students);
     }

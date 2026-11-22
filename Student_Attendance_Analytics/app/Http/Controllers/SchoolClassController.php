@@ -31,6 +31,7 @@ class SchoolClassController extends Controller
 
         return view('classes.index', [
             'classes' => $classes,
+            'atRisk' => SchoolClass::atRiskCounts($classes->pluck('id')),
             'year' => $year,
             'teachers' => User::where('role', User::ROLE_TEACHER)->orderBy('name')->get(),
         ]);

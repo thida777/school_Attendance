@@ -408,3 +408,22 @@ body {
 .stat-desc {
   color: color-mix(in oklab, var(--color-base-content) 78%, transparent);
 }
+
+/* Chip buttons (radio inputs styled as .btn), e.g. the absence reason in Review attendance:
+   the chosen one gets the brand gradient, like the primary button. */
+.btn:is(input[type="radio"], input[type="checkbox"]):checked {
+  background: var(--brand-gradient);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Student avatars on Take Attendance: one calm colour per student (chosen from the student code),
+   so 40 cards do not all look the same. White initials stay readable in light and dark mode. */
+.avatar-placeholder > .av-0 { background: #1f877b; }
+.avatar-placeholder > .av-1 { background: #2f6fb5; }
+.avatar-placeholder > .av-2 { background: #5a5bd6; }
+.avatar-placeholder > .av-3 { background: #8a4fc7; }
+.avatar-placeholder > .av-4 { background: #c2477e; }
+.avatar-placeholder > .av-5 { background: #c26a2b; }
+.avatar-placeholder > .av-6 { background: #3b8a3e; }
+.avatar-placeholder > .av-7 { background: #1f86a8; }

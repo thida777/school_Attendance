@@ -428,8 +428,81 @@ body {
 
 /* Pop-up forms sit on top of tables: keep them solid so the text behind never shows through */
 .modal-box {
-  background-color: color-mix(in oklab, var(--color-base-100) 96%, transparent);
+  background-color: var(--color-base-100);
 }
 .modal-box :is(.input, .select, .file-input, .textarea) {
   background-color: var(--color-base-100);
+}
+
+/* Chip buttons (radio inputs styled as .btn), e.g. the absence reason in Review attendance:
+   the chosen one gets the brand gradient, like the primary button. */
+.btn:is(input[type="radio"], input[type="checkbox"]):checked {
+  background: var(--brand-gradient);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Student avatars on Take Attendance: one calm colour per student (chosen from the student code),
+   so 40 cards do not all look the same. White initials stay readable in light and dark mode. */
+.avatar-placeholder > .av-0 { background: #1f877b; }
+.avatar-placeholder > .av-1 { background: #2f6fb5; }
+.avatar-placeholder > .av-2 { background: #5a5bd6; }
+.avatar-placeholder > .av-3 { background: #8a4fc7; }
+.avatar-placeholder > .av-4 { background: #c2477e; }
+.avatar-placeholder > .av-5 { background: #c26a2b; }
+.avatar-placeholder > .av-6 { background: #3b8a3e; }
+.avatar-placeholder > .av-7 { background: #1f86a8; }
+
+/* ---------- Date picker calendar (resources/js/date-picker.js) ---------- */
+.date-day {
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.date-day:hover:not(:disabled) { background-color: color-mix(in oklab, var(--color-primary) 12%, transparent); }
+.date-day:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+.date-day.is-sunday { color: color-mix(in oklab, var(--color-base-content) 45%, transparent); }
+.date-day.is-today { box-shadow: inset 0 0 0 1.5px var(--color-primary); color: var(--color-primary); font-weight: 600; }
+.date-day.is-selected { background: var(--brand-gradient); color: #fff; font-weight: 600; box-shadow: none; }
+.date-day:disabled { opacity: 0.25; cursor: not-allowed; }
+
+/* ---------- Dropdown list (resources/js/select-picker.js) ---------- */
+.pick-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.12s;
+}
+.pick-item:hover,
+.pick-item:focus-visible,
+.pick-item:focus { background-color: color-mix(in oklab, var(--color-primary) 10%, transparent); }
+.pick-item .pick-check { visibility: hidden; color: var(--color-primary); }
+.pick-item.is-selected { color: var(--color-primary); font-weight: 600; background-color: color-mix(in oklab, var(--color-primary) 8%, transparent); }
+.pick-item.is-selected .pick-check { visibility: visible; }
+.pick-item.is-disabled { opacity: 0.4; cursor: not-allowed; }
+.pick-pop { scrollbar-width: thin; scrollbar-color: color-mix(in oklab, var(--color-base-content) 25%, transparent) transparent; }
+
+/* Profile: the camera button on the photo stays visible on any picture */
+.btn.photo-camera {
+  background: var(--brand-gradient);
+  color: #fff;
+  border: 3px solid var(--color-base-100);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
+}
+.btn.photo-camera:hover { filter: brightness(1.1); }
+
+/* A filter box that is filtering something (not "All …"): tinted, so you see what is on */
+.input.picker-on {
+  border-color: color-mix(in oklab, var(--color-primary) 55%, transparent);
+  background-color: color-mix(in oklab, var(--color-primary) 8%, var(--color-base-100));
+  font-weight: 500;
 }

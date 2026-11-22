@@ -1,0 +1,148 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+        One theme for light and dark. The colours come from colors.xml / values-night/colors.xml,
+        so this file does not need a dark copy.
+    -->
+    <style name="Base.Theme.AttendanceApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand</item>
+        <item name="colorOnPrimary">@color/on_brand</item>
+        <item name="colorPrimaryContainer">@color/brand_soft</item>
+        <item name="colorSecondary">@color/brand</item>
+        <item name="colorSurface">@color/card</item>
+        <item name="colorOnSurface">@color/text_main</item>
+        <item name="colorOnSurfaceVariant">@color/text_muted</item>
+        <item name="colorOutline">@color/border</item>
+        <item name="colorError">@color/absent_text</item>
+        <item name="android:colorBackground">@color/page</item>
+        <item name="android:windowBackground">@color/page</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="textInputStyle">@style/Widget.Attendance.TextInput</item>
+
+        <!-- Material 3 uses these for switches, the bottom menu, toggle buttons and sheets.
+             Without them it uses its own purple-grey colours. -->
+        <item name="colorSecondaryContainer">@color/brand_soft</item>
+        <item name="colorOnSecondaryContainer">@color/brand</item>
+        <item name="colorOutlineVariant">@color/border</item>
+        <item name="colorSurfaceContainerLowest">@color/card</item>
+        <item name="colorSurfaceContainerLow">@color/card</item>
+        <item name="colorSurfaceContainer">@color/card</item>
+        <item name="colorSurfaceContainerHigh">@color/field</item>
+        <item name="colorSurfaceContainerHighest">@color/border</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Attendance.BottomSheet</item>
+    </style>
+
+    <!-- Bottom sheets (photo options, sign out): card colour, round top corners -->
+    <style name="ThemeOverlay.Attendance.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Attendance.BottomSheet</item>
+    </style>
+
+    <style name="Widget.Attendance.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/card</item>
+    </style>
+
+    <!-- A white card with a thin border (Dashboard, Profile) -->
+    <style name="Attendance.Card" parent="">
+        <item name="android:background">@drawable/bg_card</item>
+        <item name="android:elevation">1dp</item>
+    </style>
+
+    <!-- One row in a settings list -->
+    <style name="Attendance.Row" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <!-- Small rounded icon tile at the start of a row -->
+    <style name="Attendance.RowIcon" parent="">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:background">@drawable/bg_icon_tile</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginEnd">14dp</item>
+        <item name="tint">@color/brand</item>
+    </style>
+
+    <style name="Attendance.RowText" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/text_main</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Attendance.Divider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">66dp</item>
+        <item name="android:background">@color/border</item>
+    </style>
+
+    <style name="Theme.AttendanceApp" parent="Base.Theme.AttendanceApp" />
+
+    <!-- Splash: the gradient shows at once, with no white flash before the screen draws -->
+    <style name="Theme.AttendanceApp.Splash" parent="Theme.AttendanceApp">
+        <item name="android:windowBackground">@drawable/bg_header_gradient</item>
+    </style>
+
+    <!-- Text boxes: rounded, teal when focused -->
+    <style name="Widget.Attendance.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="boxStrokeColor">@color/brand</item>
+        <item name="boxBackgroundColor">@color/field</item>
+        <item name="hintTextColor">@color/brand</item>
+        <item name="startIconTint">@color/text_muted</item>
+        <item name="endIconTint">@color/text_muted</item>
+    </style>
+
+    <!-- Main button: gradient teal to blue -->
+    <style name="Widget.Attendance.BrandButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/bg_button_brand</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">54dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- Step bar: numbered circle and its label -->
+    <style name="Attendance.StepCircle" parent="">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/bg_step_todo</item>
+        <item name="android:textColor">@color/text_muted</item>
+    </style>
+
+    <style name="Attendance.StepLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_muted</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- Reason chips (Sick, Family matter…) -->
+    <style name="Widget.Attendance.ReasonChip" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipMinHeight">34dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

@@ -25,8 +25,8 @@ export function initAttendance(form, drawIcons) {
         tile.setAttribute('aria-label', `${tile.dataset.name}: ${absent ? text.absent : text.present}`);
 
         const badge = tile.querySelector('[data-badge]');
-        badge.className = `absolute end-2 top-2 grid size-6 place-items-center rounded-full ${absent ? 'bg-error text-error-content' : 'bg-success text-success-content'}`;
-        badge.innerHTML = `<i data-lucide="${absent ? 'x' : 'check'}" class="size-3.5"></i>`;
+        badge.className = `absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-full ${absent ? 'bg-error text-error-content' : 'bg-success text-success-content'}`;
+        badge.innerHTML = `<i data-lucide="${absent ? 'x' : 'check'}" class="size-3"></i>`;
         tile.querySelector('[data-avatar]').classList.toggle('grayscale', absent);
         tile.querySelector('[data-avatar]').classList.toggle('opacity-60', absent);
 
@@ -71,6 +71,13 @@ export function initAttendance(form, drawIcons) {
             row.classList.toggle('hidden', !isAbsent(tile));
         });
         form.querySelector('[data-reasons]').classList.toggle('hidden', absent === 0);
+        form.querySelector('[data-all-present-note]')?.classList.toggle('hidden', absent > 0);
+        form.querySelectorAll('[data-review-rate]').forEach((el) => (el.textContent = `${rate}%`));
+        const bar = form.querySelector('[data-review-bar]');
+        if (bar) {
+            bar.value = rate;
+            bar.className = `progress mt-3 w-full ${rate >= 90 ? 'progress-success' : rate >= 80 ? 'progress-warning' : 'progress-error'}`;
+        }
         drawIcons();
     }
 

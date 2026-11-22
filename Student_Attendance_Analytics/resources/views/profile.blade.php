@@ -3,18 +3,44 @@
 @section('title', __('Profile'))
 
 @php
-    $km = app()->getLocale() === 'km';
-    $initials = collect(explode(' ', $user->name))->map(fn ($w) => mb_substr($w, 0, 1))->take(2)->join('');
-@endphp
+    $km = app()->getLocale() === 'km';@endphp
 
 @section('content')
     <div class="mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 lg:grid-cols-3">
         {{-- Who is logged in --}}
         <div class="card bg-base-100 border-base-300 h-fit border">
             <div class="card-body items-center text-center">
-                <div class="avatar avatar-placeholder">
-                    <div class="bg-neutral text-neutral-content w-20 rounded-full"><span class="text-2xl">{{ $initials }}</span></div>
-                </div>
+                {{-- Profile photo: tap the camera, see the preview, then Save --}}
+                <form method="POST" action="{{ route('profile.photo') }}" enctype="multipart/form-data" class="flex flex-col items-center gap-2" data-photo-form>
+                    @csrf
+                    <div class="relative">
+                        <div class="avatar avatar-placeholder">
+                            <div class="bg-neutral text-neutral-content ring-base-100 w-24 rounded-full shadow-md ring-4">
+                                <img @if ($user->photoUrl()) src="{{ $user->photoUrl() }}" @endif alt="{{ $user->name }}" @class(['size-full object-cover', 'hidden' => ! $user->photoUrl()]) data-photo-preview />
+                                <span @class(['text-3xl', 'hidden' => $user->photoUrl()]) data-photo-initials>{{ $user->initials() }}</span>
+                            </div>
+                        </div>
+                        <label class="photo-camera btn btn-circle btn-sm absolute -inset-e-1 bottom-0" title="{{ $user->photoUrl() ? __('Change photo') : __('Add photo') }} · {{ __('JPG, PNG or WebP · up to 2 MB') }}">
+                            <i data-lucide="camera" class="size-4"></i>
+                            <span class="sr-only">{{ $user->photoUrl() ? __('Change photo') : __('Add photo') }}</span>
+                            <input type="file" name="photo" accept="image/jpeg,image/png,image/webp" class="hidden" data-photo-input />
+                        </label>
+                    </div>
+
+                    {{-- Shown only after a picture is chosen --}}
+                    <div class="hidden gap-2" data-photo-actions>
+                        <button class="btn btn-primary btn-sm"><i data-lucide="check" class="size-4"></i>{{ __('Save photo') }}</button>
+                        <button type="button" class="btn btn-ghost btn-sm" data-photo-cancel>{{ __('Cancel') }}</button>
+                    </div>
+                    <p class="text-error hidden text-xs" data-photo-error data-too-big="{{ __('The photo is too big. Choose one under 2 MB.') }}" data-wrong-type="{{ __('Choose a JPG, PNG or WebP picture.') }}"></p>
+                    @error('photo')<p class="text-error text-xs">{{ $message }}</p>@enderror                </form>
+                @if ($user->photoUrl())
+                    <form method="POST" action="{{ route('profile.photo.destroy') }}" data-photo-remove>
+                        @csrf
+                        @method('DELETE')
+                        <button class="link link-hover text-error text-xs">{{ __('Remove photo') }}</button>
+                    </form>
+                @endif
                 <h2 class="mt-2 text-lg font-semibold">{{ $km ? $user->name_km : $user->name }}</h2>
                 <p class="text-sm opacity-60">{{ $user->email ?? trim(chunk_split((string) $user->phone, 3, ' ')) }}</p>
                 <span class="badge badge-soft badge-primary">{{ $user->isAdmin() ? __('Administrator') : __('Teacher') }}</span>

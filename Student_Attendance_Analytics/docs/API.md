@@ -45,6 +45,8 @@ Save the token (SharedPreferences) and send it on every call.
 | **GET `/me`** | — | `{"data": user}` |
 | **PUT `/me`** | `{"locale": "km"}` | `{"data": user}` |
 | **PUT `/me/password`** | `{"current_password", "password", "password_confirmation"}` | `{"message": "Password changed."}`, other phones are logged out |
+| **POST `/me/photo`** | multipart, field `photo` (JPG/PNG/WebP, max 2 MB, at least 64×64) | the user, with the new `photo_url` |
+| **DELETE `/me/photo`** | none | the user, with `photo_url: null` (show `initials` instead) |
 
 ## Dashboard: today's lessons
 

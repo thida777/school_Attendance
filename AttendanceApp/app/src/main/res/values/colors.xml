@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Light colours: the same as the website (resources/css/app.css).
+    Dark colours are in values-night/colors.xml with the SAME names,
+    so every screen switches automatically.
+-->
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand (teal) -->
+    <color name="brand">#1F877B</color>
+    <color name="on_brand">#FFFFFF</color>
+    <color name="brand_soft">#E3F2EF</color>
+
+    <!-- Buttons: gradient teal to blue -->
+    <color name="button_start">#14998A</color>
+    <color name="button_end">#2B7FB8</color>
+
+    <!-- Big headers (Splash, Login, Home): teal, blue, purple -->
+    <color name="header_start">#0F8F82</color>
+    <color name="header_mid">#2B7FB8</color>
+    <color name="header_end">#6B6FD6</color>
+    <color name="header_text_soft">#CCEFEA</color>
+
+    <!-- Page, cards, text -->
+    <color name="page">#EEF5F4</color>
+    <color name="card">#FFFFFF</color>
+    <color name="field">#F6FAF9</color>
+    <color name="border">#D7E4E2</color>
+    <color name="text_main">#1F2D3A</color>
+    <color name="text_muted">#5B6B78</color>
+
+    <!-- Status: fills (badges, bars, charts) and darker text versions for small text -->
+    <color name="present">#3AA876</color>
+    <color name="present_text">#2E8B5F</color>
+    <color name="present_soft">#E5F5EC</color>
+    <color name="absent">#DC6B6B</color>
+    <color name="absent_text">#C0504D</color>
+    <color name="absent_soft">#FDECEC</color>
+    <color name="warning">#E0A83A</color>
+    <color name="warning_text">#A8761A</color>
+    <color name="warning_soft">#FCF3E1</color>
+    <color name="info_text">#2B6A9A</color>
+    <color name="info_soft">#E6F1FA</color>
+</resources>

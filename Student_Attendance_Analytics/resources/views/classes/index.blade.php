@@ -35,19 +35,16 @@
                 @php $rate = Risk::rate($class->records_present, $class->records_total); @endphp
                 <div class="card bg-base-100 border-base-300 border">
                     <div class="card-body">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <h3 class="card-title">{{ $class->name }}</h3>
-                                <p class="text-sm opacity-60">{{ __('Grade') }} {{ $class->grade }}@if ($class->room) · {{ __('Room') }} {{ $class->room }}@endif</p>
-                            </div>
-                            @if ($rate === null)
-                                <span class="badge badge-soft badge-ghost">{{ __('No records yet') }}</span>
-                            @else
-                                <span class="badge badge-soft {{ Risk::badge(Risk::level($rate)) }}">{{ $rate }}%</span>
-                            @endif
+                        <div>
+                            <h3 class="card-title">{{ $class->name }}</h3>
+                            <p class="text-sm opacity-60">{{ __('Grade') }} {{ $class->grade }}@if ($class->room) · {{ __('Room') }} {{ $class->room }}@endif</p>
                         </div>
-                        <progress class="progress {{ Risk::progress($rate) }} mt-2" value="{{ $rate ?? 0 }}" max="100"></progress>
-                        <dl class="mt-2 grid grid-cols-2 gap-y-1 text-sm">
+                        @include('partials.class-rate', [
+                            'rate' => $rate,
+                            'atRisk' => $atRisk[$class->id] ?? 0,
+                            'riskLink' => route('students.index', ['class' => $class->id]),
+                        ])
+                        <dl class="mt-3 grid grid-cols-2 gap-y-1 text-sm">
                             <dt class="opacity-60">{{ __('Homeroom teacher') }}</dt>
                             <dd class="text-right">{{ $class->homeroomTeacher?->name ?? '—' }}</dd>
                             <dt class="opacity-60">{{ __('Students') }}</dt>

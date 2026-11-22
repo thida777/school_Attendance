@@ -1,0 +1,2 @@
+# Database backups (contain password hashes): keep them on this computer / USB only
+backups/

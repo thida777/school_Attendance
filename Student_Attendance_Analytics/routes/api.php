@@ -20,6 +20,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::put('/me', [AuthController::class, 'update']);
         Route::put('/me/password', [AuthController::class, 'password']);
+        Route::post('/me/photo', [AuthController::class, 'photo']);
+        Route::delete('/me/photo', [AuthController::class, 'removePhoto']);
 
         Route::get('/today', [TeachingController::class, 'today']);
         Route::get('/classes', [TeachingController::class, 'classes']);

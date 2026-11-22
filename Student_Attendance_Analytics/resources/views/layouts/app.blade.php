@@ -3,7 +3,6 @@
 @php
     $user = auth()->user();
     $menu = config('navigation.'.$user->role, []);
-    $initials = collect(explode(' ', $user->name))->map(fn ($w) => mb_substr($w, 0, 1))->take(2)->join('');
     $otherLocale = app()->getLocale() === 'km' ? 'en' : 'km';
 @endphp
 
@@ -31,9 +30,7 @@
                     <button class="btn btn-ghost btn-sm btn-square" data-action="theme" aria-label="{{ __('Switch theme') }}"></button>
                     <details class="dropdown dropdown-end">
                         <summary class="btn btn-ghost gap-2 px-2">
-                            <div class="avatar avatar-placeholder">
-                                <div class="w-8 rounded-full"><span class="text-xs">{{ $initials }}</span></div>
-                            </div>
+                            @include('partials.avatar', ['person' => $user, 'size' => 'w-8'])
                             <span class="hidden text-left text-sm leading-tight sm:inline">
                                 {{ app()->getLocale() === 'km' && $user->name_km ? $user->name_km : $user->name }}<br>
                                 <span class="text-xs font-normal opacity-60">{{ __(ucfirst($user->role)) }}</span>

@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Website Test Plan · Student Attendance Analytics System</title>
+<style>
+  @page { size: A4; margin: 14mm 13mm 16mm; }
+  :root { --ink:#1d2433; --muted:#5d6577; --line:#d9dde5; --soft:#f3f6f8; --teal:#1f877b; --teal-soft:#e4f3f1; --warn:#9a6700; --warn-soft:#fff6dd; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Khmer UI", Arial, sans-serif; color: var(--ink); font-size: 9.6pt; line-height: 1.42; margin: 0; }
+  h1 { font-size: 24pt; margin: 0 0 4mm; color: var(--teal); line-height: 1.15; }
+  h2 { font-size: 14pt; margin: 7mm 0 2.5mm; padding-bottom: 1.5mm; border-bottom: 2px solid var(--teal); break-after: avoid; }
+  h3 { font-size: 11pt; margin: 5mm 0 2mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 2.5mm; padding-left: 5mm; }
+  li { margin-bottom: 0.8mm; }
+  code, .mono { font-family: Consolas, "Courier New", monospace; font-size: 8.8pt; background: var(--soft); padding: 0.2mm 1mm; border-radius: 1mm; }
+  pre { font-family: Consolas, monospace; font-size: 8.4pt; background: var(--soft); border: 1px solid var(--line); border-radius: 2mm; padding: 2.5mm 3mm; margin: 0 0 3mm; white-space: pre-wrap; break-inside: avoid; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 3mm; }
+  th, td { border: 1px solid var(--line); padding: 1.4mm 1.8mm; vertical-align: top; text-align: left; }
+  th { background: var(--teal-soft); font-size: 8.6pt; text-transform: uppercase; letter-spacing: .02em; }
+  tr { break-inside: avoid; }
+  thead { display: table-header-group; }
+  .cases td:nth-child(1) { width: 11mm; font-weight: 700; color: var(--teal); white-space: nowrap; }
+  .cases td:nth-child(2) { width: 33mm; font-weight: 600; }
+  .cases td:nth-child(5) { width: 17mm; white-space: nowrap; font-size: 8.6pt; color: var(--muted); }
+  .cases ol { margin: 0; padding-left: 4mm; }
+  .cover { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; }
+  .cover .band { background: linear-gradient(135deg, #1f877b, #2d6ea8); color: #fff; border-radius: 4mm; padding: 14mm 12mm; }
+  .cover .band h1 { color: #fff; font-size: 28pt; }
+  .cover .band p { font-size: 12pt; opacity: .92; }
+  .meta td { border: none; padding: 1.2mm 0; font-size: 10.5pt; }
+  .meta td:first-child { width: 42mm; color: var(--muted); }
+  .note { border-left: 3px solid var(--teal); background: var(--teal-soft); padding: 2mm 3mm; border-radius: 0 2mm 2mm 0; margin: 0 0 3mm; break-inside: avoid; }
+  .warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .tag { display: inline-block; font-size: 7.8pt; font-weight: 700; padding: 0.3mm 1.6mm; border-radius: 5mm; background: var(--teal-soft); color: var(--teal); }
+  .page-break { break-before: page; }
+  .fill td { height: 9mm; }
+  .small { font-size: 8.6pt; color: var(--muted); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+</style>
+</head>
+<body>
+
+<!-- ======================= Cover ======================= -->
+<section class="cover">
+  <div class="band">
+    <p>Student Attendance Analytics System</p>
+    <h1>Website Test Plan<br>and Test Cases</h1>
+    <p>Manual testing of the Laravel website (admin and teacher) and the API for the Android app</p>
+  </div>
+  <table class="meta">
+    <tr><td>Project</td><td>Student Attendance Analytics System for a high school in Cambodia</td></tr>
+    <tr><td>Part tested</td><td>Laravel website, version of 17 November 2026 (Day 3 + interface update), and API v1</td></tr>
+    <tr><td>Roles</td><td>Admin and Teacher (parents receive messages only; students do not log in)</td></tr>
+    <tr><td>Number of test cases</td><td>99 manual test cases in 14 groups, plus 82 automatic tests</td></tr>
+    <tr><td>Tester</td><td>______________________________________</td></tr>
+    <tr><td>Test date</td><td>______________________________________</td></tr>
+  </table>
+  <p class="small">How to use this document: follow section 2 once to prepare the computer, run the automatic tests (section 3), then work through the test cases in section 4 in order. Tick Pass or Fail for each case. Write every failure in the bug table (section 5).</p>
+</section>
+
+<!-- ======================= 1. Scope ======================= -->
+<h2>1. Purpose and scope</h2>
+<p>This plan checks that every finished page of the website works as designed, that each role sees only what it may see, and that the attendance rules are applied the same way on the website and in the API.</p>
+<div class="grid2">
+  <div>
+    <h3>Tested (finished)</h3>
+    <ul>
+      <li>Login, logout, roles (Admin / Teacher), English and Khmer, light and dark theme</li>
+      <li>School data: Students, Classes, Subjects, Teachers, Parents, Teaching Assignments</li>
+      <li>Take Attendance (4 steps), Attendance Monitoring / History</li>
+      <li>Corrections and Audit Log (24-hour rule, requests)</li>
+      <li>My Classes (teacher), Profile with profile photo</li>
+      <li>Interface: calendar date picker, modern dropdowns, page numbers without reload</li>
+      <li>API v1 for the Android app</li>
+    </ul>
+  </div>
+  <div>
+    <h3>Not tested yet (planned for Day 5–6)</h3>
+    <ul>
+      <li>Dashboard charts, Insights, At-Risk Students, Interventions, Reports</li>
+      <li>Student details and Teacher details pages</li>
+      <li>Alerts and Telegram / SMS messages to parents</li>
+      <li>Forgot password, Excel import</li>
+    </ul>
+    <p class="small">These pages show "Coming soon". Opening them must not give an error (test A-09).</p>
+  </div>
+</div>
+
+<!-- ======================= 2. Setup ======================= -->
+<h2>2. Before you start</h2>
+<h3>2.1 Start the system</h3>
+<ol>
+  <li>Start <b>WAMP</b> and wait until its icon is green (MySQL on port 3306 must run).</li>
+  <li>Open PowerShell in <code>D:\Project\Student_Attendance_Analytics</code>.</li>
+  <li><b>Optional, start from clean data</b> (deletes all attendance and changes made before, then creates the demo school again):
+    <pre>php artisan migrate:fresh --seed</pre></li>
+  <li>Build the styles and scripts once: <code>npm run build</code></li>
+  <li>Start the server: <code>php artisan serve</code> and open <b>http://127.0.0.1:8000</b> in Chrome.</li>
+</ol>
+<div class="note warn"><b>Test on a school day (Monday to Saturday).</b> The timetable has no lessons on Sunday, so the Take Attendance tests in group I need a weekday. Use two browsers (or one normal and one private window) so you can be logged in as admin and as a teacher at the same time.</div>
+
+<h3>2.2 Test accounts (password for all: <code>password</code>)</h3>
+<table>
+  <thead><tr><th>Name</th><th>Role</th><th>Log in with</th><th>Teaches</th><th>Homeroom</th></tr></thead>
+  <tbody>
+    <tr><td>Sok Admin</td><td>Admin</td><td>admin@school.edu.kh or 012 000 111</td><td>—</td><td>—</td></tr>
+    <tr><td>Pen Sovann</td><td>Teacher</td><td>012 345 678 or sovann@school.edu.kh</td><td>Mathematics</td><td>10A</td></tr>
+    <tr><td>Mao Sreyleak</td><td>Teacher</td><td>011 222 333</td><td>Khmer Literature</td><td>10B</td></tr>
+    <tr><td>Ros Piseth</td><td>Teacher</td><td>015 678 901</td><td>Physics</td><td>11A</td></tr>
+    <tr><td>Tep Mony</td><td>Teacher</td><td>017 890 123</td><td>Chemistry, Biology</td><td>11B</td></tr>
+    <tr><td>Hak Chanthou</td><td>Teacher</td><td>010 456 789</td><td>English</td><td>12A</td></tr>
+    <tr><td>Long Davin</td><td>Teacher</td><td>016 234 567</td><td>History, Computer (ICT)</td><td>12B</td></tr>
+  </tbody>
+</table>
+<h3>2.3 Demo data</h3>
+<p>Academic year 2025–2026 · 6 classes (10A–12B) · 8 subjects · 42 students (7 per class, codes <code>S-10A-001</code> to <code>S-12B-007</code>, e.g. <code>S-10A-001 Sok Dara</code>) · 1 parent per student (6 parents have no Telegram, so they get SMS) · a weekly timetable, Monday to Saturday, 5 periods a day.</p>
+
+<!-- ======================= 3. Automatic tests ======================= -->
+<h2>3. Automatic tests</h2>
+<p>The project contains 82 automatic tests (PHPUnit). They create their own temporary database, so they never change your real data. Run:</p>
+<pre>php artisan test</pre>
+<table>
+  <thead><tr><th>Test file</th><th>What it checks</th><th>Tests</th></tr></thead>
+  <tbody>
+    <tr><td>LoginAndRolesTest</td><td>Login by email or phone, wrong password, 5-try limit, roles, Khmer switch, database rules</td><td>13</td></tr>
+    <tr><td>StudentManagementTest</td><td>Search, add, shared parent, form errors, edit, delete rules</td><td>8</td></tr>
+    <tr><td>SchoolDataTest</td><td>Classes, Subjects, Teachers, Parents, Teaching Assignments and their rules</td><td>18</td></tr>
+    <tr><td>TakeAttendanceTest</td><td>Today's lessons, marking, reasons, 24-hour rule, past and future dates</td><td>13</td></tr>
+    <tr><td>CorrectionsTest</td><td>History, direct changes, requests, approve, reject, audit log</td><td>9</td></tr>
+    <tr><td>ApiTest</td><td>Every API address used by the Android app</td><td>10</td></tr>
+    <tr><td>ProfileAndMyClassesTest</td><td>My Classes, profile details, password change, profile photo (web and API)</td><td>11</td></tr>
+  </tbody>
+</table>
+<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 82 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
+
+<!-- ======================= 4. Test cases ======================= -->
+<h2 class="page-break">4. Manual test cases</h2>
+<p class="small">Each case: do the steps in order and compare with the expected result. Cases build on each other inside a group, so keep the order.</p>
+
+<h3>A. Login, logout and roles</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>A-01</td><td>Guest is sent to login</td><td>Log out (or use a private window) and open <code>/students</code>.</td><td>The login page opens instead of the Students page.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-02</td><td>Admin logs in by email</td><td>Log in with <code>admin@school.edu.kh</code> / <code>password</code>.</td><td>The admin Dashboard opens. The sidebar shows Overview, Attendance, Analytics, School data and Account.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-03</td><td>Teacher logs in by phone with spaces</td><td>Log out. Log in with <code>012 345 678</code> / <code>password</code>.</td><td>"My Dashboard" of Pen Sovann opens. The sidebar has no School data and no Analytics.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-04</td><td>Wrong password</td><td>Log in with <code>012345678</code> / <code>wrong</code>.</td><td>Red message: "The email, phone or password is not correct." The login field keeps the typed value.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-05</td><td>Password guessing is stopped</td><td>Enter a wrong password 6 times in a row for the same account.</td><td>From the 6th try: "Too many attempts. Try again in … seconds." After 1 minute, login works again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-06</td><td>Teacher cannot open admin pages</td><td>As Pen Sovann, type <code>/students</code>, then <code>/teachers</code>, then <code>/attendance/corrections</code> in the address bar.</td><td>Each shows the 403 "no permission" page. No data is shown.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-07</td><td>Admin cannot open teacher-only page</td><td>As admin, open <code>/my-classes</code>.</td><td>403 page.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-08</td><td>Logout</td><td>Click the user name (top right) → Log out. Then press the browser Back button and reload the page (F5).</td><td>The login page opens. After the reload, the private page is not shown again: the login page is asked for.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-09</td><td>Unfinished pages are safe</td><td>As admin, click Insights, At-Risk Students, Interventions and Reports in the sidebar.</td><td>Each shows a friendly "Coming soon" page, not an error.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>B. Language and theme</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>B-01</td><td>Switch to Khmer</td><td>Click the language button (ខ្មែរ) in the top bar.</td><td>The sidebar, titles, buttons and table headers change to Khmer. Names show in Khmer first.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>B-02</td><td>Language is remembered</td><td>Log out and log in again with the same account.</td><td>The website opens in the language chosen last time.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>B-03</td><td>Dark theme</td><td>Click the moon button. Reload the page.</td><td>Dark navy colours; text stays easy to read; the choice stays after reload.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>B-04</td><td>Error messages in Khmer</td><td>In Khmer, try test C-05 (duplicate student code).</td><td>The page labels are Khmer. Note: some validation sentences may still be English (full Khmer check is planned for Day 6).</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>C. Students (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>C-01</td><td>List</td><td>Open Students.</td><td>"42 students in the school". Table: code, name (Latin and Khmer), gender, class, parent with Telegram or SMS, rate, risk. 15 per page with page buttons.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-02</td><td>Search</td><td>Search <code>Rithy</code>, then <code>ដារា</code>, then <code>S-10A-003</code>.</td><td>Each search shows only the matching students.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-03</td><td>Filters</td><td>Choose class 10B, then gender Female.</td><td>The list updates right away after each choice; "Clear" removes the filters.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-04</td><td>Add student</td><td>Add student: Khmer name ចាន់ សុភា, Latin Chan Sophea, code <code>s-10a-099</code>, Female, class 10A, parent Chan Dara, phone <code>012 888 999</code>, Father → Save.</td><td>Green message "Student saved." The new student shows code <code>S-10A-099</code> (capitals) and parent phone <code>012888999</code>.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-05</td><td>Form explains errors</td><td>Add student with code <code>S-10A-001</code>, empty Latin name and parent phone <code>12</code>.</td><td>The pop-up opens again with the typed values kept and red messages under the 3 wrong fields. Nothing is saved.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-06</td><td>Brothers share one parent</td><td>Add a second student (code <code>S-10A-100</code>) with the same parent phone <code>012 888 999</code>.</td><td>On the Parents page, Chan Dara appears once, with 2 children.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-07</td><td>Edit</td><td>Click the pencil of Chan Sophea, set Status to Inactive, Save.</td><td>The pop-up opened already filled in. After saving, the row is faded with the "Inactive" badge.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-08</td><td>Delete without attendance</td><td>Delete Chan Rotha / S-10A-100 → confirm.</td><td>A confirmation asks first. After Delete: "Student deleted."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-09</td><td>Student with attendance is kept</td><td>After group I, try to delete a student who now has attendance (any student of the lesson you submitted in I-07).</td><td>Red message: the student has attendance records and cannot be deleted; set the student to Inactive instead. The student stays.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-10</td><td>Page numbers without reload</td><td>On Students, scroll down and click page 2, then 3, then the browser Back button.</td><td>Only the list changes: the page does not reload or jump to the top. The address bar shows <code>?page=2</code> / <code>?page=3</code>. Back shows page 2 again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>D. Classes (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>D-01</td><td>Cards</td><td>Open Classes.</td><td>6 cards (10A–12B) with grade, room, homeroom teacher, students (girls) and the attendance rate. A class without attendance shows one grey line "No attendance taken yet".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-02</td><td>Add class</td><td>Add class: name <code>10c</code>, grade 10, room 103, no homeroom teacher.</td><td>"Class saved." A card <b>10C</b> appears.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-03</td><td>No duplicate name</td><td>Add class <code>10A</code> again.</td><td>Error under Class name: already taken.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-04</td><td>Class with students is kept</td><td>Delete class 10A.</td><td>Red message: "Class 10A still has students. Move them to another class first."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-05</td><td>Delete empty class</td><td>Delete class 10C.</td><td>"Class deleted." The card disappears.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-06</td><td>Students button</td><td>Click "Students" on the 11A card.</td><td>The Students page opens, filtered to class 11A.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-07</td><td>Rate colours and at-risk chip</td><td>After group I, look at the 10A card. Then click its red "student(s) at risk" chip.</td><td>The rate number and its bar have the <b>same colour</b>: green 90% or more, orange 80–89%, red under 80%. Caption "Attendance this school year". A red chip "N student(s) at risk" (or green "All on track"). The chip opens Students filtered to 10A.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>E. Subjects (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>E-01</td><td>List</td><td>Open Subjects.</td><td>8 subjects with code, English and Khmer names, hours per week, number of classes and teachers.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>E-02</td><td>Add subject</td><td>Add <code>geo</code>, Geography, ភូមិវិទ្យា, 2 hours.</td><td>"Subject saved." Code shows <b>GEO</b>.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>E-03</td><td>No duplicate code</td><td>Add another subject with code <code>MAT</code>.</td><td>Error under Code: already taken.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>E-04</td><td>Taught subject is kept</td><td>Delete Mathematics. Then delete Geography.</td><td>Mathematics: red message (still taught). Geography: "Subject deleted."</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>F. Teachers (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>F-01</td><td>List and search</td><td>Open Teachers. Search <code>Mony</code>, then <code>017</code>.</td><td>6 teachers with phone, subjects, classes, "X of Y recorded" this week and account status. Each search finds Tep Mony.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>F-02</td><td>Add teacher</td><td>Add: ស៊ុន មាលា, Sun Meala, phone <code>099 111 222</code>, no email, password <code>secret123</code>.</td><td>"Teacher saved." Sun Meala shows "Not logged in yet".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>F-03</td><td>New teacher logs in</td><td>In a second browser, log in as <code>099 111 222</code> / <code>secret123</code>. Reload the Teachers page as admin.</td><td>The teacher sees "My Dashboard". On Teachers, Sun Meala now shows "Active".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>F-04</td><td>Edit keeps password</td><td>Edit Sun Meala, change the email, leave Password empty, Save. Log in again as her with <code>secret123</code>.</td><td>Saved; the old password still works.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>F-05</td><td>Rules</td><td>Add a teacher with phone <code>012 345 678</code> and no password. Then delete Pen Sovann.</td><td>Add: errors (phone taken, password required). Delete: red message (still has teaching assignments).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>F-06</td><td>Delete free teacher</td><td>Delete Sun Meala.</td><td>"Teacher deleted."</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>G. Parents (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>G-01</td><td>List and search</td><td>Open Parents. Search a child's name, e.g. <code>Sok Dara</code>.</td><td>Each parent shows relation, phone with Telegram or SMS, children as labels, and "Last notified: Never". The search finds the parent of Sok Dara.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-02</td><td>Add parent</td><td>Add parent: Chea Sokunthea, phone <code>017 333 444</code>, child Sok Dara · 10A, Mother.</td><td>"Parent saved." Sok Dara now has 2 parents.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-03</td><td>Link a second child</td><td>Edit Chea Sokunthea, choose another child (e.g. Chan Sreyneang · 10A), Save.</td><td>Chea Sokunthea shows 2 children.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-04</td><td>Every student keeps a parent</td><td>Click × on a child label of a parent who is that child's only parent. Then try to delete that parent.</td><td>Both are refused: "… would have no parent contact. Add another parent for this student first."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-05</td><td>Remove a link</td><td>Click × on Sok Dara under Chea Sokunthea (Sok Dara has 2 parents now).</td><td>"Child removed from this parent."</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>H. Teaching Assignments (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>H-01</td><td>List and filters</td><td>Open Teaching Assignments. Filter class 10A, then teacher Tep Mony.</td><td>"48 assignments" in total; each filter shows only matching rows with hours per week.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>H-02</td><td>One teacher per subject per class</td><td>Add: class 10A, Mathematics, teacher Tep Mony.</td><td>Error: "This class already has a teacher for this subject. Edit that assignment instead."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>H-03</td><td>Busy teacher is refused</td><td>Edit 10A · Mathematics and choose another teacher who teaches at the same time (try a few).</td><td>For a busy teacher: "This teacher already teaches another class on [day], period [n]." Nothing changes.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>H-04</td><td>Change back</td><td>If a change worked in H-03, set the teacher back to Pen Sovann.</td><td>"Assignment saved." Pen Sovann's lessons are back in Take Attendance.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>I. Take Attendance (teacher and admin)</h3>
+<div class="note">Log in as <b>Pen Sovann</b> on a weekday. Steps: 1 Choose class → 2 Mark → 3 Review → 4 Done.</div>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>I-01</td><td>Today's lessons</td><td>Open Take Attendance.</td><td>Only Pen Sovann's Mathematics lessons for today, each with period and time. The first unmarked lesson is "Up next" (highlighted). "0 of N classes marked".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-02</td><td>Start marking</td><td>Click Start on the first lesson.</td><td>Step 2. The lesson title, period and date. All students show as Present; ring 100%.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-03</td><td>Tap = absent</td><td>Tap 2 student cards.</td><td>They turn red "Absent"; the ring and the counts change (e.g. 71%, 5 present, 2 absent). The bar at the bottom shows the same numbers.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-04</td><td>Undo</td><td>Tap a third card, then click Undo in the black bar.</td><td>That card goes back to Present.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-05</td><td>Search and tabs</td><td>Type part of a name; then use the Absent tab; then "Mark all present"; then mark the 2 students absent again.</td><td>Search and tabs show only matching cards. "Mark all present" sets everyone to Present.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-06</td><td>Review with reasons</td><td>Click "Review &amp; submit". Set one absence reason to Sick.</td><td>Step 3 is highlighted. The pop-up shows the rate with a coloured bar and the totals. Each absent student has a row of reason chips (Sick, Family matter, School activity, Other); the chosen chip turns teal. If nobody is absent, a green note says everyone is present.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-07</td><td>Submit</td><td>Click Submit.</td><td>Step 4 "Attendance submitted" with the totals and the absent names (one with "· Sick"). Button "Next: [class] · Mathematics".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-08</td><td>Lesson is done</td><td>Go back to Take Attendance.</td><td>That lesson shows "Done · 5/7" and an Edit button; the next lesson is "Up next".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-09</td><td>Edit the same day</td><td>Click Edit on the done lesson.</td><td>Blue note "Already recorded at [time]…". The saved statuses and reasons are shown and can be changed.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-10</td><td>Other class today</td><td>Open "Other class today" and start a lesson for one of Pen Sovann's classes in a free period.</td><td>The date is fixed to today. The marking page opens.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-11</td><td>Not my class</td><td>In the address bar, open <code>/attendance/mark?school_class_id=1&amp;subject_id=1&amp;date=[today]&amp;period=5</code> (subject 1 = Khmer Literature).</td><td>403 page: Pen Sovann does not teach this subject.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-12</td><td>Admin sees all lessons</td><td>As admin, open Take Attendance.</td><td>All lessons of the school today, each with the teacher's name. Pen Sovann's lesson shows Done.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-13</td><td>Admin records a past day</td><td>As admin: Other class or date → a class, subject, a date last week, a period → Start → Submit.</td><td>The lesson is saved for that date.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-14</td><td>No future date</td><td>As admin, change the URL of the marking page to tomorrow's date.</td><td>A red error says the date must be today or earlier, and nothing is saved. (The date box itself does not allow future days.)</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-15</td><td>Calendar date picker</td><td>As admin, open "Other class or date" and click the Date box. Use ‹ ›, the Today and Yesterday buttons, the arrow keys and Esc.</td><td>A calendar card opens (weeks start on Monday, Sundays grey). Today has a teal ring; the chosen day is filled. Days after today are faded and cannot be picked. The box shows the date as "Mon, 9 Nov 2026". Esc or a click outside closes it.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>I-16</td><td>Dropdowns and summary bar</td><td>In the same section open Class, Subject and Period. Choose Period 3. Try the keyboard: ↓, Enter, type "M".</td><td>Each box has an icon; the list is a rounded card with a ✓ on the chosen row. Period rows show the time (Period 3 · 09:15 – 10:15). The summary bar under the fields changes to e.g. "10A · Biology · Sun, 15 Nov 2026 · Period 3". Start opens the marking page for exactly that choice.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>J. Attendance Monitoring / History</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>J-01</td><td>Teacher history</td><td>As Pen Sovann, open Attendance History.</td><td>Only records of his own lessons. Totals: Records = Present + Absent.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>J-02</td><td>Filters</td><td>Filter by today's date, then Status Absent, then search a name.</td><td>The table and the totals follow the filters; "Clear filters" resets.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>J-03</td><td>Admin monitoring</td><td>As admin, open Attendance Monitoring.</td><td>Records of all teachers, with a Teacher column.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>J-04</td><td>Change within 24 hours</td><td>As Pen Sovann, click Change on an absent student → New status Present → reason "Arrived after roll call" → Save.</td><td>"Attendance changed and saved in the audit log." The row now shows Present.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>J-05</td><td>Date filter with the calendar</td><td>As admin, in Monitoring click Date, pick a day that has records, then open it again and click Clear.</td><td>Picking a day filters the list at once (address <code>?date=…</code>) and the Date box is highlighted in teal. Clear shows "All dates" and all records again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>J-06</td><td>Filter dropdowns</td><td>Open Status: choose Absent. Then choose class 10A.</td><td>Present and Absent have green and red dots. Each choice filters at once. Boxes that filter something are highlighted in teal; boxes on "All …" stay plain with grey text.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>K. Corrections and Audit Log (24-hour rule)</h3>
+<div class="note warn"><b>Helper to test "after 24 hours" without waiting one day.</b> Run this once in PowerShell (in the Laravel folder). It makes the newest lesson look 25 hours old:
+<pre>php artisan tinker --execute="$s = App\Models\AttendanceSession::latest('id')->first(); $s->forceFill(['created_at' => now()->subHours(25)])->save(); echo $s->id;"</pre>
+Only use it on test data.</div>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>K-01</td><td>Audit log</td><td>As admin, open Corrections &amp; Audit Log.</td><td>The info box about the 24-hour rule. The audit log lists "Submitted" (I-07) and "Corrected" (J-04) with user, time, record, old → new and reason.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-02</td><td>Log filters</td><td>Choose action "Corrected"; search a student name.</td><td>Only matching events.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-03</td><td>Teacher sends a request</td><td>Run the helper above on Pen Sovann's lesson. As Pen Sovann, open Attendance History → the button now says "Request change" → change a status without a reason, then with reason "Medical letter".</td><td>Without reason: error. With reason: "Request sent. The admin will approve or reject it." The row shows "Request pending"; the status did not change.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-04</td><td>Teacher cannot edit an old lesson</td><td>As Pen Sovann, open Take Attendance (or the Done page) for that lesson.</td><td>Clicking Edit on that lesson goes back to step 1 with a yellow message: "This lesson was submitted more than 24 hours ago. Send a correction request from Attendance History." The Done page has no "Edit" link.<td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-05</td><td>Admin approves</td><td>As admin, open Corrections → the request shows → Approve.</td><td>"Request approved. The attendance record was changed." The request leaves the list; the log shows "Request approved"; History shows the new status.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-06</td><td>Admin rejects</td><td>Send another request (K-03) → as admin click Reject → note "No evidence" → Reject.</td><td>"Request rejected. The record was kept as it was." The log shows "Request rejected" with the note.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-07</td><td>Admin change needs a reason</td><td>As admin, in Monitoring, click Change on a record of that old lesson; save without a reason, then with a reason.</td><td>Without reason: error. With reason: saved and logged as "Corrected".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>K-08</td><td>Log is read-only</td><td>Look for any edit or delete button in the audit log.</td><td>There is none. The note says nobody can edit or delete it.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>L. My Classes (teacher)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>L-01</td><td>Class cards</td><td>As Pen Sovann, open My Classes.</td><td>"The classes you teach Mathematics in". One card per class with the rate (same colours as D-07), students, sessions this month, and 6 day chips "My lessons each week" (teaching days in teal with the periods, e.g. "Fri P3, P4"; free days faded). 10A has the "Homeroom" badge.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>L-02</td><td>Card buttons</td><td>Click History on 10A, then Take attendance.</td><td>History opens filtered to 10A; Take attendance opens step 1.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>L-03</td><td>Students table</td><td>Search a name; filter one class.</td><td>Students of his classes only, with rate and the words Good / Watch / At risk. No edit buttons; note "Only admins can add or edit student records."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>L-04</td><td>At-risk chip</td><td>On a card with a red "student(s) at risk" chip, click the chip.</td><td>The students table below opens, filtered to that class, showing the student(s) marked "At risk".</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>M. Profile (admin and teacher)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>M-01</td><td>Open profile</td><td>Open Profile as Pen Sovann.</td><td>Round initials with a 📷 button, name, email, "Teacher" badge, Log out button; the form is filled with his details.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-02</td><td>Save details</td><td>Change the Khmer name and Save.</td><td>"Your details were saved." The form and the profile card show the new name (switch to Khmer to see the Khmer name).<td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-03</td><td>Phone must be unique</td><td>Set the phone to <code>011 222 333</code> (Mao Sreyleak) and Save.</td><td>Error under Phone: already taken.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-04</td><td>Admin keeps an email</td><td>As admin, empty the Email and Save.</td><td>Error: email is required.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-05</td><td>Change password</td><td>As Pen Sovann: wrong current password; then new passwords that do not match; then correct: <code>password</code> → <code>newpass123</code> twice. Log out and log in with the new password.</td><td>First two: errors. Third: "Password changed." Login works with <code>newpass123</code>. (Set it back to <code>password</code> afterwards.)</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-06</td><td>Language and theme</td><td>Use the Language and Theme buttons on the profile.</td><td>Same behaviour as B-01 and B-03.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-07</td><td>Add a profile photo</td><td>As Pen Sovann, click the 📷 button on the circle and choose a JPG or PNG under 2 MB. Click Save photo.</td><td>The picture shows in the circle at once, with Save photo and Cancel. After saving: "Profile photo saved."; the photo shows on the card, in the top bar, and (as admin) on the Teachers list. A "Remove photo" link appears.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-08</td><td>Wrong or too big file</td><td>Hover the 📷 button. Then choose a PDF, then a picture bigger than 2 MB.</td><td>The tooltip says "JPG, PNG or WebP · up to 2 MB". For the PDF: red "Choose a JPG, PNG or WebP picture." For the big picture: red "The photo is too big. Choose one under 2 MB." Nothing is uploaded.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>M-09</td><td>Remove the photo</td><td>Click "Remove photo".</td><td>"Profile photo removed." The circle and the top bar show the initials again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>N. API for the Android app</h3>
+<div class="note">Use PowerShell (<code>curl.exe</code>, not <code>curl</code>) or Postman. Full details: <code>Student_Attendance_Analytics/docs/API.md</code>. Replace <code>TOKEN</code> with the token from N-01.</div>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>N-01</td><td>Login gives a token</td><td><code>curl.exe -X POST http://127.0.0.1:8000/api/v1/login -H "Accept: application/json" -d "login=012345678" -d "password=password"</code></td><td>JSON with <code>"token": "1|…"</code> and the user Pen Sovann.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>N-02</td><td>Admin cannot use the app</td><td>Same with <code>login=admin@school.edu.kh</code>.</td><td>Status 403: "The app is for teachers. Please use the website."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>N-03</td><td>Today's lessons</td><td><code>curl.exe http://127.0.0.1:8000/api/v1/today -H "Accept: application/json" -H "Authorization: Bearer TOKEN"</code></td><td>JSON with date, done, total and the same lessons as the website's Take Attendance page.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>N-04</td><td>No token</td><td>Same as N-03 without the Authorization header.</td><td>Status 401 "Unauthenticated."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>N-05</td><td>Khmer messages</td><td>N-01 with a wrong password and <code>-H "Accept-Language: km"</code>.</td><td>The error message is in Khmer (shown as \u17.. codes in the terminal).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>N-06</td><td>Logout</td><td><code>curl.exe -X POST http://127.0.0.1:8000/api/v1/logout -H "Accept: application/json" -H "Authorization: Bearer TOKEN"</code>, then repeat N-03.</td><td>"Logged out."; then N-03 gives 401 with the old token.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>N-07</td><td>Profile photo in the app</td><td>Log in again (N-01). Run <code>curl.exe -X POST http://127.0.0.1:8000/api/v1/me/photo -H "Accept: application/json" -H "Authorization: Bearer TOKEN" -F "photo=@C:\photo.jpg"</code>, then the same address with <code>-X DELETE</code> and without <code>-F</code>.</td><td>The upload returns the user with <code>photo_url</code> (…/storage/avatars/…). The delete returns <code>photo_url: null</code> and <code>initials</code> "PS".</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<!-- ======================= 5. Bugs and summary ======================= -->
+<h2 class="page-break">5. Bug report</h2>
+<p class="small">Write one line for each failed test. Severity: High = data wrong or lost, page cannot be used · Medium = feature wrong but a way around exists · Low = text, layout or translation.</p>
+<table class="fill">
+  <thead><tr><th style="width:12mm">No.</th><th style="width:16mm">Test ID</th><th>What happened (steps, what you saw)</th><th style="width:20mm">Severity</th><th style="width:22mm">Fixed (date)</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>5</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>6</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>7</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>8</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>9</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>10</td><td></td><td></td><td></td><td></td></tr>
+  </tbody>
+</table>
+
+<h2>6. Test summary</h2>
+<table class="fill">
+  <thead><tr><th>Group</th><th style="width:20mm">Cases</th><th style="width:20mm">Passed</th><th style="width:20mm">Failed</th></tr></thead>
+  <tbody>
+    <tr><td>3. Automatic tests</td><td>82</td><td></td><td></td></tr>
+    <tr><td>A. Login, logout and roles</td><td>9</td><td></td><td></td></tr>
+    <tr><td>B. Language and theme</td><td>4</td><td></td><td></td></tr>
+    <tr><td>C. Students</td><td>10</td><td></td><td></td></tr>
+    <tr><td>D. Classes</td><td>7</td><td></td><td></td></tr>
+    <tr><td>E. Subjects</td><td>4</td><td></td><td></td></tr>
+    <tr><td>F. Teachers</td><td>6</td><td></td><td></td></tr>
+    <tr><td>G. Parents</td><td>5</td><td></td><td></td></tr>
+    <tr><td>H. Teaching Assignments</td><td>4</td><td></td><td></td></tr>
+    <tr><td>I. Take Attendance</td><td>16</td><td></td><td></td></tr>
+    <tr><td>J. Monitoring / History</td><td>6</td><td></td><td></td></tr>
+    <tr><td>K. Corrections and Audit Log</td><td>8</td><td></td><td></td></tr>
+    <tr><td>L. My Classes</td><td>4</td><td></td><td></td></tr>
+    <tr><td>M. Profile</td><td>9</td><td></td><td></td></tr>
+    <tr><td>N. API</td><td>7</td><td></td><td></td></tr>
+    <tr><th>Total manual</th><th>99</th><th></th><th></th></tr>
+  </tbody>
+</table>
+<table class="meta" style="margin-top:8mm">
+  <tr><td>Result</td><td>☐ Ready for the next step &nbsp;&nbsp; ☐ Fix the bugs first</td></tr>
+  <tr><td>Tester signature</td><td>______________________________ &nbsp; Date: ______________</td></tr>
+  <tr><td>Supervisor</td><td>______________________________ &nbsp; Date: ______________</td></tr>
+</table>
+
+</body>
+</html>

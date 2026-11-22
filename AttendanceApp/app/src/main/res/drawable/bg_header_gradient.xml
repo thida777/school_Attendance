@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Big header (Splash, Login, Home): teal, blue, purple, from top-left to bottom-right -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:angle="315" android:type="linear"
+        android:startColor="@color/header_start"
+        android:centerColor="@color/header_mid"
+        android:endColor="@color/header_end" />
+</shape>

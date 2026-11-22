@@ -19,11 +19,12 @@
             <form method="GET" action="{{ route('attendance.monitoring') }}" class="grid grid-cols-1 gap-x-4 sm:grid-cols-2 xl:grid-cols-5" data-auto-submit>
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">{{ __('Date') }}</legend>
-                    <input type="date" name="date" value="{{ $filters['date'] ?? '' }}" max="{{ today()->toDateString() }}" class="input w-full" onchange="this.form.submit()" />
+                    <input type="date" name="date" value="{{ $filters['date'] ?? '' }}" max="{{ today()->toDateString() }}" class="input w-full" onchange="this.form.submit()"
+                        data-date-picker data-submit data-clearable data-placeholder="{{ __('All dates') }}" />
                 </fieldset>
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">{{ __('Class') }}</legend>
-                    <select name="class" class="select w-full">
+                    <select name="class" class="select w-full" data-picker data-filter data-icon="school">
                         <option value="">{{ __('All classes') }}</option>
                         @foreach ($classes as $class)
                             <option value="{{ $class->id }}" @selected(($filters['class'] ?? '') == $class->id)>{{ $class->name }}</option>
@@ -32,7 +33,7 @@
                 </fieldset>
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">{{ __('Subject') }}</legend>
-                    <select name="subject" class="select w-full">
+                    <select name="subject" class="select w-full" data-picker data-filter data-icon="book-open">
                         <option value="">{{ __('All subjects') }}</option>
                         @foreach ($subjects as $subject)
                             <option value="{{ $subject->id }}" @selected(($filters['subject'] ?? '') == $subject->id)>{{ $km ? $subject->name_km : $subject->name_en }}</option>
@@ -41,10 +42,10 @@
                 </fieldset>
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">{{ __('Status') }}</legend>
-                    <select name="status" class="select w-full">
+                    <select name="status" class="select w-full" data-picker data-filter data-icon="list-checks">
                         <option value="">{{ __('All statuses') }}</option>
-                        <option value="present" @selected(($filters['status'] ?? '') === 'present')>{{ __('Present') }}</option>
-                        <option value="absent" @selected(($filters['status'] ?? '') === 'absent')>{{ __('Absent') }}</option>
+                        <option value="present" data-dot="bg-success" @selected(($filters['status'] ?? '') === 'present')>{{ __('Present') }}</option>
+                        <option value="absent" data-dot="bg-error" @selected(($filters['status'] ?? '') === 'absent')>{{ __('Absent') }}</option>
                     </select>
                 </fieldset>
                 <fieldset class="fieldset">
@@ -63,7 +64,7 @@
     </div>
 
     {{-- Records --}}
-    <div class="card bg-base-100 border-base-300 border">
+    <div class="card bg-base-100 border-base-300 border scroll-mt-4" data-list>
         <div class="card-body">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <h3 class="card-title text-base">{{ __('Attendance records') }}</h3>

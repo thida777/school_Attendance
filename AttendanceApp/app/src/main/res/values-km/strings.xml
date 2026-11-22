@@ -1,0 +1,205 @@
+<resources>
+    <!-- Khmer. Same names as values/strings.xml. -->
+    <string name="app_name">វត្តមាន</string>
+    <string name="app_full_name">ប្រព័ន្ធវិភាគវត្តមានសិស្ស</string>
+    <string name="school_name">វិទ្យាល័យ</string>
+
+    <!-- Login -->
+    <string name="sign_in">ចូលប្រើ</string>
+    <string name="teacher_account">គណនីគ្រូ</string>
+    <string name="phone_label">លេខទូរស័ព្ទ</string>
+    <string name="phone_hint">012 345 678</string>
+    <string name="password_label">ពាក្យសម្ងាត់</string>
+    <string name="remember_me">ចងចាំខ្ញុំ</string>
+    <string name="forgot_password">ភ្លេចពាក្យសម្ងាត់?</string>
+    <string name="forgot_info">សូមស្នើឱ្យអ្នកគ្រប់គ្រងសាលាកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។</string>
+    <string name="signing_in">កំពុងចូល…</string>
+    <string name="login_footer">វិទ្យាល័យ · 2026</string>
+    <string name="fill_all">សូមបញ្ចូលលេខទូរស័ព្ទ និងពាក្យសម្ងាត់។</string>
+    <string name="switch_theme">ប្តូរពន្លឺ ឬងងឹត</string>
+    <string name="lang_en">EN</string>
+    <string name="lang_km">ខ្មែរ</string>
+
+    <!-- Errors -->
+    <string name="error_network">មិនអាចភ្ជាប់ទៅម៉ាស៊ីនមេបានទេ។ សូមពិនិត្យអ៊ីនធឺណិត ហើយប្រាកដថា Laravel កំពុងដំណើរការ (php artisan serve)។</string>
+    <string name="error_too_many">ព្យាយាមច្រើនដងពេក។ សូមរង់ចាំមួយនាទី ហើយព្យាយាមម្តងទៀត។</string>
+    <string name="error_session">វគ្គរបស់អ្នកបានបញ្ចប់។ សូមចូលម្តងទៀត។</string>
+    <string name="error_unknown">មានបញ្ហាកើតឡើង (កូដ %1$d)។ សូមព្យាយាមម្តងទៀត។</string>
+
+    <!-- Home (for now) -->
+    <string name="welcome_back">សូមស្វាគមន៍ 👋</string>
+    <string name="signed_in_as">បានចូលជា</string>
+    <string name="role_teacher">គ្រូ</string>
+    <string name="homeroom_class">ថ្នាក់ទទួលបន្ទុក៖ %1$s</string>
+    <string name="log_out">ចាកចេញ</string>
+    <string name="logging_out">កំពុងចាកចេញ…</string>
+
+    <!-- Bottom menu -->
+    <string name="nav_home">ទំព័រដើម</string>
+    <string name="nav_classes">ថ្នាក់</string>
+    <string name="nav_attendance">វត្តមាន</string>
+    <string name="nav_history">ប្រវត្តិ</string>
+    <string name="nav_profile">គណនី</string>
+
+    <!-- Dashboard -->
+    <string name="absent_today">អវត្តមាន %1$d នាក់ថ្ងៃនេះ</string>
+    <string name="classes_marked">បានស្រង់ %1$d/%2$d ថ្នាក់</string>
+    <string name="next_class">ថ្នាក់បន្ទាប់</string>
+    <string name="period_time">ម៉ោងទី %1$d · %2$s–%3$s</string>
+    <string name="subject_students">%1$s · សិស្ស %2$d នាក់</string>
+    <string name="start_marking">ចាប់ផ្តើមស្រង់វត្តមាន</string>
+    <string name="all_done_title">ថ្នាក់ទាំងអស់ថ្ងៃនេះបានស្រង់រួចហើយ 🎉</string>
+    <string name="view_history">មើលប្រវត្តិ</string>
+    <string name="no_lessons_title">គ្មានម៉ោងបង្រៀនថ្ងៃនេះ</string>
+    <string name="no_lessons_text">ម៉ោងបង្រៀនតាមកាលវិភាគរបស់អ្នកនឹងបង្ហាញនៅទីនេះ។</string>
+    <string name="todays_schedule">កាលវិភាគថ្ងៃនេះ</string>
+    <string name="done_count">រួច %1$d/%2$d</string>
+    <string name="up_next">បន្ទាប់</string>
+    <string name="later">ក្រោយ</string>
+    <string name="period_short">ម៉ោងទី %1$d</string>
+    <string name="coming_in_part">មុខងារនេះនឹងមកក្នុងផ្នែក %1$s។</string>
+    <string name="retry">ព្យាយាមម្តងទៀត</string>
+
+    <!-- Screens that come later -->
+    <string name="placeholder_text">អេក្រង់នេះនឹងមកក្នុងផ្នែក %1$s។</string>
+
+    <!-- Profile -->
+    <string name="stat_classes">ថ្នាក់</string>
+    <string name="stat_students">សិស្ស</string>
+    <string name="stat_rate">អត្រា</string>
+    <string name="language">ភាសា</string>
+    <string name="dark_mode">ផ្ទៃងងឹត</string>
+    <string name="personal_info">ព័ត៌មានផ្ទាល់ខ្លួន</string>
+    <string name="change_password">ប្តូរពាក្យសម្ងាត់</string>
+    <string name="sign_out">ចាកចេញ</string>
+    <string name="sign_out_question">ចាកចេញមែនទេ?</string>
+    <string name="sign_out_text">អ្នកនឹងត្រឡប់ទៅអេក្រង់ចូលប្រើវិញ។</string>
+    <string name="cancel">បោះបង់</string>
+    <string name="profile_photo">រូបថតប្រវត្តិរូប</string>
+    <string name="photo_choose">ជ្រើសពីវិចិត្រសាល</string>
+    <string name="photo_take">ថតរូប</string>
+    <string name="photo_remove">លុបរូបថត</string>
+    <string name="photo_uploading">កំពុងផ្ទុករូបថត…</string>
+    <string name="photo_saved">បានរក្សាទុករូបថតប្រវត្តិរូប។</string>
+    <string name="photo_removed">បានលុបរូបថតប្រវត្តិរូប។</string>
+    <string name="photo_unreadable">មិនអាចអានរូបនេះបានទេ។ សូមជ្រើសរូបផ្សេង។</string>
+    <string name="no_camera">រកមិនឃើញកម្មវិធីកាមេរ៉ានៅលើទូរស័ព្ទនេះទេ។</string>
+
+    <!-- Personal information -->
+    <string name="name_latin">ឈ្មោះ (ឡាតាំង)</string>
+    <string name="name_khmer">ឈ្មោះ (ខ្មែរ)</string>
+    <string name="email">អ៊ីមែល</string>
+    <string name="homeroom">ថ្នាក់ទទួលបន្ទុក</string>
+    <string name="role">តួនាទី</string>
+    <string name="admin_only_note">មានតែអ្នកគ្រប់គ្រងសាលាប៉ុណ្ណោះដែលអាចកែព័ត៌មានទាំងនេះ។</string>
+
+    <!-- Change password -->
+    <string name="current_password">ពាក្យសម្ងាត់បច្ចុប្បន្ន</string>
+    <string name="new_password">ពាក្យសម្ងាត់ថ្មី</string>
+    <string name="repeat_password">បញ្ចូលពាក្យសម្ងាត់ថ្មីម្តងទៀត</string>
+    <string name="password_min">យ៉ាងតិច 8 តួអក្សរ</string>
+    <string name="update_password">ប្តូរពាក្យសម្ងាត់</string>
+    <string name="saving">កំពុងរក្សាទុក…</string>
+    <string name="password_changed">បានប្តូរពាក្យសម្ងាត់។</string>
+    <string name="passwords_not_match">ពាក្យសម្ងាត់ថ្មីទាំងពីរមិនដូចគ្នាទេ។</string>
+    <string name="fill_all_password">សូមបំពេញប្រអប់ទាំងបី។</string>
+    <string name="password_note">ទូរស័ព្ទផ្សេងទៀតដែលបានចូលគណនីរបស់អ្នក នឹងត្រូវចាកចេញ។</string>
+
+    <!-- Mark attendance -->
+    <string name="mark_attendance">ស្រង់វត្តមាន</string>
+    <string name="review_attendance">ពិនិត្យវត្តមាន</string>
+    <string name="step_choose">ជ្រើសថ្នាក់</string>
+    <string name="step_mark">ស្រង់</string>
+    <string name="step_review">ពិនិត្យ</string>
+    <string name="step_done">រួចរាល់</string>
+    <string name="todays_classes">ថ្នាក់ថ្ងៃនេះ</string>
+    <string name="done_present">រួច · %1$d/%2$d</string>
+    <string name="not_marked">មិនទាន់ស្រង់</string>
+    <string name="start">ចាប់ផ្តើម</string>
+    <string name="edit">កែ</string>
+    <string name="present">មក</string>
+    <string name="absent">អវត្តមាន</string>
+    <string name="present_count">✓ មក %1$d</string>
+    <string name="absent_count">✗ អវត្តមាន %1$d</string>
+    <string name="search_student">ស្វែងរកឈ្មោះ ឬអត្តលេខ</string>
+    <string name="filter_all">ទាំងអស់ %1$d</string>
+    <string name="filter_present">មក %1$d</string>
+    <string name="filter_absent">អវត្តមាន %1$d</string>
+    <string name="mark_all_present">ដាក់មកទាំងអស់</string>
+    <string name="mark_hint">សិស្សទាំងអស់ចាប់ផ្តើមជា «មក»។ ចុច ✗ សម្រាប់សិស្សអវត្តមាន។</string>
+    <string name="no_students_found">រកមិនឃើញសិស្សទេ។ សូមសាកឈ្មោះ ឬតម្រងផ្សេង។</string>
+    <string name="all_present_bar">✓ សិស្សមកទាំងអស់</string>
+    <string name="summary_bar">មក %1$d · អវត្តមាន %2$d</string>
+    <string name="review_submit">ពិនិត្យ និងបញ្ជូន</string>
+    <string name="undo">ត្រឡប់វិញ</string>
+    <string name="marked_as">%1$s → %2$s</string>
+    <string name="absent_students">សិស្សអវត្តមាន</string>
+    <string name="reason_optional">មូលហេតុមិនចាំបាច់ទេ។ អាចបន្ថែមពេលក្រោយបាន។</string>
+    <string name="nobody_absent">ថ្ងៃនេះគ្មានសិស្សអវត្តមានទេ។ 🎉</string>
+    <string name="reason_not_given">មិនបានប្រាប់</string>
+    <string name="reason_sick">ឈឺ</string>
+    <string name="reason_family_matter">ការងារគ្រួសារ</string>
+    <string name="reason_school_activity">សកម្មភាពសាលា</string>
+    <string name="reason_other">ផ្សេងៗ</string>
+    <string name="submit_attendance">បញ្ជូនវត្តមាន</string>
+    <string name="submit_question">បញ្ជូនវត្តមានមែនទេ?</string>
+    <string name="submit_note">អ្នកនៅតែអាចកែបានក្នុងរយៈពេល 24 ម៉ោង។</string>
+    <string name="submit">បញ្ជូន</string>
+    <string name="submitting">កំពុងបញ្ជូន…</string>
+    <string name="already_taken">បានស្រង់រួចហើយ។ ការកែប្រែរបស់អ្នកនឹងធ្វើបច្ចុប្បន្នភាពវា។</string>
+    <string name="success_title">បានបញ្ជូនវត្តមាន</string>
+    <string name="success_updated">បានកែវត្តមាន</string>
+    <string name="next_lesson">បន្ទាប់៖ %1$s · %2$s</string>
+    <string name="back_home">ត្រឡប់ទៅទំព័រដើម</string>
+    <string name="lesson_line">%1$s · %2$s · ម៉ោងទី %3$d</string>
+    <string name="leave_question">ចាកចេញដោយមិនបញ្ជូន?</string>
+    <string name="leave_text">ការស្រង់ដែលអ្នកបានធ្វើនឹងបាត់។</string>
+    <string name="leave">ចាកចេញ</string>
+    <string name="keep_marking">បន្តស្រង់</string>
+    <string name="students_count">សិស្ស %1$d នាក់</string>
+
+    <!-- My Classes -->
+    <string name="classes_title">ថ្នាក់របស់ខ្ញុំ</string>
+    <string name="classes_count">ទទួលបន្ទុក %1$d ថ្នាក់</string>
+    <string name="grade_room">ថ្នាក់ទី %1$d · បន្ទប់ %2$s</string>
+    <string name="grade_only">ថ្នាក់ទី %1$d</string>
+    <string name="homeroom_badge">គ្រូបន្ទុកថ្នាក់</string>
+    <string name="attendance_label">វត្តមាន</string>
+    <string name="subjects_count">%1$d មុខវិជ្ជា</string>
+    <string name="no_records_yet">មិនទាន់មានទិន្នន័យ</string>
+    <string name="class_details">ព័ត៌មានថ្នាក់</string>
+    <string name="attendance_rate">អត្រាវត្តមាន</string>
+    <string name="mark_period">ស្រង់វត្តមាន · ម៉ោងទី %1$d</string>
+    <string name="no_lesson_today">ថ្ងៃនេះគ្មានម៉ោងបង្រៀនថ្នាក់នេះទេ</string>
+    <string name="students_title">សិស្ស (%1$d)</string>
+    <string name="my_subjects_here">មុខវិជ្ជារបស់ខ្ញុំក្នុងថ្នាក់នេះ</string>
+    <string name="risk_good">ល្អ</string>
+    <string name="risk_watch">តាមដាន</string>
+    <string name="risk_at_risk">មានហានិភ័យ</string>
+    <string name="parent_line">អាណាព្យាបាល៖ %1$s</string>
+    <string name="call_parent">ហៅទៅអាណាព្យាបាល</string>
+    <string name="inactive">អសកម្ម</string>
+
+    <!-- History -->
+    <string name="history_title">ប្រវត្តិវត្តមាន</string>
+    <string name="records_total">%1$d កំណត់ត្រា</string>
+    <string name="all_classes">ថ្នាក់ទាំងអស់</string>
+    <string name="all_statuses">ទាំងអស់</string>
+    <string name="absent_only">តែអវត្តមាន</string>
+    <string name="no_history">រកមិនឃើញកំណត់ត្រាវត្តមានទេ។</string>
+    <string name="change">កែ</string>
+    <string name="request_change">ស្នើ</string>
+    <string name="request_pending">រង់ចាំ</string>
+    <string name="change_title">កែវត្តមាន</string>
+    <string name="request_title">ស្នើសុំកែប្រែ</string>
+    <string name="change_note_direct">ក្នុងរយៈពេល 24 ម៉ោង៖ ការកែប្រែត្រូវបានរក្សាទុកភ្លាម ហើយកត់ត្រាទុកក្នុងកំណត់ហេតុ។</string>
+    <string name="change_note_request">មេរៀននេះលើសពី 24 ម៉ោងហើយ ដូច្នេះការកែប្រែរបស់អ្នកក្លាយជាសំណើ។ អ្នកគ្រប់គ្រងនឹងអនុម័ត ឬបដិសេធនៅលើគេហទំព័រ។</string>
+    <string name="new_status">ស្ថានភាពថ្មី</string>
+    <string name="reason_label">មូលហេតុ</string>
+    <string name="reason_optional_label">មូលហេតុ (មិនចាំបាច់)</string>
+    <string name="reason_hint">ឧ. មកដល់ក្រោយការស្រង់វត្តមាន</string>
+    <string name="reason_required">សូមសរសេរមូលហេតុសម្រាប់អ្នកគ្រប់គ្រង។</string>
+    <string name="save_change">រក្សាទុកការកែប្រែ</string>
+    <string name="send_request">ផ្ញើសំណើ</string>
+    <string name="same_status">សូមជ្រើសស្ថានភាពផ្សេងជាមុនសិន។</string>
+</resources>

@@ -7,6 +7,7 @@ use App\Models\AttendanceSession;
 use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\TimetableSlot;
+use App\Services\RiskAnalyzer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -63,25 +64,14 @@ class MyClassesController extends Controller
             'subjects' => $assignments->pluck('subject')->unique('id'),
             'homeroomIds' => $teacher->homeroomClasses()->pluck('id'),
             'sessionsThisMonth' => $sessionsThisMonth,
-            'teachingTimes' => $slots->map(fn ($classSlots) => $this->teachingTime($classSlots)),
+            // class id => [weekday => [periods]], shown as 6 day chips on each card
+            'teachingDays' => $slots->map(fn ($classSlots) => $classSlots->groupBy('weekday')
+                ->map(fn ($daySlots) => $daySlots->pluck('period')->sort()->values()->all())),
+            'atRisk' => SchoolClass::atRiskCounts($classIds),
             'students' => $students,
+            'risks' => app(RiskAnalyzer::class)->forStudents($students->getCollection()->pluck('id')),
             'filters' => $filters,
             'year' => AcademicYear::current(),
         ]);
-    }
-
-    /** "Mon–Sat · P1" or "Mon, Thu · P2; Wed · P4" */
-    private function teachingTime(Collection $slots): string
-    {
-        $days = [1 => __('Mon'), 2 => __('Tue'), 3 => __('Wed'), 4 => __('Thu'), 5 => __('Fri'), 6 => __('Sat')];
-
-        return $slots->groupBy('period')->sortKeys()->map(function ($periodSlots, $period) use ($days) {
-            $weekdays = $periodSlots->pluck('weekday')->unique()->sort()->values();
-            $label = $weekdays->count() === 6
-                ? $days[1].'–'.$days[6]
-                : $weekdays->map(fn ($d) => $days[$d])->join(', ');
-
-            return "{$label} · P{$period}";
-        })->join('; ');
     }
 }

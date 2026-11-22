@@ -77,7 +77,7 @@
     </div>
 
     {{-- Audit log --}}
-    <div class="card bg-base-100 border-base-300 border">
+    <div class="card bg-base-100 border-base-300 border scroll-mt-4" data-list>
         <div class="card-body">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <h3 class="card-title text-base">{{ __('Audit log') }}</h3>

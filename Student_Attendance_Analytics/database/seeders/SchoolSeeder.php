@@ -50,7 +50,7 @@ class SchoolSeeder extends Seeder
 
         // ---------- Academic year ----------
         $year = AcademicYear::create([
-            'name' => '2025-2026', 'start_date' => '2025-11-03', 'end_date' => '2026-08-28', 'is_current' => true,
+            'name' => '2026-2027', 'start_date' => '2026-09-01', 'end_date' => '2027-07-31', 'is_current' => true,
         ]);
 
         // ---------- Subjects ----------
