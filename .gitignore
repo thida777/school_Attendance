@@ -1,2 +1,6 @@
 # Database backups (contain password hashes): keep them on this computer / USB only
 backups/
+
+# Built app files (shared by Telegram/Drive, not in git)
+release/
+*.apk
