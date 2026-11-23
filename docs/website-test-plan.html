@@ -51,9 +51,9 @@
   </div>
   <table class="meta">
     <tr><td>Project</td><td>Student Attendance Analytics System for a high school in Cambodia</td></tr>
-    <tr><td>Part tested</td><td>Laravel website, version of 17 November 2026 (Day 3 + interface update), and API v1</td></tr>
+    <tr><td>Part tested</td><td>Laravel website and API v1, version of 23 November 2026 (Days 3–6: school data, attendance, analytics, follow-ups, reports, parent messages, forgot password), the online site <b>https://demohs-attendance.alwaysdata.net</b> and the Android app v1.1 (installation and main flow)</td></tr>
     <tr><td>Roles</td><td>Admin and Teacher (parents receive messages only; students do not log in)</td></tr>
-    <tr><td>Number of test cases</td><td>99 manual test cases in 14 groups, plus 82 automatic tests</td></tr>
+    <tr><td>Number of test cases</td><td>152 manual test cases in 21 groups, plus 126 automatic tests</td></tr>
     <tr><td>Tester</td><td>______________________________________</td></tr>
     <tr><td>Test date</td><td>______________________________________</td></tr>
   </table>
@@ -74,17 +74,22 @@
       <li>My Classes (teacher), Profile with profile photo</li>
       <li>Interface: calendar date picker, modern dropdowns, page numbers without reload</li>
       <li>API v1 for the Android app</li>
+      <li>Dashboards (admin, teacher), Insights, At-Risk Students, Student details</li>
+      <li>Interventions (follow-ups with before / after rate), Reports (Excel and printable PDF), Teacher details</li>
+      <li>Parent messages by Telegram (automatic absence alerts and messages written by staff)</li>
+      <li>Forgot password by Telegram code, Khmer form errors</li>
+      <li>The online site and installing the Android app (APK)</li>
     </ul>
   </div>
   <div>
-    <h3>Not tested yet (planned for Day 5–6)</h3>
+    <h3>Not in this plan</h3>
     <ul>
-      <li>Dashboard charts, Insights, At-Risk Students, Interventions, Reports</li>
-      <li>Student details and Teacher details pages</li>
-      <li>Alerts and Telegram / SMS messages to parents</li>
-      <li>Forgot password, Excel import</li>
+      <li>Every screen of the Android app in detail (group U checks installation and the main flow only)</li>
+      <li>Real SMS: the school has no SMS provider yet, so SMS messages are saved as a demo and marked "Demo (not sent)"</li>
+      <li>Importing students from Excel (not built)</li>
+      <li>Load testing with many users at once</li>
     </ul>
-    <p class="small">These pages show "Coming soon". Opening them must not give an error (test A-09).</p>
+    <p class="small">Every page in the menu is finished; none shows "Coming soon" any more (test A-09).</p>
   </div>
 </div>
 
@@ -99,9 +104,11 @@
   <li>Build the styles and scripts once: <code>npm run build</code></li>
   <li>Start the server: <code>php artisan serve</code> and open <b>http://127.0.0.1:8000</b> in Chrome.</li>
 </ol>
+<div class="note"><b>Or test the online site</b> (no setup): <b>https://demohs-attendance.alwaysdata.net</b>. It has its own copy of the data, so changes made online do not appear on the computer, and the other way round. The online password is given by the project team; it is not written here because the site is public.</div>
+<div class="note"><b>Telegram (groups S and T).</b> Parent messages and password codes are really sent only when <code>TELEGRAM_BOT_TOKEN</code> is set in <code>.env</code>. Link your own Telegram first: open the school bot, press Start, run <code>php artisan telegram:chats</code>, and put your chat ID on one parent (Parents → Edit) and on Pen Sovann (Teachers → Edit). Without a token, everything works in demo mode.</div>
 <div class="note warn"><b>Test on a school day (Monday to Saturday).</b> The timetable has no lessons on Sunday, so the Take Attendance tests in group I need a weekday. Use two browsers (or one normal and one private window) so you can be logged in as admin and as a teacher at the same time.</div>
 
-<h3>2.2 Test accounts (password for all: <code>password</code>)</h3>
+<h3>2.2 Test accounts (password for all after <code>migrate:fresh --seed</code>: <code>password</code>)</h3>
 <table>
   <thead><tr><th>Name</th><th>Role</th><th>Log in with</th><th>Teaches</th><th>Homeroom</th></tr></thead>
   <tbody>
@@ -115,25 +122,34 @@
   </tbody>
 </table>
 <h3>2.3 Demo data</h3>
-<p>Academic year 2025–2026 · 6 classes (10A–12B) · 8 subjects · 42 students (7 per class, codes <code>S-10A-001</code> to <code>S-12B-007</code>, e.g. <code>S-10A-001 Sok Dara</code>) · 1 parent per student (6 parents have no Telegram, so they get SMS) · a weekly timetable, Monday to Saturday, 5 periods a day.</p>
+<p>Academic year 2026–2027 (1 September 2026 to 31 July 2027) · 6 classes (10A–12B) · 8 subjects · 42 students (7 per class, codes <code>S-10A-001</code> to <code>S-12B-007</code>, e.g. <code>S-10A-001 Sok Dara</code>) · 1 parent per student (6 parents have no Telegram, so they get SMS) · a weekly timetable, Monday to Saturday, 5 periods a day · demo attendance for every lesson from 1 September until yesterday (today is left empty, so you can take it) · 7 demo follow-ups. The demo data contains at-risk students on purpose, e.g. <b>Chea Rithy (10A, Critical)</b>.</p>
 
 <!-- ======================= 3. Automatic tests ======================= -->
 <h2>3. Automatic tests</h2>
-<p>The project contains 82 automatic tests (PHPUnit). They create their own temporary database, so they never change your real data. Run:</p>
+<p>The project contains 126 automatic tests (PHPUnit) in 16 files. They create their own temporary database, so they never change your real data. Run:</p>
 <pre>php artisan test</pre>
 <table>
   <thead><tr><th>Test file</th><th>What it checks</th><th>Tests</th></tr></thead>
   <tbody>
-    <tr><td>LoginAndRolesTest</td><td>Login by email or phone, wrong password, 5-try limit, roles, Khmer switch, database rules</td><td>13</td></tr>
+    <tr><td>LoginAndRolesTest</td><td>Login by email or phone, wrong password, 5-try limit, roles, Khmer switch, database rules</td><td>12</td></tr>
     <tr><td>StudentManagementTest</td><td>Search, add, shared parent, form errors, edit, delete rules</td><td>8</td></tr>
     <tr><td>SchoolDataTest</td><td>Classes, Subjects, Teachers, Parents, Teaching Assignments and their rules</td><td>18</td></tr>
     <tr><td>TakeAttendanceTest</td><td>Today's lessons, marking, reasons, 24-hour rule, past and future dates</td><td>13</td></tr>
     <tr><td>CorrectionsTest</td><td>History, direct changes, requests, approve, reject, audit log</td><td>9</td></tr>
     <tr><td>ApiTest</td><td>Every API address used by the Android app</td><td>10</td></tr>
     <tr><td>ProfileAndMyClassesTest</td><td>My Classes, profile details, password change, profile photo (web and API)</td><td>11</td></tr>
+    <tr><td>RiskAnalyzerTest</td><td>Risk rules: rate, days absent in a row, 4-week trend, absences with no reason</td><td>9</td></tr>
+    <tr><td>AtRiskPagesTest</td><td>At-Risk list, filters, Excel export, Student details</td><td>5</td></tr>
+    <tr><td>InsightsAndDashboardsTest</td><td>Insights findings, drill-down, heat map, admin and teacher dashboards</td><td>5</td></tr>
+    <tr><td>InterventionsTest</td><td>Rate before / after (10 school days), measure and close, filters, form rules</td><td>7</td></tr>
+    <tr><td>ReportsAndTeacherDetailsTest</td><td>Report numbers, date checks, Excel rows and reasons, printable PDF, Teacher details</td><td>5</td></tr>
+    <tr><td>ParentMessagesTest</td><td>3-days-in-a-row alert (once per streak), demo mode, real Telegram, failure and resend, Message parent</td><td>5</td></tr>
+    <tr><td>ForgotPasswordTest</td><td>Telegram code, wrong / old code, 5-try limit, same answer for every account, API, Teachers field</td><td>5</td></tr>
+    <tr><td>KhmerValidationTest</td><td>Form errors in Khmer on the website and in the API; English stays English</td><td>3</td></tr>
+    <tr><td>ExampleTest</td><td>The home address answers</td><td>1</td></tr>
   </tbody>
 </table>
-<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 82 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
+<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 126 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
 
 <!-- ======================= 4. Test cases ======================= -->
 <h2 class="page-break">4. Manual test cases</h2>
@@ -149,7 +165,7 @@
 <tr><td>A-06</td><td>Teacher cannot open admin pages</td><td>As Pen Sovann, type <code>/students</code>, then <code>/teachers</code>, then <code>/attendance/corrections</code> in the address bar.</td><td>Each shows the 403 "no permission" page. No data is shown.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>A-07</td><td>Admin cannot open teacher-only page</td><td>As admin, open <code>/my-classes</code>.</td><td>403 page.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>A-08</td><td>Logout</td><td>Click the user name (top right) → Log out. Then press the browser Back button and reload the page (F5).</td><td>The login page opens. After the reload, the private page is not shown again: the login page is asked for.</td><td>☐ Pass<br>☐ Fail</td></tr>
-<tr><td>A-09</td><td>Unfinished pages are safe</td><td>As admin, click Insights, At-Risk Students, Interventions and Reports in the sidebar.</td><td>Each shows a friendly "Coming soon" page, not an error.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>A-09</td><td>Every menu page opens</td><td>As admin, click every item in the sidebar, from Dashboard to Profile (including Insights, At-Risk Students, Interventions, Parent Messages and Reports).</td><td>Each page opens with real data. No error page and no "Coming soon" page.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>B. Language and theme</h3>
@@ -299,6 +315,90 @@ Only use it on test data.</div>
 <tr><td>N-07</td><td>Profile photo in the app</td><td>Log in again (N-01). Run <code>curl.exe -X POST http://127.0.0.1:8000/api/v1/me/photo -H "Accept: application/json" -H "Authorization: Bearer TOKEN" -F "photo=@C:\photo.jpg"</code>, then the same address with <code>-X DELETE</code> and without <code>-F</code>.</td><td>The upload returns the user with <code>photo_url</code> (…/storage/avatars/…). The delete returns <code>photo_url: null</code> and <code>initials</code> "PS".</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
+<h3>O. Dashboards and Insights</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>O-01</td><td>Admin dashboard</td><td>Log in as admin. Look at the Dashboard.</td><td>Greeting with "Academic year 2026-2027". Four cards: Attendance this month (% with ▲/▼ compared with the 4 weeks before), High or Critical risk ("x critical · y high"), Absent 3+ days in a row, Not recorded today. One headline finding with "See insights".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>O-02</td><td>Charts and theme</td><td>Scroll down to the charts. Switch to dark mode, then back.</td><td>Four charts (week-by-week trend, today by status, rate by class, absences by weekday). In dark mode they redraw with readable colours; class bars are green 90%+, orange 80–89%, red under 80%.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>O-03</td><td>Who needs attention</td><td>In "Students who need attention", click a student name.</td><td>The list starts with Critical, then High, lowest rate first. The name opens that Student details page.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>O-04</td><td>Teacher dashboard</td><td>Log in as Pen Sovann (012 345 678).</td><td>"My Dashboard" with today's schedule (his lessons only), "Students to watch" from his own classes only, and 2 charts of his lessons.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>O-05</td><td>Insights findings</td><td>As admin, open Insights.</td><td>"What the data shows this month" with short findings (e.g. a grade that declined, the lowest day and period). A heat map day × period: cells 5+ points below the school average are darker red.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>O-06</td><td>Drill-down</td><td>Click a grade card, then a class card.</td><td>Grade → its classes with rate and trend. Class → rate by subject and "Students to watch". Breadcrumb back to the whole school.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>O-07</td><td>Teachers cannot open analytics</td><td>As Pen Sovann, type the address /insights.</td><td>A friendly "No permission" page (403), not the Insights page.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>P. At-Risk Students and Student details</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>P-01</td><td>Risk levels</td><td>As admin, open At-Risk Students.</td><td>Four cards: Critical, High, Medium, Low with counts. The priority list shows Critical first (e.g. Chea Rithy, 10A), with rate, trend ▲/▼, days in a row and pattern (e.g. Mon · P1).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-02</td><td>Filters</td><td>Click the High card; then choose class 11B.</td><td>Only High students; then only High students of 11B. Click the card again to remove the level filter.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-03</td><td>The rules are shown</td><td>Scroll to "How the risk level is decided".</td><td>The four rules (Critical under 70% or 5+ days in a row, High 70–79% or 3–4 days or −10 points, Medium 80–89% or −5 points or 3+ days with no reason, Low).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-04</td><td>Excel export</td><td>Click "Export list" and open the file in Excel.</td><td>One row per listed student, Khmer names readable (not ???), risk, suggested action, rate, trend, parent phone.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-05</td><td>Student details</td><td>Click Chea Rithy.</td><td>Profile with parent and phone, a coloured box with the risk and the reason in one sentence, an 8-week chart, absences by weekday, reasons, follow-ups and recent records.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-06</td><td>Edit from the details page</td><td>Click Edit, change nothing, Save.</td><td>The same student form as on the Students page, already filled in; "Student saved."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-07</td><td>Teachers cannot open it</td><td>As Pen Sovann, type /at-risk.</td><td>"No permission" page (403).</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>Q. Interventions (follow-ups)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>Q-01</td><td>Follow up from At-Risk</td><td>On At-Risk Students, click "Follow up" next to a student.</td><td>Interventions opens with the "Add follow-up" form already open, the student chosen, a coloured dot and "High · 7x%" next to the name, and the suggested action under it.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-02</td><td>Save a follow-up</td><td>Choose "Meeting with parent", keep the dates (today, follow-up in 2 weeks, not a Sunday), write a note, Save.</td><td>"Follow-up saved…". The new row shows "Before" already filled in by the system (rate in the last 10 school days), "… " for After, status Open.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-03</td><td>Date rules</td><td>Add again with the action date tomorrow, and the follow-up date before the action date.</td><td>Red errors under both dates; nothing saved. In Khmer: "ថ្ងៃធ្វើសកម្មភាព មិនអាចក្រោយ ថ្ងៃនេះ បានទេ។"</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-04</td><td>Due follow-ups</td><td>Look at the cards and the list.</td><td>Rows whose follow-up date has come show a red "Follow-up due" badge and a filled "Measure" button; they are listed first. The cards count Open, Follow-up due, Improved after action (x / y) and Average change.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-05</td><td>Measure and close</td><td>Click "Measure" on a due row, write what happened, click "Measure and close".</td><td>"Result measured: a% → b% (±c)". The row is Closed with Improved (+5 or more), No clear change, or Declined (−5 or less).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-06</td><td>Too early to measure</td><td>Click "Measure" on the follow-up from Q-02 (made today).</td><td>Red message: "No attendance has been recorded since the action yet, so there is nothing to measure." The row stays Open.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-07</td><td>Filters</td><td>Use the status filter (Open, Follow-up due, Closed), the result filter and the search box.</td><td>The list and "Showing x–y of z" follow the filters; "Clear" resets them.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>Q-08</td><td>History and delete</td><td>Open the student of Q-02 (Student details), then delete the test follow-up on Interventions.</td><td>Student details shows the follow-up in the Interventions timeline with the same labels. Delete asks first, then removes the row.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>R. Reports and Teacher details</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>R-01</td><td>Report of this month</td><td>As admin, open Reports.</td><td>From = the 1st of this month, To = today. Four cards (average rate with change, lessons recorded of the timetable, total absences, absent rate with the worst day and period), two charts and "Summary by class" with a "Whole school" row.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-02</td><td>Filters</td><td>Choose class 10A and subject Mathematics. Then choose a period with no lessons (e.g. in August).</td><td>All numbers change to 10A Mathematics. The empty period shows "No attendance was recorded in this period."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-03</td><td>Date check</td><td>Set From later than To.</td><td>A red error; the report is not shown.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-04</td><td>Daily / Weekly / Monthly</td><td>Click the three tabs above the trend chart.</td><td>The chart redraws for each grouping without reloading the page.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-05</td><td>Excel</td><td>Click Excel and open the file.</td><td>Two title lines, then one row per student: lessons, present, absent, rate, absences by reason (sick, family, school activity, other, no reason) and today's risk. Khmer names readable.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-06</td><td>Printable PDF</td><td>Click "Export PDF". In the print window choose "Save as PDF". Repeat in Khmer.</td><td>A clean A4 report (school name, period, numbers, tables, at-risk list, "Prepared by" and "Approved by the school principal"). Khmer letters are correct in the PDF.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-07</td><td>Teacher details</td><td>Teachers → click Hak Chanthou.</td><td>Profile (phone, email, last login, homeroom class), Classes, Lessons this week (e.g. 24/24), attendance rate in this teacher's lessons, assignments with lessons recorded / planned, and the 10 latest lessons.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>R-08</td><td>Teacher Telegram</td><td>Teachers → Edit Pen Sovann → Telegram chat ID "abc" → Save; then a number → Save.</td><td>"abc" gives a red error. A number is saved.</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>S. Parent messages (Telegram)</h3>
+<div class="note">Needs a bot token and a parent linked to your own Telegram for S-02 to S-05 (see 2.1). Without a token the same steps work, but messages are marked "Demo (not sent)".</div>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>S-01</td><td>Mode is clear</td><td>As admin, open Parent Messages.</td><td>With a token: green "Telegram is connected…". Without: orange "Demo mode: messages are written and saved here, but not really sent…". Four cards and the message list.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-02</td><td>Message parent</td><td>Open the student whose parent is linked to your Telegram → "Message parent". Read the text, then Send.</td><td>The text starts in Khmer, then English, with this month's rate and the homeroom teacher's Khmer name and phone. "Message delivered by Telegram." Your phone receives the same text.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-03</td><td>Message + follow-up</td><td>Do S-02 again with "Also add a follow-up" ticked.</td><td>Interventions has a new row "Parent message (Telegram)" with the follow-up date in 2 weeks and the Before rate filled in.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-04</td><td>Automatic alert</td><td>On a school day, take attendance for a student who was absent the 2 previous school days and mark them absent. Then mark them absent in a second lesson the same day.</td><td>Parent Messages shows one "Absence alert" sent by "System" ("… absent 3 school days in a row"). The second lesson does not send another one.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-05</td><td>Failed and Resend</td><td>Put a wrong chat ID (e.g. 123) on a parent, message them, then put the right ID back and click Resend.</td><td>First: red "Failed" with Telegram's reason. After Resend: "Delivered". The teacher's attendance is never blocked by a message problem.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-06</td><td>Filters and log</td><td>Filter by Delivered, Demo, Failed; by type; search a name. Click a message.</td><td>The list follows the filters. The full text opens under the line.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-07</td><td>Teachers cannot open it</td><td>As Pen Sovann, type /messages.</td><td>"No permission" page (403).</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>T. Forgot password and Khmer form errors</h3>
+<div class="note">T-05 really changes Pen Sovann's password. Afterwards set it back (repeat T-02 to T-05, or admin: Teachers → Edit → Password).</div>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>T-01</td><td>Link on the login page</td><td>Log out. Click "Forgot password?" under the password.</td><td>The "Forgot password" page with one box (email or phone) and "Send code by Telegram".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-02</td><td>Code by Telegram</td><td>Type 012 345 678 → Send code by Telegram.</td><td>Next page: "If this account is linked to Telegram, a 6-digit code was sent. It works for 10 minutes." Your Telegram receives the code in Khmer and English.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-03</td><td>Same answer for every number</td><td>Start again with 099 999 999 (no such account).</td><td>Exactly the same next page; no message is sent. Nobody can find out which numbers have accounts.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-04</td><td>Wrong code</td><td>Type 000000 and a new password twice → Save.</td><td>Red: "The code is wrong or has expired. Ask for a new code." The password does not change.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-05</td><td>Right code</td><td>Type the code from Telegram and a new password (8+ characters) twice → Save. Log in with the old, then the new password.</td><td>Login page with green "Your password was changed…". The old password fails; the new one works. If the app was logged in with this account, it is signed out.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-06</td><td>Try limit</td><td>Ask for a code, then type a wrong code 5 times, then the right one.</td><td>"Too many attempts. Try again in … seconds." Even the right code is refused until the wait is over.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-07</td><td>Khmer errors (website)</td><td>Switch to ខ្មែរ. Students → Add student → Save with everything empty.</td><td>Every error is in Khmer, e.g. "សូមបញ្ចូល ឈ្មោះ (ខ្មែរ)។". Switch back to English: "The Name (Khmer) field is required."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>T-08</td><td>Khmer errors (app)</td><td>In the app, switch to ខ្មែរ and press Sign In with empty boxes, or run N-05.</td><td>The message is in Khmer, e.g. "សូមបញ្ចូល លេខទូរស័ព្ទ ឬអ៊ីមែល។".</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
+<h3>U. Online site and Android app</h3>
+<div class="note">Use a real Android phone (Android 7 or newer) with internet. iPhone users test the website only.</div>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>U-01</td><td>Online site</td><td>Open https://demohs-attendance.alwaysdata.net on a computer and on a phone browser.</td><td>Padlock (HTTPS). The login page looks like the computer version and fits the phone screen.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-02</td><td>Speed and time</td><td>Log in, open Dashboard, At-Risk, Reports.</td><td>Each page opens in about 1–3 seconds. Today's date is the Cambodia date.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-03</td><td>Install the APK</td><td>Send AttendanceApp-v1.1.apk to the phone (e.g. Telegram), tap it, allow "Install unknown apps", Install.</td><td>The app "Attendance" is installed and opens on the login screen.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-04</td><td>App login</td><td>Log in as a teacher (phone number + online password).</td><td>"Welcome back" with today's date and the same lessons as the website's Take Attendance page for that teacher.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-05</td><td>Same data everywhere</td><td>Mark a lesson in the app. On the website, open Attendance Monitoring.</td><td>The same records appear on the website within seconds.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-06</td><td>Language and theme</td><td>In the app, switch to ខ្មែរ and to dark mode.</td><td>All screens change language and colours at once.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-07</td><td>Forgot password in the app</td><td>Log out → "Forgot password?" → phone number → Send code.</td><td>Step 2 appears (code + new password). The code arrives on the linked Telegram. (Finish only if you will set the password back.)</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-08</td><td>Update without uninstalling</td><td>With v1.0 installed, install v1.1.</td><td>"Update" instead of "Install"; the app keeps working (same signature).</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
 <!-- ======================= 5. Bugs and summary ======================= -->
 <h2 class="page-break">5. Bug report</h2>
 <p class="small">Write one line for each failed test. Severity: High = data wrong or lost, page cannot be used · Medium = feature wrong but a way around exists · Low = text, layout or translation.</p>
@@ -322,7 +422,7 @@ Only use it on test data.</div>
 <table class="fill">
   <thead><tr><th>Group</th><th style="width:20mm">Cases</th><th style="width:20mm">Passed</th><th style="width:20mm">Failed</th></tr></thead>
   <tbody>
-    <tr><td>3. Automatic tests</td><td>82</td><td></td><td></td></tr>
+    <tr><td>3. Automatic tests</td><td>126</td><td></td><td></td></tr>
     <tr><td>A. Login, logout and roles</td><td>9</td><td></td><td></td></tr>
     <tr><td>B. Language and theme</td><td>4</td><td></td><td></td></tr>
     <tr><td>C. Students</td><td>10</td><td></td><td></td></tr>
@@ -337,7 +437,14 @@ Only use it on test data.</div>
     <tr><td>L. My Classes</td><td>4</td><td></td><td></td></tr>
     <tr><td>M. Profile</td><td>9</td><td></td><td></td></tr>
     <tr><td>N. API</td><td>7</td><td></td><td></td></tr>
-    <tr><th>Total manual</th><th>99</th><th></th><th></th></tr>
+    <tr><td>O. Dashboards and Insights</td><td>7</td><td></td><td></td></tr>
+    <tr><td>P. At-Risk and Student details</td><td>7</td><td></td><td></td></tr>
+    <tr><td>Q. Interventions</td><td>8</td><td></td><td></td></tr>
+    <tr><td>R. Reports and Teacher details</td><td>8</td><td></td><td></td></tr>
+    <tr><td>S. Parent messages</td><td>7</td><td></td><td></td></tr>
+    <tr><td>T. Forgot password and Khmer errors</td><td>8</td><td></td><td></td></tr>
+    <tr><td>U. Online site and Android app</td><td>8</td><td></td><td></td></tr>
+    <tr><th>Total manual</th><th>152</th><th></th><th></th></tr>
   </tbody>
 </table>
 <table class="meta" style="margin-top:8mm">

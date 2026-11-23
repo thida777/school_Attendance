@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v3 · Student Attendance Analytics System</title>
+<title>ERD v4 · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -78,6 +78,7 @@ erDiagram
     string email UK "nullable"
     string phone UK "nullable"
     string photo_path "nullable, profile photo"
+    string telegram_chat_id "nullable, reset code"
     string password
     enum role "admin, teacher"
     string locale "en or km"
@@ -85,7 +86,7 @@ erDiagram
   }
   academic_years {
     bigint id PK
-    string name UK "2025-2026"
+    string name UK "2026-2027"
     date start_date
     date end_date
     boolean is_current
@@ -182,6 +183,7 @@ erDiagram
     date follow_up_date
     decimal rate_before
     decimal rate_after
+    text outcome "nullable"
     enum status "open, closed"
   }
   parent_messages {
@@ -189,10 +191,11 @@ erDiagram
     bigint guardian_id FK
     bigint student_id FK
     bigint sent_by FK "users.id, nullable"
-    enum type "absence_alert, monthly_report"
+    string type "absence_alert, manual"
     enum channel "telegram, sms"
     text body
     enum status "pending, sent, failed"
+    boolean simulated "demo, not delivered"
     timestamp sent_at
   }
   alerts {
@@ -263,7 +266,7 @@ erDiagram
   timetable_slots |o--o{ alerts : "not recorded"
   users ||--o{ personal_access_tokens : "app login tokens"
   users |o--o{ sessions : "web login"
-  users ||..o| password_reset_tokens : "by email"
+  users ||..o| password_reset_tokens : "reset code"
 
   users {
     bigint id PK
@@ -378,6 +381,7 @@ erDiagram
         <tr><td>email</td><td>varchar</td><td>Unique, optional</td></tr>
         <tr><td>phone</td><td>varchar</td><td>Unique, optional; can be used to log in</td></tr>
         <tr><td>photo_path</td><td>varchar</td><td>Optional profile photo (file in storage/app/public/avatars); empty = show the initials</td></tr>
+        <tr><td>telegram_chat_id</td><td>varchar</td><td>Optional; the school bot sends the "Forgot password?" code here</td></tr>
         <tr><td>password</td><td>varchar</td><td>Hashed (bcrypt), never plain text</td></tr>
         <tr><td>role</td><td>enum</td><td>admin or teacher</td></tr>
         <tr><td>locale</td><td>varchar</td><td>Preferred language: en or km</td></tr>
@@ -393,7 +397,7 @@ erDiagram
         <caption>academic_years</caption>
         <tr><th>Column</th><th>Type</th><th>Description</th></tr>
         <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
-        <tr><td>name</td><td>varchar</td><td>Unique, e.g. 2025-2026</td></tr>
+        <tr><td>name</td><td>varchar</td><td>Unique, e.g. 2026-2027</td></tr>
         <tr><td>start_date</td><td>date</td><td>First school day</td></tr>
         <tr><td>end_date</td><td>date</td><td>Last school day</td></tr>
         <tr><td>is_current</td><td>boolean</td><td>Only one year is current</td></tr>
@@ -562,11 +566,12 @@ erDiagram
         <tr><td class="k">id</td><td>bigint</td><td>Primary key</td></tr>
         <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id</td></tr>
         <tr><td class="k">created_by</td><td>bigint</td><td>FK → users.id</td></tr>
-        <tr><td>action</td><td>varchar</td><td>e.g. Parent message (Telegram), meeting with parent</td></tr>
+        <tr><td>action</td><td>varchar</td><td>phone_call, telegram, sms, meeting, home_visit, talk, counselling, other</td></tr>
         <tr><td>notes</td><td>text</td><td>Optional</td></tr>
         <tr><td>action_date</td><td>date</td><td>When the action was taken</td></tr>
         <tr><td>follow_up_date</td><td>date</td><td>When to check again</td></tr>
-        <tr><td>rate_before / rate_after</td><td>decimal</td><td>Attendance rate before, and when closed</td></tr>
+        <tr><td>rate_before / rate_after</td><td>decimal</td><td>Rate in the 10 school days before the action, and in the 10 after (worked out by the system)</td></tr>
+        <tr><td>outcome</td><td>text</td><td>Optional; what happened, written when the follow-up is closed</td></tr>
         <tr><td>status</td><td>enum</td><td>open or closed</td></tr>
         <tr><td>closed_at</td><td>timestamp</td><td>When it was closed</td></tr>
       </table>
@@ -581,10 +586,11 @@ erDiagram
         <tr><td class="k">guardian_id</td><td>bigint</td><td>FK → guardians.id</td></tr>
         <tr><td class="k">student_id</td><td>bigint</td><td>FK → students.id</td></tr>
         <tr><td class="k">sent_by</td><td>bigint</td><td>FK → users.id; empty = sent by the system</td></tr>
-        <tr><td>type</td><td>enum</td><td>absence_alert or monthly_report</td></tr>
+        <tr><td>type</td><td>varchar</td><td>absence_alert (automatic: 3 school days absent in a row) or manual (written by staff)</td></tr>
         <tr><td>channel</td><td>enum</td><td>telegram or sms</td></tr>
         <tr><td>body</td><td>text</td><td>Message text, Khmer then English</td></tr>
         <tr><td>status</td><td>enum</td><td>pending, sent, failed</td></tr>
+        <tr><td>simulated</td><td>boolean</td><td>Yes = saved only (demo mode or SMS), not really delivered</td></tr>
         <tr><td>error</td><td>varchar</td><td>Why sending failed</td></tr>
         <tr><td>sent_at</td><td>timestamp</td><td>When it was delivered</td></tr>
       </table>
@@ -655,11 +661,11 @@ erDiagram
       <table>
         <caption>password_reset_tokens</caption>
         <tr><th>Column</th><th>Type</th><th>Description</th></tr>
-        <tr><td class="k">email</td><td>varchar</td><td>Primary key, the user's email</td></tr>
-        <tr><td>token</td><td>varchar</td><td>Hashed reset code</td></tr>
-        <tr><td>created_at</td><td>timestamp</td><td>When the code was made</td></tr>
+        <tr><td class="k">email</td><td>varchar</td><td>Primary key; holds "user:{id}" (some teachers have no email)</td></tr>
+        <tr><td>token</td><td>varchar</td><td>The 6-digit code sent by Telegram, hashed (never stored as plain text)</td></tr>
+        <tr><td>created_at</td><td>timestamp</td><td>When the code was made; it works for 10 minutes</td></tr>
       </table>
-      <p>Used only for "Forgot password".</p>
+      <p>Used only for "Forgot password?" (website and app): one row per user, deleted when the password is changed.</p>
     </div>
 
     <div class="tbl">
