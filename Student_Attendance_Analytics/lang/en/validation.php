@@ -1,0 +1,57 @@
+<?php
+
+// English field names in form errors (the messages themselves come from Laravel).
+// Keys match lang/km/validation.php.
+
+return [
+
+    'attributes' => [
+        'action' => 'action',
+        'action_date' => 'action date',
+        'body' => 'message',
+        'class' => 'class',
+        'class_id' => 'class',
+        'code' => 'code',
+        'correction_reason' => 'reason for the change',
+        'current_password' => 'current password',
+        'date' => 'date',
+        'date_of_birth' => 'date of birth',
+        'device_name' => 'device name',
+        'email' => 'email',
+        'follow_up_date' => 'follow-up date',
+        'from' => 'start date',
+        'gender' => 'gender',
+        'grade' => 'grade',
+        'guardian_name' => 'parent name',
+        'guardian_phone' => 'parent phone',
+        'guardian_relation' => 'relation',
+        'homeroom_teacher_id' => 'homeroom teacher',
+        'hours_per_week' => 'hours per week',
+        'level' => 'risk level',
+        'login' => 'phone number or email',
+        'name' => 'name',
+        'name_en' => 'name (English)',
+        'name_km' => 'name (Khmer)',
+        'name_latin' => 'name (Latin)',
+        'new_status' => 'new status',
+        'notes' => 'notes',
+        'password' => 'password',
+        'period' => 'period',
+        'phone' => 'phone number',
+        'photo' => 'photo',
+        'reason' => 'reason',
+        'relation' => 'relation',
+        'room' => 'room',
+        'school_class_id' => 'class',
+        'status' => 'status',
+        'student_code' => 'student code',
+        'student_id' => 'student',
+        'subject' => 'subject',
+        'subject_id' => 'subject',
+        'teacher_id' => 'teacher',
+        'telegram_chat_id' => 'Telegram chat ID',
+        'to' => 'end date',
+        'type' => 'type',
+    ],
+
+];

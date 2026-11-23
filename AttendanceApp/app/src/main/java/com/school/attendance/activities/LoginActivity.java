@@ -84,8 +84,11 @@ public class LoginActivity extends AppCompatActivity {
         langKm.setOnClickListener(v -> switchLanguage("km"));
         btnTheme.setOnClickListener(v -> Session.setNightMode(
                 isDarkMode() ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES));
-        findViewById(R.id.txtForgot).setOnClickListener(v -> txtForgotInfo.setVisibility(
-                txtForgotInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE));
+        // Forgot password: a 6-digit code by Telegram (the phone typed here is passed along)
+        findViewById(R.id.txtForgot).setOnClickListener(v -> startActivity(
+                new Intent(this, ForgotPasswordActivity.class)
+                        .putExtra(ForgotPasswordActivity.EXTRA_LOGIN,
+                                edtPhone.getText() == null ? "" : edtPhone.getText().toString())));
 
         btnSignIn.setOnClickListener(v -> signIn());
         edtPassword.setOnEditorActionListener((v, actionId, event) -> {

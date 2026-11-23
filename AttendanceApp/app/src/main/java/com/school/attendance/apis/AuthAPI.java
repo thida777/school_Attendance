@@ -1,6 +1,8 @@
 package com.school.attendance.apis;
 
 import com.school.attendance.models.ApiMessage;
+import com.school.attendance.models.ForgotRequest;
+import com.school.attendance.models.ResetRequest;
 import com.school.attendance.models.LocaleRequest;
 import com.school.attendance.models.LoginRequest;
 import com.school.attendance.models.LoginResponse;
@@ -23,6 +25,14 @@ public interface AuthAPI {
     /** POST /api/v1/login → token + teacher. Admin accounts get 403 (the app is for teachers). */
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest body);
+
+    /** POST /api/v1/password/forgot → the school bot sends a 6-digit code (same answer for every account). */
+    @POST("password/forgot")
+    Call<ApiMessage> forgotPassword(@Body ForgotRequest body);
+
+    /** POST /api/v1/password/reset → new password; all old logins are signed out. */
+    @POST("password/reset")
+    Call<ApiMessage> resetPassword(@Body ResetRequest body);
 
     /** POST /api/v1/logout → logs out this phone only. */
     @POST("logout")

@@ -163,6 +163,7 @@ class TeacherController extends Controller
         $request->merge([
             'phone' => preg_replace('/\D/', '', (string) $request->input('phone')),
             'email' => Str::lower(trim((string) $request->input('email'))) ?: null,
+            'telegram_chat_id' => trim((string) $request->input('telegram_chat_id')) ?: null,
         ]);
 
         return $request->validate([
@@ -170,8 +171,10 @@ class TeacherController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'digits_between:8,12', Rule::unique('users')->ignore($teacher)],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('users')->ignore($teacher)],
+            'telegram_chat_id' => ['nullable', 'regex:/^-?\d{5,20}$/'],
             'password' => [$teacher ? 'nullable' : 'required', Password::min(8)],
         ], [], [
+            'telegram_chat_id' => __('Telegram chat ID'),
             'name_km' => __('Name (Khmer)'),
             'name' => __('Name (Latin)'),
             'phone' => __('Phone'),

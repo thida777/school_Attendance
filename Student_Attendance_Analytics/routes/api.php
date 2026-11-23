@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // 5 tries per minute
 
+    // Forgot password: a code by Telegram, then a new password (same rules as the website)
+    Route::post('/password/forgot', [AuthController::class, 'forgot'])->middleware('throttle:5,1');
+    Route::post('/password/reset', [AuthController::class, 'reset'])->middleware('throttle:10,1');
+
     Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);

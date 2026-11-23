@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\SetLocale;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\PasswordResetter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -103,5 +104,32 @@ class AuthController extends Controller
         $user->tokens()->where('id', '!=', $user->currentAccessToken()->id)->delete();
 
         return response()->json(['message' => __('Password changed.')]);
+    }
+
+    /** Forgot password, step 1: a code by Telegram. The answer is the same for every account. */
+    public function forgot(Request $request, PasswordResetter $resetter): JsonResponse
+    {
+        $data = $request->validate(['login' => ['required', 'string', 'max:255']]);
+        $resetter->sendCode($data['login']);
+
+        return response()->json([
+            'message' => __('If this account is linked to Telegram, a 6-digit code was sent. It works for :minutes minutes.', [
+                'minutes' => PasswordResetter::CODE_MINUTES,
+            ]),
+        ]);
+    }
+
+    /** Forgot password, step 2: code + new password. All old logins are signed out. */
+    public function reset(Request $request, PasswordResetter $resetter): JsonResponse
+    {
+        $data = $request->validate([
+            'login' => ['required', 'string', 'max:255'],
+            'code' => ['required', 'string', 'max:10'],
+            'password' => ['required', 'confirmed', Password::min(8)],
+        ], [], ['code' => __('Code from Telegram'), 'password' => __('New password')]);
+
+        $resetter->reset($data['login'], $data['code'], $data['password']);
+
+        return response()->json(['message' => __('Your password was changed. Log in with the new password.')]);
     }
 }

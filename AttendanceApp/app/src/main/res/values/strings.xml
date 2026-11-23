@@ -202,4 +202,16 @@
     <string name="save_change">Save change</string>
     <string name="send_request">Send request</string>
     <string name="same_status">Choose a different status first.</string>
+
+    <!-- Forgot password -->
+    <string name="forgot_title">Forgot password</string>
+    <string name="forgot_intro">Type your phone number. If your account is linked to Telegram, the school bot sends you a 6-digit code.</string>
+    <string name="send_code">Send code by Telegram</string>
+    <string name="no_telegram">No Telegram? Ask the school admin to set a new password for you.</string>
+    <string name="enter_phone">Please type your phone number.</string>
+    <string name="code_from_telegram">Code from Telegram</string>
+    <string name="save_new_password">Save new password</string>
+    <string name="send_new_code">Send a new code</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="account_label">Account: %1$s</string>
 </resources>

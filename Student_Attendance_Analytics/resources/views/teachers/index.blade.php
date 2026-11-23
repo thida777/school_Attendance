@@ -75,7 +75,7 @@
                                         <button class="btn btn-ghost btn-xs btn-square" aria-label="{{ __('Edit') }}"
                                             data-form-dialog="teacher-form" data-action="{{ route('teachers.update', $teacher) }}" data-method="PUT"
                                             data-title="{{ __('Edit teacher') }}"
-                                            data-values="{{ json_encode($teacher->only(['name_km', 'name', 'phone', 'email'])) }}">
+                                            data-values="{{ json_encode($teacher->only(['name_km', 'name', 'phone', 'email', 'telegram_chat_id'])) }}">
                                             <i data-lucide="pencil" class="size-4"></i>
                                         </button>
                                         <button class="btn btn-ghost btn-xs btn-square" aria-label="{{ __('Delete') }}"
@@ -107,6 +107,8 @@
                 @include('partials.field', ['name' => 'name', 'label' => __('Name (Latin)'), 'placeholder' => 'Pen Sovann'])
                 @include('partials.field', ['name' => 'phone', 'label' => __('Phone'), 'placeholder' => '012 345 678', 'hint' => __('Used to log in.')])
                 @include('partials.field', ['name' => 'email', 'label' => __('Email'), 'type' => 'email', 'placeholder' => 'teacher@school.edu.kh', 'required' => false])
+                @include('partials.field', ['name' => 'telegram_chat_id', 'label' => __('Telegram chat ID'), 'placeholder' => '123456789', 'required' => false, 'span' => true,
+                    'hint' => __('For “Forgot password?”: the school bot sends the reset code here. The teacher opens the bot and presses Start; the admin runs php artisan telegram:chats to see the ID.')])
                 @include('partials.field', ['name' => 'password', 'label' => __('Password'), 'type' => 'password', 'span' => true,
                     'required' => false, 'markOptional' => false,
                     'hint' => __('At least 8 characters. When adding: the first password, the teacher can change it later. When editing: leave empty to keep the old password.')])

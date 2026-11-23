@@ -9,9 +9,6 @@ use App\Models\User;
 use App\Support\Risk;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 /**
  * Sends a message to a student's parents and keeps a copy of every message (parent_messages).
@@ -26,11 +23,11 @@ class ParentMessenger
     /** Absent this many school days in a row → the parents get an automatic message. */
     public const STREAK_DAYS = 3;
 
-    public function __construct(private RiskAnalyzer $analyzer) {}
+    public function __construct(private RiskAnalyzer $analyzer, private Telegram $telegram) {}
 
     public function isLive(): bool
     {
-        return filled(config('services.telegram.token'));
+        return $this->telegram->isLive();
     }
 
     /**
@@ -86,20 +83,10 @@ class ParentMessenger
             return $message;
         }
 
-        try {
-            $response = Http::timeout(8)->asForm()->post(
-                'https://api.telegram.org/bot'.config('services.telegram.token').'/sendMessage',
-                ['chat_id' => $message->guardian->telegram_chat_id, 'text' => $message->body],
-            );
-            if ($response->successful() && $response->json('ok')) {
-                $message->update(['status' => 'sent', 'simulated' => false, 'error' => null, 'sent_at' => now()]);
-            } else {
-                $message->update(['status' => 'failed', 'error' => mb_substr((string) ($response->json('description') ?? 'HTTP '.$response->status()), 0, 250)]);
-            }
-        } catch (Throwable $e) {
-            Log::warning('Telegram message failed', ['message' => $message->id, 'error' => $e->getMessage()]);
-            $message->update(['status' => 'failed', 'error' => mb_substr(__('No connection to Telegram. Try again later.'), 0, 250)]);
-        }
+        $error = $this->telegram->send($message->guardian->telegram_chat_id, $message->body);
+        $message->update($error === null
+            ? ['status' => 'sent', 'simulated' => false, 'error' => null, 'sent_at' => now()]
+            : ['status' => 'failed', 'error' => $error]);
 
         return $message;
     }

@@ -202,4 +202,16 @@
     <string name="save_change">រក្សាទុកការកែប្រែ</string>
     <string name="send_request">ផ្ញើសំណើ</string>
     <string name="same_status">សូមជ្រើសស្ថានភាពផ្សេងជាមុនសិន។</string>
+
+    <!-- Forgot password -->
+    <string name="forgot_title">ភ្លេចពាក្យសម្ងាត់</string>
+    <string name="forgot_intro">វាយលេខទូរស័ព្ទរបស់អ្នក។ បើគណនីរបស់អ្នកភ្ជាប់ជាមួយ Telegram bot របស់សាលានឹងផ្ញើលេខកូដ ៦ ខ្ទង់ទៅអ្នក។</string>
+    <string name="send_code">ផ្ញើលេខកូដតាម Telegram</string>
+    <string name="no_telegram">គ្មាន Telegram? សូមស្នើអ្នកគ្រប់គ្រងសាលាឲ្យកំណត់ពាក្យសម្ងាត់ថ្មីឲ្យអ្នក។</string>
+    <string name="enter_phone">សូមវាយលេខទូរស័ព្ទរបស់អ្នក។</string>
+    <string name="code_from_telegram">លេខកូដពី Telegram</string>
+    <string name="save_new_password">រក្សាទុកពាក្យសម្ងាត់ថ្មី</string>
+    <string name="send_new_code">ផ្ញើលេខកូដថ្មី</string>
+    <string name="please_wait">សូមរង់ចាំ…</string>
+    <string name="account_label">គណនី៖ %1$s</string>
 </resources>
