@@ -1,0 +1,24 @@
+<section id="quality">
+<div class="head">
+<p class="eyebrow">Testing and security</p>
+<h2>Checked by machine and by hand</h2>
+</div>
+<div class="grid2" style="gap:48px">
+<div class="card rise" style="--i:0">
+<x-icon name="CheckCircle" class="icon"></x-icon>
+<h3>Testing</h3>
+<p><b style="color:#17695F">126 automatic tests</b> (631 checks) run on every change, from the risk rules to the app API.</p>
+<p><b style="color:#17695F">152 manual test cases</b> in 21 groups, in the written test plan.</p>
+<p>Every screen and every form error in Khmer and English.</p>
+</div>
+<div class="card rise" style="--i:1">
+<x-icon name="Lock" class="icon"></x-icon>
+<h3>Security</h3>
+<p>The role is checked on every page and API address; teachers see only their classes.</p>
+<p>Passwords and reset codes are hashed; login and codes have try limits.</p>
+<p>HTTPS online, error details hidden, and an audit log of every change.</p>
+</div>
+</div>
+<p class="pagenum"></p>
+<aside>Quality was checked in two ways. There are 126 automatic PHPUnit tests with 631 checks; they cover the risk rules, the 24-hour rule, the reports, the Telegram messages with a fake server, and every API address the app uses. They all pass. My written test plan has 152 manual test cases in 21 groups, from login to installing the APK. For security: the role is checked on every page and API route, passwords and password reset codes are stored hashed, login and reset codes have try limits, and the forgot password page gives the same answer for every phone number, so nobody can test which accounts exist.</aside>
+</section>

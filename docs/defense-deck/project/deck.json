@@ -1,0 +1,30 @@
+{
+  "v": 5,
+  "createdOnFiles": { "v": 1, "at": "2026-11-23T07:30:00Z" },
+  "lists": "css",
+  "format": { "v": 1, "shared": ["project/deck.css"] },
+  "title": "Student Attendance Analytics System – Thesis Defense",
+  "order": [
+    "cover", "problem", "objectives", "roles", "architecture", "database",
+    "attendance", "risk", "analytics", "interventions", "messages", "app",
+    "reports", "quality", "results", "online", "future", "demo", "thanks"
+  ],
+  "sections": {
+    "intro": { "description": "Why the school needs the system and what it had to do.", "start": "cover" },
+    "design": { "description": "Who uses it and how it is built: roles, architecture, database.", "start": "roles" },
+    "features": { "description": "What it does: attendance, risk, analytics, follow-ups, parents, app, reports.", "start": "attendance" },
+    "evidence": { "description": "Quality, results, deployment and what comes next.", "start": "quality" },
+    "close": { "description": "The live demo and questions.", "start": "demo" }
+  },
+  "faces": {
+    "plus-jakarta-sans": {
+      "family": "Plus Jakarta Sans",
+      "href": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap"
+    },
+    "kantumruy-pro": {
+      "family": "Kantumruy Pro",
+      "href": "https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400..700&display=swap"
+    }
+  },
+  "designSystems": []
+}

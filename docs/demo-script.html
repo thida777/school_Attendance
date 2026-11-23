@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demo Script · Student Attendance Analytics System</title>
+<style>
+  @page { size: A4; margin: 14mm 13mm 16mm; }
+  :root { --ink:#1d2433; --muted:#5d6577; --line:#d9dde5; --soft:#f3f6f8; --teal:#1f877b; --teal-soft:#e4f3f1; --warn:#9a6700; --warn-soft:#fff6dd; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Khmer UI", Arial, sans-serif; color: var(--ink); font-size: 9.8pt; line-height: 1.42; margin: 0; }
+  h1 { font-size: 22pt; margin: 0 0 2mm; color: var(--teal); line-height: 1.15; }
+  h2 { font-size: 14pt; margin: 7mm 0 2.5mm; padding-bottom: 1.5mm; border-bottom: 2px solid var(--teal); break-after: avoid; }
+  h3 { font-size: 11pt; margin: 4mm 0 2mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 2.5mm; padding-left: 5mm; }
+  li { margin-bottom: 1mm; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: var(--soft); padding: 0.2mm 1mm; border-radius: 1mm; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 3mm; }
+  th, td { border: 1px solid var(--line); padding: 1.6mm 2mm; vertical-align: top; text-align: left; }
+  th { background: var(--teal-soft); font-size: 8.6pt; text-transform: uppercase; letter-spacing: .02em; }
+  tr { break-inside: avoid; }
+  .steps td:nth-child(1) { width: 9mm; font-weight: 800; font-size: 13pt; color: var(--teal); text-align: center; }
+  .steps td:nth-child(2) { width: 22mm; font-weight: 600; }
+  .steps td:nth-child(4) { width: 58mm; font-style: italic; color: #2c3a4d; }
+  .note { border-left: 3px solid var(--teal); background: var(--teal-soft); padding: 2mm 3mm; border-radius: 0 2mm 2mm 0; margin: 0 0 3mm; break-inside: avoid; }
+  .warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .box { display: inline-block; width: 3.2mm; height: 3.2mm; border: 1.2px solid var(--ink); border-radius: 0.6mm; margin-right: 1.6mm; vertical-align: -0.4mm; }
+  .check li { list-style: none; margin-left: -5mm; }
+  .small { font-size: 8.6pt; color: var(--muted); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .page-break { break-before: page; }
+  .qa td:first-child { width: 52mm; font-weight: 600; }
+  .header { background: linear-gradient(135deg, #1f877b, #2d6ea8); color: #fff; border-radius: 3mm; padding: 7mm 8mm; margin-bottom: 4mm; }
+  .header h1 { color: #fff; }
+  .header p { margin: 0; opacity: .92; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Live Demo Script</h1>
+  <p>Student Attendance Analytics System · thesis defense · about 10 minutes · slide 18</p>
+</div>
+
+<div class="note"><b>The story in one sentence:</b> a teacher marks a lesson on the phone, the school sees at once that Chea Rithy (10A) is at Critical risk, acts, and the parent receives a Telegram message in Khmer, in front of the committee.</div>
+
+<h2>1. The day before the defense</h2>
+<ul class="check">
+  <li><span class="box"></span><b>Top up the demo data.</b> The demo attendance stops on 21 November 2026. If the defense is later, “this month” and the trends will look empty. Ask Claude to top it up, or run on the server (it adds only missing lessons up to yesterday, and never changes lessons that exist):
+    <br><code>php artisan db:seed --class=DemoAttendanceSeeder --force</code>
+    <br>Run it on the laptop too (WAMP on, in <code>D:\Project\Student_Attendance_Analytics</code>), so the local backup in section 4 shows the same picture.</li>
+  <li><span class="box"></span><b>Check the defense day has a 10A lesson for Pen Sovann:</b> Mon P1, Tue P4, Thu P2, Fri P5, Sat P5. <b>Wednesday has none</b>: then mark his first lesson of the day instead, and skip the “Chea Rithy absent” part in step 1.</li>
+  <li><span class="box"></span><b>Telegram works:</b> on the server, <code>php artisan telegram:chats</code> shows your name. Both Chea Rithy’s parent (Chea Samnang) and Pen Sovann are linked to your Telegram (chat ID 829169853).</li>
+  <li><span class="box"></span><b>Rehearse the whole script twice</b>, with a timer. Each rehearsal adds a follow-up and a message; that is fine and looks realistic.</li>
+  <li><span class="box"></span><b>Fill in the slide placeholders</b> (name, supervisor, date, university, team testing result) and download the deck as PDF and PowerPoint as a backup.</li>
+  <li><span class="box"></span><b>Charge</b> the laptop, the phone and a power bank. Prepare a phone hotspot in case the room Wi-Fi fails.</li>
+</ul>
+
+<h2>2. One hour before</h2>
+<div class="grid2">
+<div>
+<h3>Laptop</h3>
+<ul class="check">
+  <li><span class="box"></span>Open <b>https://demohs-attendance.alwaysdata.net</b> and log in as <b>admin@school.edu.kh</b>. Keep this tab on the Dashboard.</li>
+  <li><span class="box"></span>Open a second tab on <b>At-Risk Students</b>.</li>
+  <li><span class="box"></span>Browser zoom about 125%, so the committee can read it. Language: English, light mode.</li>
+  <li><span class="box"></span>Close everything else: chat apps, notifications, email.</li>
+  <li><span class="box"></span>The slides open on slide 18 in another window.</li>
+</ul>
+</div>
+<div>
+<h3>Phone</h3>
+<ul class="check">
+  <li><span class="box"></span>The <b>Attendance</b> app (v1.1) is installed and logged in as <b>Pen Sovann (012 345 678)</b>, on the Home tab.</li>
+  <li><span class="box"></span><b>Telegram notifications on, sound on</b>, “Do not disturb” off. The bot chat <b>Demo High School Attendance</b> is easy to find.</li>
+  <li><span class="box"></span>Screen brightness high. If there is a document camera or screen mirroring, test it.</li>
+  <li><span class="box"></span>Know the online password by heart (do not show it on the projector).</li>
+</ul>
+</div>
+</div>
+
+<h2 class="page-break">3. The demo, step by step</h2>
+<p class="small">Column “Say” is a suggestion: say it in your own words. Times are a guide; the whole demo is about 10 minutes.</p>
+<table class="steps">
+  <thead><tr><th>#</th><th>Where · time</th><th>Do (click by click)</th><th>Say</th></tr></thead>
+  <tbody>
+  <tr><td>1</td><td>Phone<br>2 min</td>
+    <td>Show the phone. On Home, press <b>Start marking</b> on the 10A lesson. Mark <b>Chea Rithy</b> as Absent (everyone else stays Present). Press <b>Review &amp; submit</b>, choose a reason (e.g. Sick), press <b>Submit</b>.<br><span class="small">Expected: the app confirms the lesson is saved, and Home shows one more class marked. Rehearse this once to know the exact screens.</span></td>
+    <td>“This is the teacher’s daily job. Everyone starts present; I only tap who is absent. It takes about a minute.”</td></tr>
+  <tr><td>2</td><td>Laptop · Dashboard<br>1 min</td>
+    <td>Reload the Dashboard. Point at “Not recorded today” (one fewer) and the cards. Open <b>Attendance Monitoring</b>: the lesson you just marked is at the top.</td>
+    <td>“The same server: the lesson from the phone is already on the website. No copying.”</td></tr>
+  <tr><td>3</td><td>Laptop · At-Risk<br>2 min</td>
+    <td>Open <b>At-Risk Students</b>. Point at the four level cards and at <b>Chea Rithy, Critical</b> at the top. Click his name. On Student details, read the coloured box (the reason in one sentence) and point at the 8-week chart and the weekday pattern.</td>
+    <td>“The system does not just say ‘at risk’; it says why.” (Read the reason and the numbers from the box, e.g. the rate and how many points it fell.) “A teacher can check the rule.”</td></tr>
+  <tr><td>4</td><td>Laptop + phone<br>2 min</td>
+    <td>On Chea Rithy’s page press <b>Message parent</b>. Show the Khmer + English text with this month’s rate. Keep <b>“Also add a follow-up”</b> ticked. Press <b>Send</b>. <b>Hold up the phone: the Telegram message arrives.</b> Then open <b>Interventions</b>: the new follow-up with the “Before” rate filled in.</td>
+    <td>“Parents use Telegram, so the school bot sends it, in Khmer first. And the message is also recorded as a follow-up, so in two weeks the system measures whether attendance improved.”</td></tr>
+  <tr><td>5</td><td>Laptop · Reports<br>1.5 min</td>
+    <td>Open <b>Reports</b>. Choose class 10A to show the numbers change. Click <b>Excel</b> (show the file opens with Khmer names). Click <b>Export PDF</b>: show the A4 report in the print window, then Cancel.</td>
+    <td>“For the principal: any period, class or subject, as Excel or a printable report with signature lines.”</td></tr>
+  <tr><td>6</td><td>Laptop<br>1.5 min</td>
+    <td>Press <b>ខ្មែរ</b> in the top bar: the whole site changes to Khmer. Optional: in a private window, open the login page → <b>Forgot password?</b> → 012 345 678 → the code arrives on Telegram. Do not finish the reset.</td>
+    <td>“Every screen and every error message is in Khmer and English. And a teacher who forgets the password gets a code from the same bot.”</td></tr>
+  </tbody>
+</table>
+<div class="note">End with: “That is the full loop: detect, act, measure, and keep the parents informed.” Then go back to slide 19 for questions.</div>
+
+<h2>4. If something goes wrong</h2>
+<table>
+  <thead><tr><th style="width:52mm">Problem</th><th>What to do</th></tr></thead>
+  <tbody>
+  <tr><td>No internet in the room</td><td>Turn on the phone hotspot and connect the laptop. If that fails too: run the website locally (<code>php artisan serve</code>, then http://127.0.0.1:8000, same password) and show the app and Telegram with slides 11 and 12. Say calmly: “The online version needs internet; here is the same system on my laptop.”</td></tr>
+  <tr><td>The Telegram message does not arrive within 30 seconds</td><td>Open <b>Parent Messages</b>: it shows Delivered, Demo or Failed with the reason; if Failed, press <b>Resend</b>. Then show slide 11, the real message received on 22 November.</td></tr>
+  <tr><td>Defense day has no 10A lesson (Wednesday) or 10A is already marked</td><td>Mark Pen Sovann’s next lesson instead; in step 3, Chea Rithy is still Critical from the earlier data.</td></tr>
+  <tr><td>The app says it cannot connect</td><td>Pull down to refresh. If it still fails, do step 1 on the website: Take Attendance as admin (the same rules).</td></tr>
+  <tr><td>A page is slow</td><td>Free hosting can be slow on the first visit. Open each page once in the hour before, so it is warm. Keep talking while it loads.</td></tr>
+  <tr><td>The projector shows a small screen</td><td>Browser zoom 125–150%. Use the browser’s full screen (F11).</td></tr>
+  </tbody>
+</table>
+
+<h2 class="page-break">5. Questions the committee may ask</h2>
+<table class="qa">
+  <thead><tr><th>Question</th><th>Short answer</th></tr></thead>
+  <tbody>
+  <tr><td>Why simple rules and not machine learning?</td><td>Teachers must be able to check why a student is flagged, and one term of data is too little to train and test a model fairly. The rules are written in one class and covered by tests. After a full year of real data, a model can be compared against the rules.</td></tr>
+  <tr><td>How do you know the thresholds (70%, 80%, 90%) are right?</td><td>They are a reasonable starting point, the same scale everywhere in the system, and easy to change in one place. Real validation needs a pilot term in a school, which is the first item of future work.</td></tr>
+  <tr><td>Is the data real?</td><td>No. It is generated for a model school with a fixed seed, so results can be repeated, and it contains known patterns on purpose. No real student data was used.</td></tr>
+  <tr><td>How is the data kept safe?</td><td>Only two roles can log in, and the role is checked on every page and API address. Passwords and reset codes are stored hashed. Login and codes have try limits. The online site uses HTTPS with error details hidden. Every attendance change is in the audit log.</td></tr>
+  <tr><td>What if there is no internet at the school?</td><td>The website can run on a school computer or local network (it runs the same way on the laptop). Telegram messages need internet: a message that cannot be sent is saved as Failed, with the reason, and staff press Resend when the connection is back.</td></tr>
+  <tr><td>Why Telegram and not SMS?</td><td>Telegram is free, supports Khmer text well and tells the system whether the message was delivered. SMS needs a paid provider; the system already has an SMS channel in demo mode, ready for a gateway.</td></tr>
+  <tr><td>Do parents agree to receive messages?</td><td>Yes: a parent receives Telegram messages only after opening the school bot and pressing Start themselves.</td></tr>
+  <tr><td>What if a teacher forgets to take attendance?</td><td>The dashboard shows “Not recorded today”, Reports show lessons recorded against the timetable, and Teacher details show each teacher’s missing lessons.</td></tr>
+  <tr><td>Why the 24-hour rule?</td><td>A teacher can fix a mistake quickly, but old records cannot change silently: after 24 hours a change needs the admin’s approval, and every change is logged.</td></tr>
+  <tr><td>How was it tested?</td><td>126 automatic tests (631 checks) that all pass, and a written test plan with 152 manual cases in 21 groups.</td></tr>
+  <tr><td>How much would it cost a school?</td><td>The demo runs on a free hosting plan and Telegram bots are free. A real school would need a small paid hosting plan, and SMS would cost per message. [Add a price only if you have checked one.]</td></tr>
+  <tr><td>How would a school start using it?</td><td>The admin enters classes, subjects, teachers, students and parents on the website (Excel import is future work), sets the timetable, and teachers install the app.</td></tr>
+  </tbody>
+</table>
+
+<h2>6. After the defense</h2>
+<ul class="check">
+  <li><span class="box"></span>Thank the committee. Write down every question and suggestion; they are useful for the final report.</li>
+  <li><span class="box"></span>If you changed any password during the demo, set it back (Teachers → Edit).</li>
+  <li><span class="box"></span>Keep the final backup: code (GitHub), both databases, the APK and the signing key.</li>
+</ul>
+
+</body>
+</html>

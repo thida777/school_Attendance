@@ -1,0 +1,29 @@
+<section id="architecture" class="dark">
+<div class="head">
+<p class="eyebrow">Architecture</p>
+<h2>One server, the same rules for the website and the app</h2>
+</div>
+<div class="row" style="gap:24px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:24px; width:400px">
+<div class="box rise" style="--i:0"><h3>Android app</h3><p>Java · XML · Retrofit<br>REST API v1, token login</p></div>
+<div class="box rise" style="--i:1"><h3>Web browser</h3><p>Blade · Tailwind · daisyUI<br>ApexCharts</p></div>
+</div>
+<x-shape kind="arrow-right" class="arrow"></x-shape>
+<div class="box core rise" style="--i:2; width:600px; gap:12px">
+<h3>Laravel 13 · PHP 8.4</h3>
+<p>AttendanceRecorder: attendance rules</p>
+<p>RiskAnalyzer: risk levels</p>
+<p>InterventionTracker: before / after</p>
+<p>ParentMessenger: messages to parents</p>
+<p>PasswordResetter: reset codes</p>
+</div>
+<x-shape kind="arrow-right" class="arrow"></x-shape>
+<div style="display:flex; flex-direction:column; gap:24px; width:400px">
+<div class="box rise" style="--i:3"><h3>MySQL / MariaDB</h3><p>15 project tables<br>UTF-8 for Khmer names</p></div>
+<div class="box rise" style="--i:4"><h3>Telegram Bot API</h3><p>Messages to parents<br>Password reset codes</p></div>
+</div>
+</div>
+<p class="small">Hosted online on alwaysdata (HTTPS) · source code on GitHub · Khmer and English in every screen</p>
+<p class="pagenum"></p>
+<aside>The architecture has one server. Both the website and the Android app talk to the same Laravel application, the app through a REST API with token login. The important design choice: every business rule lives in one service class, so the website and the app can never disagree. For example AttendanceRecorder holds the attendance rules, RiskAnalyzer the risk levels. Data is in MySQL locally and MariaDB online, and Telegram is used for parent messages and password codes.</aside>
+</section>
