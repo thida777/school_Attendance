@@ -13,10 +13,10 @@
                     <p class="grow-0 text-sm opacity-60">{{ __('Type your phone number or email. If your account is linked to Telegram, the school bot sends you a 6-digit code.') }}</p>
 
                     <fieldset class="fieldset mt-2">
-                        <legend class="fieldset-legend">{{ __('Email or phone') }}</legend>
+                        <legend class="fieldset-legend">{{ __('Phone number or email') }}</legend>
                         <label class="input w-full @error('login') input-error @enderror">
                             <i data-lucide="smartphone" class="size-4 opacity-50"></i>
-                            <input type="text" name="login" value="{{ old('login') }}" placeholder="012 345 678" autocomplete="username" required autofocus />
+                            <input type="text" name="login" value="{{ old('login') }}" placeholder="{{ __('e.g. 012 345 678') }}" autocomplete="username" required autofocus />
                         </label>
                         @error('login')<p class="label text-error whitespace-normal">{{ $message }}</p>@enderror
                     </fieldset>

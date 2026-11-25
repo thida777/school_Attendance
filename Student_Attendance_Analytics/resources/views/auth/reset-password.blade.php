@@ -33,7 +33,7 @@
                         <legend class="fieldset-legend">{{ __('New password') }}</legend>
                         <label class="input w-full @error('password') input-error @enderror">
                             <i data-lucide="lock" class="size-4 opacity-50"></i>
-                            <input type="password" name="password" id="password" placeholder="••••••••" autocomplete="new-password" required />
+                            <input type="password" name="password" id="password" placeholder="{{ __('At least 8 characters') }}" autocomplete="new-password" required />
                             <button type="button" class="btn btn-ghost btn-xs btn-square -me-1" data-action="toggle-password" data-target="password" aria-label="{{ __('Show password') }}">
                                 <i data-lucide="eye" class="size-4"></i>
                             </button>
@@ -45,7 +45,7 @@
                         <legend class="fieldset-legend">{{ __('Confirm new password') }}</legend>
                         <label class="input w-full">
                             <i data-lucide="lock" class="size-4 opacity-50"></i>
-                            <input type="password" name="password_confirmation" placeholder="••••••••" autocomplete="new-password" required />
+                            <input type="password" name="password_confirmation" placeholder="{{ __('Type it again') }}" autocomplete="new-password" required />
                         </label>
                     </fieldset>
 

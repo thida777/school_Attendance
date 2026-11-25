@@ -22,10 +22,10 @@
                     @enderror
 
                     <fieldset class="fieldset mt-2">
-                        <legend class="fieldset-legend">{{ __('Email or phone') }}</legend>
+                        <legend class="fieldset-legend">{{ __('Phone number or email') }}</legend>
                         <label class="input w-full @error('login') input-error @enderror">
-                            <i data-lucide="mail" class="size-4 opacity-50"></i>
-                            <input type="text" name="login" id="login" value="{{ old('login') }}" placeholder="admin@school.edu.kh" autocomplete="username" required autofocus />
+                            <i data-lucide="smartphone" class="size-4 opacity-50"></i>
+                            <input type="text" name="login" id="login" value="{{ old('login') }}" placeholder="{{ __('e.g. 012 345 678') }}" autocomplete="username" required autofocus />
                         </label>
                     </fieldset>
 
@@ -33,7 +33,7 @@
                         <legend class="fieldset-legend">{{ __('Password') }}</legend>
                         <label class="input w-full">
                             <i data-lucide="lock" class="size-4 opacity-50"></i>
-                            <input type="password" name="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+                            <input type="password" name="password" id="password" placeholder="{{ __('Enter your password') }}" autocomplete="current-password" required />
                             <button type="button" class="btn btn-ghost btn-xs btn-square -me-1" data-action="toggle-password" data-target="password" aria-label="{{ __('Show password') }}">
                                 <i data-lucide="eye" class="size-4"></i>
                             </button>
