@@ -65,8 +65,15 @@ document.addEventListener('click', (e) => {
     for (const el of form.elements) {
         if (!el.name || RESERVED_FIELDS.includes(el.name)) continue;
         if (el.type === 'checkbox') el.checked = Boolean(values[el.name]);
+        // Choice buttons (e.g. gender): the one with the saved value, or the first one for "Add"
+        else if (el.type === 'radio') el.checked = el.name in values ? String(values[el.name]) === el.value : el.defaultChecked;
+        else if (el.type === 'file') el.value = '';
         else el.value = values[el.name] ?? (el.tagName === 'SELECT' ? el.options[0]?.value ?? '' : '');
+        // Styled dropdowns and other helpers listen for "change" to show the new value
+        if (el.tagName === 'SELECT' || el.type === 'hidden') el.dispatchEvent(new Event('change', { bubbles: true }));
     }
+    // Extra values for the form's own script (e.g. the student photo): keys starting with "_"
+    form.dispatchEvent(new CustomEvent('dialog:fill', { detail: values }));
     // Old error messages belong to the previous attempt
     dialog.querySelectorAll('[data-error]').forEach((m) => m.remove());
     dialog.querySelectorAll('.input-error, .select-error').forEach((f) => f.classList.remove('input-error', 'select-error'));

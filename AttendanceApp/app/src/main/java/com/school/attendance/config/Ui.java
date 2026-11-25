@@ -148,4 +148,31 @@ public final class Ui {
         initials.setVisibility(View.INVISIBLE);
         Glide.with(photo).load(url).circleCrop().into(photo);
     }
+
+    /**
+     * Show a student's photo in a circle over the initials, or only the initials when there is no photo.
+     * grey = true for an absent student: the photo turns grey and pale, like the website.
+     */
+    public static void showStudentPhoto(ImageView photo, TextView initials, com.school.attendance.models.Student student, boolean grey) {
+        initials.setText(student.initials());
+        String url = student.getPhotoUrl();
+        if (url == null || url.isEmpty()) {
+            Glide.with(photo).clear(photo);
+            photo.setVisibility(View.GONE);
+            initials.setVisibility(View.VISIBLE);
+            return;
+        }
+        photo.setVisibility(View.VISIBLE);
+        initials.setVisibility(View.INVISIBLE);
+        Glide.with(photo).load(url).circleCrop().into(photo);
+        if (grey) {
+            android.graphics.ColorMatrix matrix = new android.graphics.ColorMatrix();
+            matrix.setSaturation(0);
+            photo.setColorFilter(new android.graphics.ColorMatrixColorFilter(matrix));
+            photo.setAlpha(0.6f);
+        } else {
+            photo.clearColorFilter();
+            photo.setAlpha(1f);
+        }
+    }
 }

@@ -70,8 +70,13 @@
                                 <tr @class(['opacity-60' => $student->status === 'inactive'])>
                                     <td>{{ $student->student_code }}</td>
                                     <td>
-                                        <a href="{{ route('students.show', $student) }}" class="link link-hover font-medium">{{ $km ? $student->name_km : $student->name_latin }}</a>
-                                        <div class="text-xs opacity-60">{{ $km ? $student->name_latin : $student->name_km }}</div>
+                                        <div class="flex items-center gap-3">
+                                            @include('partials.student-avatar', ['student' => $student, 'size' => 'size-9', 'text' => 'text-xs'])
+                                            <div class="min-w-0">
+                                                <a href="{{ route('students.show', $student) }}" class="link link-hover font-medium">{{ $km ? $student->name_km : $student->name_latin }}</a>
+                                                <div class="text-xs opacity-60">{{ $km ? $student->name_latin : $student->name_km }}</div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>{{ __(ucfirst($student->gender)) }}</td>
                                     <td>{{ $student->schoolClass->name }}</td>

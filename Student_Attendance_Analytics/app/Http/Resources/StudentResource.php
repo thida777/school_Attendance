@@ -25,6 +25,9 @@ class StudentResource extends JsonResource
             'name_km' => $this->name_km,
             'gender' => $this->gender,
             'active' => $this->status === 'active',
+            // Signed link to the photo (works until the end of tomorrow), or null: then the app shows the initials
+            'photo_url' => $this->resource->photoUrl(),
+            'initials' => $this->resource->initials(),
             $this->mergeWhen(isset($this->records_total), fn () => [
                 'attendance_rate' => $rate,
                 // Set by the controller with RiskAnalyzer (full rules); the rate alone is the fallback

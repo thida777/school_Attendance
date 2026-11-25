@@ -91,12 +91,18 @@
         $groups = array_keys($menu);
         $groupIcons = ['Overview' => 'layout-dashboard', 'Attendance' => 'clipboard-check', 'Analytics' => 'chart-column',
             'School data' => 'school', 'My teaching' => 'book-open', 'Account' => 'circle-user'];
-        $currentGroup = 0;
+        // The group of this page: the menu item itself, otherwise a page under it
+        // (e.g. students.show belongs to students.index → School data)
+        $currentGroup = null;
+        $familyGroup = null;
         foreach ($groups as $i => $group) {
             foreach ($menu[$group] as $item) {
-                if (request()->routeIs($item['route'])) $currentGroup = $i;
+                if (request()->routeIs($item['route'])) $currentGroup ??= $i;
+                $family = str_contains($item['route'], '.') ? strstr($item['route'], '.', true).'.*' : null;
+                if ($family && request()->routeIs($family)) $familyGroup ??= $i;
             }
         }
+        $currentGroup ??= $familyGroup ?? 0;
     @endphp
     <div class="drawer-side z-40" id="sidebar" data-current-group="{{ $currentGroup }}">
         <label for="sidebar-toggle" aria-label="{{ __('Close menu') }}" class="drawer-overlay"></label>

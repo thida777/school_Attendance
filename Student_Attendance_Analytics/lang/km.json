@@ -688,5 +688,14 @@
     "No class matches your search.": "រកមិនឃើញថ្នាក់ដែលត្រូវនឹងការស្វែងរកទេ។",
     "Please call me": "សូមគ្រូទូរស័ព្ទមក",
     "Parent replied:": "អាណាព្យាបាលឆ្លើយតប៖",
-    "Waiting for the parent to answer in Telegram": "កំពុងរង់ចាំអាណាព្យាបាលឆ្លើយតបក្នុង Telegram"
+    "Waiting for the parent to answer in Telegram": "កំពុងរង់ចាំអាណាព្យាបាលឆ្លើយតបក្នុង Telegram",
+    "Class and status": "ថ្នាក់ និងស្ថានភាព",
+    "Month": "ខែ",
+    "Year": "ឆ្នាំ",
+    "Telegram linked": "បានភ្ជាប់ Telegram",
+    "No Telegram yet: SMS (demo)": "មិនទាន់មាន Telegram៖ SMS (សាកល្បង)",
+    "The parent can join the school bot; then add the chat ID on the Parents page.": "អាណាព្យាបាលអាចចូលបូតរបស់សាលា បន្ទាប់មកបញ្ចូលលេខ Chat ID នៅទំព័រអាណាព្យាបាល។",
+    "JPG, PNG or WebP, up to 5 MB. It is cut to a square and made small (400 × 400).": "JPG PNG ឬ WebP មិនលើស 5 MB។ រូបនឹងត្រូវកាត់ជាការ៉េ ហើយបង្រួមតូច (400 × 400)។",
+    "An inactive student is no longer on attendance lists and gets no messages. The attendance history is kept.": "សិស្សអសកម្មលែងមាននៅក្នុងបញ្ជីស្រង់វត្តមាន ហើយមិនទទួលសារទៀតទេ។ ប្រវត្តិវត្តមាននៅរក្សាទុកដដែល។",
+    "This file is not a picture that can be opened.": "ឯកសារនេះមិនមែនជារូបភាពដែលអាចបើកបានទេ។"
 }

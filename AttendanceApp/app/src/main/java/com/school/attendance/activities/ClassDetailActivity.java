@@ -197,7 +197,7 @@ public class ClassDetailActivity extends AppCompatActivity {
                 list.addView(line, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             }
             View row = inflater.inflate(R.layout.item_class_student, list, false);
-            ((TextView) row.findViewById(R.id.txtAvatar)).setText(s.initials());
+            Ui.showStudentPhoto(row.findViewById(R.id.imgAvatar), row.findViewById(R.id.txtAvatar), s, !s.isActive());
             ((TextView) row.findViewById(R.id.txtName)).setText(s.displayName(khmer));
             ((TextView) row.findViewById(R.id.txtCode)).setText(s.isActive()
                     ? s.getStudentCode() : s.getStudentCode() + " · " + getString(R.string.inactive));

@@ -8,7 +8,6 @@
         'not_given' => __('Not given'), 'sick' => __('Sick'), 'family_matter' => __('Family matter'),
         'school_activity' => __('School activity'), 'other' => __('Other'),
     ];
-    $initials = fn ($name) => collect(explode(' ', $name))->map(fn ($w) => mb_substr($w, 0, 1))->take(2)->join('');
 @endphp
 
 @section('content')
@@ -96,7 +95,7 @@
                                 <input type="hidden" name="statuses[{{ $student->id }}]" value="{{ $status }}">
                                 <span class="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-full" data-badge><i data-lucide="check" class="size-3"></i></span>
                                 {{-- One colour per student, always the same (from the student code) --}}
-                                <span class="avatar avatar-placeholder"><span class="av-{{ crc32($student->student_code) % 8 }} grid size-10 place-items-center rounded-full text-sm" data-avatar><span>{{ $initials($student->name_latin) }}</span></span></span>
+                                @include('partials.student-avatar', ['student' => $student, 'size' => 'size-12', 'attrs' => 'data-avatar'])
                                 <span class="w-full">
                                     <span class="block truncate text-sm font-semibold">{{ $name }}</span>
                                     <span class="block text-xs opacity-60">{{ $student->student_code }}</span>
@@ -170,7 +169,7 @@
                             @php $reason = old("reasons.{$student->id}", $saved->get($student->id)?->absence_reason ?? 'not_given'); @endphp
                             <li class="rounded-box border-base-300 border p-3" data-reason-row="{{ $student->id }}">
                                 <div class="flex items-center gap-3">
-                                    <span class="bg-error/10 text-error grid size-9 shrink-0 place-items-center rounded-full text-xs font-semibold">{{ $initials($student->name_latin) }}</span>
+                                    @include('partials.student-avatar', ['student' => $student, 'size' => 'size-9', 'text' => 'text-xs'])
                                     <div class="min-w-0">
                                         <div class="truncate text-sm font-medium">{{ $km ? $student->name_km : $student->name_latin }}</div>
                                         <div class="text-xs opacity-60">{{ $student->student_code }}</div>

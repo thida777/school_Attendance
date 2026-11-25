@@ -211,6 +211,15 @@ body {
 .btn-primary:hover {
   transform: translateY(-1px);
 }
+/* A "soft" primary button keeps its light tint, so the coloured text stays readable */
+.btn-primary.btn-soft {
+  background: color-mix(in oklab, var(--color-primary) 14%, transparent);
+  color: var(--color-primary);
+  box-shadow: none;
+}
+.btn-primary.btn-soft:hover {
+  background: color-mix(in oklab, var(--color-primary) 22%, transparent);
+}
 
 /* ---------- Inputs ---------- */
 .input,

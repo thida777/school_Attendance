@@ -6,7 +6,6 @@
     use App\Support\Risk;
     $km = app()->getLocale() === 'km';
     $guardian = $student->guardians->first();
-    $initials = collect(explode(' ', $student->name_latin))->map(fn ($w) => mb_substr($w, 0, 1))->take(2)->join('');
     $dayNames = [1 => __('Monday'), 2 => __('Tuesday'), 3 => __('Wednesday'), 4 => __('Thursday'), 5 => __('Friday'), 6 => __('Saturday')];
     $reasonLabels = [
         'not_given' => __('Not given'), 'sick' => __('Sick'), 'family_matter' => __('Family matter'),
@@ -46,9 +45,7 @@
         {{-- Profile --}}
         <div class="card bg-base-100 border-base-300 border">
             <div class="card-body items-center text-center">
-                <div class="avatar avatar-placeholder">
-                    <div class="bg-primary/15 text-primary w-20 rounded-full"><span class="text-2xl">{{ $initials }}</span></div>
-                </div>
+                @include('partials.student-avatar', ['student' => $student, 'size' => 'size-24', 'text' => 'text-3xl'])
                 <h2 class="mt-2 text-xl font-bold">{{ $km ? $student->name_km : $student->name_latin }}</h2>
                 <p class="grow-0 opacity-60">{{ $km ? $student->name_latin : $student->name_km }} · {{ $student->student_code }}</p>
                 <div class="flex flex-wrap justify-center gap-2">

@@ -19,6 +19,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolSettingsController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentPhotoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeachingAssignmentController;
@@ -33,6 +34,9 @@ use Illuminate\Support\Facades\Route;
 
 // English / Khmer switch, for everyone
 Route::post('/locale/{locale}', LocaleController::class)->name('locale');
+
+// A student's photo: only with a signed link, which only staff pages and the teacher app receive
+Route::get('/students/{student}/photo', StudentPhotoController::class)->middleware(['signed', 'throttle:300,1'])->name('students.photo');
 
 // Not logged in
 Route::middleware('guest')->group(function () {

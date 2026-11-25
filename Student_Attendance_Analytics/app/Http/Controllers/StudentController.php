@@ -102,11 +102,17 @@ class StudentController extends Controller
         ]);
     }
 
+    /** Form fields that are not columns of the students table. */
+    private const NOT_STUDENT = ['guardian_name', 'guardian_phone', 'guardian_relation', 'photo', 'remove_photo'];
+
     public function store(StudentRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-            $student = Student::create($request->safe()->except(['guardian_name', 'guardian_phone', 'guardian_relation']));
+            $student = Student::create($request->safe()->except(self::NOT_STUDENT));
             $this->saveGuardian($student, $request);
+            if ($request->hasFile('photo')) {
+                $student->replacePhoto($request->file('photo'));
+            }
         });
 
         return redirect()->route('students.index')->with('status', __('Student saved.'));
@@ -115,8 +121,13 @@ class StudentController extends Controller
     public function update(StudentRequest $request, Student $student): RedirectResponse
     {
         DB::transaction(function () use ($request, $student) {
-            $student->update($request->safe()->except(['guardian_name', 'guardian_phone', 'guardian_relation']));
+            $student->update($request->safe()->except(self::NOT_STUDENT));
             $this->saveGuardian($student, $request);
+            if ($request->hasFile('photo')) {
+                $student->replacePhoto($request->file('photo'));
+            } elseif ($request->boolean('remove_photo')) {
+                $student->replacePhoto(null);
+            }
         });
 
         return back()->with('status', __('Student saved.'));
@@ -129,6 +140,7 @@ class StudentController extends Controller
             return back()->with('error', __(':name has attendance records and cannot be deleted. Set the student to Inactive instead.', ['name' => $student->name_latin]));
         }
 
+        $student->replacePhoto(null); // the photo file goes too
         $student->delete();
 
         return back()->with('status', __('Student deleted.'));

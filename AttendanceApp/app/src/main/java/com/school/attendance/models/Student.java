@@ -36,6 +36,10 @@ public class Student {
 
     private Parent parent;
 
+    /** Signed link to the student's photo (works until the end of tomorrow), or null: then the initials are shown. */
+    @SerializedName("photo_url")
+    private String photoUrl;
+
     public int getId() { return id; }
     public String getStudentCode() { return studentCode; }
     public String getNameLatin() { return nameLatin; }
@@ -46,6 +50,7 @@ public class Student {
     public Double getAttendanceRate() { return attendanceRate; }
     public String getRisk() { return risk; }
     public Parent getParent() { return parent; }
+    public String getPhotoUrl() { return photoUrl; }
 
     /** The name in the app's language (Khmer name when the app is in Khmer). */
     public String displayName(boolean khmer) {

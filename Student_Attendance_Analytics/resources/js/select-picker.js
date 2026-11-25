@@ -49,7 +49,9 @@ function build(select, drawIcons) {
     const pop = document.createElement('ul');
     pop.className = 'pick-pop bg-base-100 border-base-300 rounded-box fixed z-50 hidden max-h-72 overflow-y-auto border p-1.5 shadow-xl';
     pop.setAttribute('role', 'listbox');
-    document.body.append(pop);
+    // Inside a pop-up form (<dialog>) the list must be in the dialog too: a modal dialog sits above
+    // the page and makes everything outside it unclickable
+    (select.closest('dialog') || document.body).append(pop);
 
     const options = () => [...select.options].filter((o) => !o.hidden);
 

@@ -37,6 +37,9 @@ class StudentRequest extends FormRequest
             'guardian_name' => ['required', 'string', 'max:255'],
             'guardian_phone' => ['required', 'digits_between:8,12'],
             'guardian_relation' => ['required', Rule::in(['father', 'mother', 'guardian'])],
+            // Optional photo: a picture up to 5 MB; it is shrunk to 400 × 400 when saved
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120', 'dimensions:min_width=100,min_height=100'],
+            'remove_photo' => ['nullable', 'boolean'],
         ];
     }
 
@@ -51,6 +54,7 @@ class StudentRequest extends FormRequest
             'guardian_name' => __('Parent name'),
             'guardian_phone' => __('Parent phone'),
             'guardian_relation' => __('Relation'),
+            'photo' => __('Photo'),
         ];
     }
 }

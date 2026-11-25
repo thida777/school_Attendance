@@ -58,7 +58,7 @@ public class StudentMarkAdapter extends RecyclerView.Adapter<StudentMarkAdapter.
         android.content.Context c = h.itemView.getContext();
 
         h.txtName.setText(student.displayName(khmer));
-        h.txtAvatar.setText(student.initials());
+        com.school.attendance.config.Ui.showStudentPhoto(h.imgAvatar, h.txtAvatar, student, absent);
         h.txtAvatar.setBackgroundResource(absent ? R.drawable.bg_avatar_absent : R.drawable.bg_avatar_present);
         h.txtAvatar.setTextColor(ContextCompat.getColor(c, absent ? R.color.absent_text : R.color.brand));
         h.txtSub.setText(absent ? student.getStudentCode() + " · " + c.getString(R.string.absent) : student.getStudentCode());
@@ -85,13 +85,14 @@ public class StudentMarkAdapter extends RecyclerView.Adapter<StudentMarkAdapter.
     static class StudentViewHolder extends RecyclerView.ViewHolder {
         final View row, divider;
         final TextView txtAvatar, txtName, txtSub;
-        final ImageView btnPresent, btnAbsent;
+        final ImageView btnPresent, btnAbsent, imgAvatar;
 
         StudentViewHolder(@NonNull View view) {
             super(view);
             row = view.findViewById(R.id.rowStudent);
             divider = view.findViewById(R.id.divider);
             txtAvatar = view.findViewById(R.id.txtAvatar);
+            imgAvatar = view.findViewById(R.id.imgAvatar);
             txtName = view.findViewById(R.id.txtName);
             txtSub = view.findViewById(R.id.txtSub);
             btnPresent = view.findViewById(R.id.btnPresent);
