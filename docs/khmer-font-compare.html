@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khmer font comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700&family=Noto+Sans+Khmer:wght@400;600;700&family=Battambang:wght@400;700&family=Siemreap&family=Hanuman:wght@400;700&family=Koulen&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f4f7f8; --card:#fff; --ink:#1f2933; --muted:#6b7680; --line:#e3e8eb; --brand:#17695F; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:'Plus Jakarta Sans', system-ui, sans-serif; padding:24px 16px 48px; }
+  h1 { font-size:1.4rem; margin:0 0 4px; }
+  .intro { color:var(--muted); margin:0 0 20px; font-size:.9rem; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 20px; }
+  .card.current { outline:2px dashed #c28a00; }
+  .head { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:10px; }
+  .name { font-weight:700; font-size:1.05rem; }
+  .tag { font-size:.72rem; font-weight:600; color:var(--brand); background:#e6f2f0; border-radius:99px; padding:2px 10px; white-space:nowrap; }
+  .card.current .tag { color:#8a6200; background:#fff4d6; }
+  .note { color:var(--muted); font-size:.8rem; margin:0 0 12px; }
+  .k { line-height:1.75; }
+  .title { font-size:1.5rem; font-weight:700; margin:0; }
+  .sub { font-size:1rem; margin:0 0 10px; }
+  .menu { list-style:none; margin:0 0 12px; padding:0; display:grid; gap:4px; }
+  .menu li { font-size:.95rem; padding:4px 10px; border-radius:10px; }
+  .menu li.on { background:var(--brand); color:#fff; font-weight:600; }
+  .stat { display:flex; gap:12px; align-items:center; border-top:1px solid var(--line); padding-top:10px; font-size:.85rem; }
+  .stat b { font-size:1.6rem; font-family:'Plus Jakarta Sans'; }
+  .btn { display:inline-block; margin-top:10px; background:var(--brand); color:#fff; font-weight:600; border-radius:12px; padding:6px 16px; font-size:.9rem; }
+</style>
+</head>
+<body>
+<h1>Khmer fonts for the website</h1>
+<p class="intro">The same words from your website in each font. Numbers and English stay in Plus Jakarta Sans. The yellow box is the font you use now.</p>
+<div class="grid" id="grid"></div>
+<script>
+const fonts = [
+  ['Kantumruy Pro', 'Now on the website', 'Modern and round, but thin and small next to English.', true],
+  ['Noto Sans Khmer', 'Best for apps', 'Made by Google for screens. Clear, even and easy to read at small sizes.'],
+  ['Battambang', 'Classic Khmer', 'Traditional look used in many Cambodian documents. Formal and familiar.'],
+  ['Siemreap', 'Simple', 'Plain and light, with one weight only (no bold).'],
+  ['Hanuman', 'Book style', 'Elegant, with small serifs. Better for reports than for menus.'],
+  ['Koulen', 'Titles only', 'Strong display font, for big headings only, not for normal text.'],
+];
+const html = ([font, tag, note, current]) => `
+  <div class="card${current ? ' current' : ''}">
+    <div class="head"><span class="name">${font}</span><span class="tag">${tag}</span></div>
+    <p class="note">${note}</p>
+    <div class="k" style="font-family:'Plus Jakarta Sans','${font}',sans-serif">
+      <p class="title">សួស្តី សុខ អេដមីន</p>
+      <p class="sub">នេះជាស្ថានភាពវត្តមានរបស់សាលាថ្ងៃនេះ</p>
+      <ul class="menu">
+        <li class="on">ផ្ទាំងគ្រប់គ្រង</li>
+        <li>ស្រង់វត្តមាន</li>
+        <li>តាមដានវត្តមាន</li>
+        <li>សិស្សមានហានិភ័យ</li>
+        <li>សារទៅអាណាព្យាបាល</li>
+      </ul>
+      <div class="stat"><b>1</b><span>អវត្តមាន 3+ ថ្ងៃជាប់គ្នា<br>សិស្សដែលត្រូវទាក់ទងមុនគេ</span></div>
+      <span class="btn">រក្សាទុកការផ្លាស់ប្តូរ</span>
+    </div>
+  </div>`;
+document.getElementById('grid').innerHTML = fonts.map(html).join('');
+</script>
+</body>
+</html>

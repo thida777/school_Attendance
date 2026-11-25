@@ -18,13 +18,13 @@
     <div class="card bg-base-100 border-base-300 border scroll-mt-4" data-list>
         <div class="card-body">
             <form method="GET" action="{{ route('assignments.index') }}" class="flex flex-wrap gap-2" data-auto-submit>
-                <select name="class" class="select w-auto" aria-label="{{ __('Class') }}">
+                <select name="class" class="select w-auto" aria-label="{{ __('Class') }}" data-picker data-filter data-icon="school">
                     <option value="">{{ __('All classes') }}</option>
                     @foreach ($classes as $class)
                         <option value="{{ $class->id }}" @selected(($filters['class'] ?? '') == $class->id)>{{ $class->name }}</option>
                     @endforeach
                 </select>
-                <select name="teacher" class="select w-auto" aria-label="{{ __('Teacher') }}">
+                <select name="teacher" class="select w-auto" aria-label="{{ __('Teacher') }}" data-picker data-filter data-icon="graduation-cap">
                     <option value="">{{ __('All teachers') }}</option>
                     @foreach ($teachers as $teacher)
                         <option value="{{ $teacher->id }}" @selected(($filters['teacher'] ?? '') == $teacher->id)>{{ $teacher->name }}</option>

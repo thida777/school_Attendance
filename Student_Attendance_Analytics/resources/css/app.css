@@ -9,16 +9,29 @@
 @source '../js';
 
 @theme {
-    --font-sans: 'Plus Jakarta Sans', 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', 'Siemreap', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Khmer letters: Siemreap (SIL Open Font License), only for the Khmer part of Unicode.
+   Khmer is more detailed than English, so it is drawn 10% bigger than the English
+   letters next to it (size-adjust). English, numbers and the layout stay the same. */
+@font-face {
+  font-family: 'Siemreap';
+  src: url('../fonts/siemreap-400.woff2') format('woff2'), url('../fonts/siemreap-400.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1780-17FF, U+19E0-19FF, U+200C-200D, U+25CC;
+  size-adjust: 110%;
 }
 
 /* ===================================================================
    Glass design, the same as the approved static design (static/assets/app.css)
    =================================================================== */
 /* Shared styles for every page.
-   Plus Jakarta Sans = Latin letters, Kantumruy Pro = Khmer letters. */
+   Plus Jakarta Sans = Latin letters, Siemreap = Khmer letters. */
 body {
-  font-family: "Plus Jakarta Sans", "Kantumruy Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Plus Jakarta Sans", "Siemreap", system-ui, -apple-system, "Segoe UI", sans-serif;
   letter-spacing: -0.005em;
 }
 h1, h2, h3, .stat-value, .card-title {
@@ -507,11 +520,13 @@ body {
   font-weight: 500;
 }
 
-/* ---------- Side menu on computer screens: icon bar + menu panel ----------
-   The icon bar (#side-rail) always stays. The panel (#side-panel) shows the links of
-   one group: the hovered icon's group, otherwise the group of the current page.
-   Pinned: both stay open. Unpinned (<html data-menu="unpinned">): the panel slides out
-   while the mouse is on the icon bar or the panel. Phones: no icon bar, every group. */
+/* ---------- Side menu: slim icon bar + menu panel (computer screens) ----------
+   The icon bar (#side-rail) always stays on the left edge, icons only, with a name tip.
+   The panel (#side-panel) shows the links of one group: the pointed-at icon's group,
+   otherwise the group of the current page.
+   Pinned: both stay open. Unpinned (<html data-menu="unpinned">): the panel is closed,
+   and pointing at the icon bar slides it out and moves the page over.
+   Phones: no icon bar; the ☰ button opens the panel with every group. */
 #side-rail {
   display: none;
 }
@@ -526,38 +541,40 @@ body {
   color: var(--color-primary);
 }
 @media (min-width: 1024px) {
-  .side-shell {
-    position: relative;
+  #sidebar {
+    overflow: visible; /* lets the name tips of the icons show */
   }
   #side-rail {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
-    width: 5.25rem;
-    margin: 1rem 0 1rem 1rem;
-    padding: 1rem 0.5rem;
-    min-height: calc(100dvh - 2rem);
-    border-radius: 1.75rem;
-    background-color: var(--glass);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    gap: 0.5rem;
+    width: 4.75rem;
+    height: 100dvh;
+    padding: 1rem 0;
+    background-color: color-mix(in oklab, var(--color-base-100) 90%, transparent);
+    border-right: 1px solid color-mix(in oklab, var(--color-base-content) 10%, transparent);
+    box-shadow: 4px 0 24px rgb(0 0 0 / 0.06);
     backdrop-filter: blur(22px) saturate(160%);
     -webkit-backdrop-filter: blur(22px) saturate(160%);
   }
+  .rail-logo {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin-bottom: 0.75rem;
+    border-radius: 1.1rem;
+  }
   .rail-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    width: 100%;
-    padding: 0.6rem 0.2rem;
-    border-radius: 1rem;
-    font-size: 0.66rem;
-    font-weight: 600;
-    line-height: 1.15;
-    text-align: center;
-    opacity: 0.75;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1.1rem;
+    border: 1px solid transparent;
+    color: var(--color-base-content);
     transition: background-color 0.15s, opacity 0.15s;
   }
   .rail-item:hover,
@@ -566,10 +583,47 @@ body {
     opacity: 1;
     background-color: var(--glass-field);
   }
+  /* The group of the current page: tinted box and a bar on the left edge */
   .rail-item[aria-current] {
     opacity: 1;
     color: var(--color-primary);
+    background-color: color-mix(in oklab, var(--color-primary) 14%, transparent);
+    border-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
   }
+  .rail-item[aria-current]::before {
+    content: '';
+    position: absolute;
+    left: -0.8rem;
+    top: 25%;
+    height: 50%;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--color-primary);
+  }
+  /* Name tip on the right of an icon */
+  .rail-item::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: calc(100% + 0.7rem);
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 60;
+    padding: 0.3rem 0.65rem;
+    border-radius: 0.5rem;
+    background: var(--color-neutral);
+    color: var(--color-neutral-content);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
+  .rail-item:hover::after,
+  .rail-item:focus-visible::after {
+    opacity: 1;
+  }
+
   #sidebar #side-panel {
     margin-left: 0.75rem;
   }
@@ -580,31 +634,29 @@ body {
     display: none;
   }
 
-  /* Unpinned: the panel floats next to the icon bar and slides out on hover */
-  [data-menu="unpinned"] #sidebar {
-    overflow: visible;
-  }
-  [data-menu="unpinned"] #sidebar > .drawer-overlay {
-    display: none;
-  }
+  /* Unpinned: the panel is closed; pointing at the icon bar opens it and moves the page over */
   [data-menu="unpinned"] #sidebar #side-panel {
-    position: absolute;
-    top: 0;
-    left: 6.25rem;
-    background-color: var(--color-base-100);
-    box-shadow: 0 24px 60px rgb(0 0 0 / 0.25);
+    width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    overflow: hidden;
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
-    translate: -0.75rem 0;
-    transition: translate 0.2s ease-out, opacity 0.2s ease-out, visibility 0.2s;
+    border-width: 0;
+    box-shadow: none;
+    transition: width 0.22s ease-out, margin 0.22s ease-out, opacity 0.22s ease-out, visibility 0.22s;
+  }
+  [data-menu="unpinned"] #side-panel > * {
+    min-width: 16rem; /* keeps the words still while the panel opens */
   }
   [data-menu="unpinned"] #sidebar.peek #side-panel,
-  [data-menu="unpinned"] #side-panel:focus-within {
+  [data-menu="unpinned"] #sidebar:has(:focus-visible) #side-panel {
+    width: 16rem;
+    margin-left: 0.75rem;
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
-    translate: 0;
+    border-width: 1px;
+    box-shadow: var(--glass-shadow);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -612,10 +664,30 @@ body {
     transition: none;
   }
 }
-/* Phone: the menu slides over the page, so it needs a solid background to stay readable
-   (the glass blur cannot see through the sliding wrapper) */
+/* Phone: the menu slides over the page, so it needs a solid background to stay readable */
 @media (max-width: 1023px) {
   #sidebar #side-panel {
     background-color: var(--color-base-100);
   }
+}
+/* ---------- Khmer line spacing ----------
+   The line heights above are made for English. Khmer has vowels above and
+   subscripts below the letters, so in Khmer mode every text size gets more room
+   (Tailwind reads these values for text-xs, text-sm, ... and leading-tight).
+   English mode is not affected. */
+html[lang="km"] {
+  line-height: 1.7;
+  --text-xs--line-height: 1.7;
+  --text-sm--line-height: 1.7;
+  --text-base--line-height: 1.7;
+  --text-lg--line-height: 1.5;
+  --text-xl--line-height: 1.5;
+  --text-2xl--line-height: 1.5;
+  --text-3xl--line-height: 1.4;
+  --text-4xl--line-height: 1.4;
+  --leading-tight: 1.5;
+}
+/* A small gap between a Khmer card title and the line under it */
+html[lang="km"] .card-title + p {
+  margin-top: 0.2rem;
 }

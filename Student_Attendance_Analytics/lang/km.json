@@ -677,6 +677,13 @@
     "Pin menu": "ខ្ទាស់ម៉ឺនុយ",
     "Unpin menu": "ឈប់ខ្ទាស់ម៉ឺនុយ",
     "Menu groups": "ក្រុមម៉ឺនុយ",
-    "Menu pinned": "បានខ្ទាស់ម៉ឺនុយ",
-    "Menu hides automatically. Point at an icon on the left to open it.": "ម៉ឺនុយលាក់ដោយស្វ័យប្រវត្តិ។ ដាក់ព្រួញកណ្តុរលើរូបតំណាងខាងឆ្វេង ដើម្បីបើកវា។"
+    "Grade :grade": "ថ្នាក់ទី :grade",
+    "Search class, room or teacher": "ស្វែងរកថ្នាក់ បន្ទប់ ឬគ្រូ",
+    "View": "របៀបបង្ហាញ",
+    "Cards": "កាត",
+    "List": "បញ្ជី",
+    "Show as cards": "បង្ហាញជាកាត",
+    "Show as list": "បង្ហាញជាបញ្ជី",
+    "Actions": "សកម្មភាព",
+    "No class matches your search.": "រកមិនឃើញថ្នាក់ដែលត្រូវនឹងការស្វែងរកទេ។"
 }

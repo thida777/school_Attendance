@@ -83,7 +83,7 @@
                 <h3 class="card-title text-base">{{ __('Audit log') }}</h3>
                 <form method="GET" action="{{ route('attendance.corrections') }}" class="flex flex-wrap gap-2" data-auto-submit>
                     <label class="input w-auto"><i data-lucide="search" class="size-4 opacity-50"></i><input type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('Search name, ID or class') }}" /></label>
-                    <select name="action" class="select w-auto" aria-label="{{ __('Action') }}">
+                    <select name="action" class="select w-auto" aria-label="{{ __('Action') }}" data-picker data-filter data-icon="history">
                         <option value="">{{ __('All actions') }}</option>
                         @foreach ($actionLabels as $value => $label)
                             <option value="{{ $value }}" @selected(($filters['action'] ?? '') === $value)>{{ $label }}</option>

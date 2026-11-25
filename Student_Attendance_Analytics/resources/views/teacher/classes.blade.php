@@ -91,7 +91,7 @@
                             <i data-lucide="search" class="size-4 opacity-50"></i>
                             <input type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('Search name or ID') }}" />
                         </label>
-                        <select name="class" class="select w-auto" aria-label="{{ __('Class') }}">
+                        <select name="class" class="select w-auto" aria-label="{{ __('Class') }}" data-picker data-filter data-icon="school">
                             <option value="">{{ __('All classes') }}</option>
                             @foreach ($classes as $class)
                                 <option value="{{ $class->id }}" @selected(($filters['class'] ?? '') == $class->id)>{{ $class->name }}</option>

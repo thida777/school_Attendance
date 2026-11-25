@@ -12,9 +12,7 @@ export default defineConfig({
                 bunny('Plus Jakarta Sans', {
                     weights: [400, 500, 600, 700, 800],
                 }),
-                bunny('Kantumruy Pro', {
-                    weights: [400, 500, 600, 700],
-                }),
+                // The Khmer font (Siemreap) is in resources/fonts, set up in app.css
             ],
         }),
         tailwindcss(),

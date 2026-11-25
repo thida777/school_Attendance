@@ -23,18 +23,18 @@
                     <i data-lucide="search" class="size-4 opacity-50"></i>
                     <input type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('Search name or student code') }}" />
                 </label>
-                <select name="class" class="select w-auto" aria-label="{{ __('Class') }}">
+                <select name="class" class="select w-auto" aria-label="{{ __('Class') }}" data-picker data-filter data-icon="school">
                     <option value="">{{ __('All classes') }}</option>
                     @foreach ($classes as $class)
                         <option value="{{ $class->id }}" @selected(($filters['class'] ?? '') == $class->id)>{{ $class->name }}</option>
                     @endforeach
                 </select>
-                <select name="gender" class="select w-auto" aria-label="{{ __('Gender') }}">
+                <select name="gender" class="select w-auto" aria-label="{{ __('Gender') }}" data-picker data-filter data-icon="users">
                     <option value="">{{ __('All genders') }}</option>
                     <option value="male" @selected(($filters['gender'] ?? '') === 'male')>{{ __('Male') }}</option>
                     <option value="female" @selected(($filters['gender'] ?? '') === 'female')>{{ __('Female') }}</option>
                 </select>
-                <select name="status" class="select w-auto" aria-label="{{ __('Status') }}">
+                <select name="status" class="select w-auto" aria-label="{{ __('Status') }}" data-picker data-filter data-icon="user-check">
                     <option value="">{{ __('Active and inactive') }}</option>
                     <option value="active" @selected(($filters['status'] ?? '') === 'active')>{{ __('Active') }}</option>
                     <option value="inactive" @selected(($filters['status'] ?? '') === 'inactive')>{{ __('Inactive') }}</option>

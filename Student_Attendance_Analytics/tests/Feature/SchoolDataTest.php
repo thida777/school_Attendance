@@ -68,6 +68,24 @@ class SchoolDataTest extends TestCase
         $this->assertSame('104', $class->fresh()->room);
     }
 
+    public function test_the_classes_page_has_grade_tabs_search_and_a_list_view(): void
+    {
+        $this->withSession(['locale' => 'en'])->get('/classes')->assertOk()
+            ->assertSeeInOrder(['data-grade=""', 'Grade 10', 'Grade 11', 'Grade 12'], false)
+            ->assertSee('id="class-search"', false)
+            ->assertSee('data-view-panel="list"', false)
+            // every class once as a card and once as a list row, with the words the search looks in
+            ->assertSee('data-search="10a 101 pen sovann', false);
+        $this->assertSame(12, substr_count($this->get('/classes')->getContent(), 'data-class-item data-grade='));
+    }
+
+    public function test_lower_secondary_grades_7_to_9_can_be_added_but_not_lower(): void
+    {
+        $this->post('/classes', ['name' => '7A', 'grade' => 7])->assertSessionHasNoErrors();
+        $this->get('/classes')->assertSee('Grade 7');
+        $this->post('/classes', ['name' => '6A', 'grade' => 6])->assertSessionHasErrors('grade');
+    }
+
     public function test_two_classes_cannot_have_the_same_name_in_one_year(): void
     {
         $this->post('/classes', ['name' => '10A', 'grade' => 10])->assertSessionHasErrors('name');

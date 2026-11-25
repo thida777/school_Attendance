@@ -83,10 +83,9 @@
         <form method="dialog" class="modal-backdrop"><button>{{ __('Close') }}</button></form>
     </dialog>
 
-    {{-- Sidebar: only the pages this role may open --}}
     {{-- Sidebar: only the pages this role may open.
-         Computer: an icon bar (one icon per menu group, always visible) + a menu panel with the links of one group.
-         Pinned: both stay open. Unpinned: only the icon bar stays; hovering an icon slides the panel out.
+         Computer: a slim icon bar (one icon per menu group, always visible) + a menu panel with the links of one group.
+         Pinned: both stay open. Unpinned: only the icon bar stays; pointing at it slides the panel out and moves the page over.
          Phone: the ☰ button opens the panel with every group, as before. --}}
     @php
         $groups = array_keys($menu);
@@ -102,55 +101,53 @@
     <div class="drawer-side z-40" id="sidebar" data-current-group="{{ $currentGroup }}">
         <label for="sidebar-toggle" aria-label="{{ __('Close menu') }}" class="drawer-overlay"></label>
         <div class="side-shell flex">
-            <nav id="side-rail" aria-label="{{ __('Menu groups') }}">
-                <a href="{{ route('home') }}" class="brand-mark text-primary-content mb-3 grid size-11 place-items-center rounded-2xl" aria-label="{{ __('Dashboard') }}">
-                    <i data-lucide="clipboard-check" class="size-5"></i>
+        <nav id="side-rail" aria-label="{{ __('Menu groups') }}">
+            <a href="{{ route('home') }}" class="rail-logo brand-mark text-primary-content" aria-label="{{ __('Dashboard') }}">
+                <i data-lucide="clipboard-check" class="size-6"></i>
+            </a>
+            @foreach ($groups as $i => $group)
+                <a href="{{ route($menu[$group][0]['route']) }}" @class(['rail-item', 'is-shown' => $i === $currentGroup])
+                   data-group="{{ $i }}" data-tip="{{ __($group) }}" aria-label="{{ __($group) }}"
+                   @if ($i === $currentGroup) aria-current="true" @endif>
+                    <i data-lucide="{{ $groupIcons[$group] ?? 'folder' }}" class="size-6"></i>
                 </a>
+            @endforeach
+        </nav>
+        <aside id="side-panel" class="bg-base-100 border-base-300 flex min-h-full w-64 flex-col border-r">
+            <div class="flex items-center gap-1 pr-3">
+                <a href="{{ route('home') }}" class="flex min-w-0 flex-1 items-center gap-3 py-4 pl-5">
+                    <span class="side-panel-logo brand-mark text-primary-content grid size-10 shrink-0 place-items-center rounded-2xl">
+                        <i data-lucide="clipboard-check" class="size-5"></i>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block leading-tight font-semibold">{{ __('Attendance') }}</span>
+                        <span class="block truncate text-xs opacity-60">{{ \App\Support\School::name() }}</span>
+                    </span>
+                </a>
+                <button type="button" class="btn btn-ghost btn-sm btn-square hidden lg:inline-flex" data-action="pin-menu"
+                        data-label-pin="{{ __('Pin menu') }}" data-label-unpin="{{ __('Unpin menu') }}"
+                        aria-label="{{ __('Unpin menu') }}" title="{{ __('Unpin menu') }}">
+                    <i data-lucide="pin" class="size-4 pin-on"></i>
+                    <i data-lucide="pin-off" class="size-4 pin-off"></i>
+                </button>
+            </div>
+            <ul class="menu w-full grow gap-1 px-3">
                 @foreach ($groups as $i => $group)
-                    <a href="{{ route($menu[$group][0]["route"]) }}" @class(["rail-item", "is-shown" => $i === $currentGroup]) data-group="{{ $i }}"
-                       @if ($i === $currentGroup) aria-current="true" @endif>
-                        <i data-lucide="{{ $groupIcons[$group] ?? 'folder' }}" class="size-5"></i>
-                        <span>{{ __($group) }}</span>
-                    </a>
-                @endforeach
-            </nav>
-
-            <aside id="side-panel" class="bg-base-100 border-base-300 flex min-h-full w-64 flex-col border-r">
-                <div class="flex items-center gap-1 pr-3">
-                    <a href="{{ route('home') }}" class="flex min-w-0 flex-1 items-center gap-3 py-4 pl-5">
-                        <span class="side-panel-logo brand-mark text-primary-content grid size-10 shrink-0 place-items-center rounded-2xl">
-                            <i data-lucide="clipboard-check" class="size-5"></i>
-                        </span>
-                        <span class="min-w-0">
-                            <span class="block leading-tight font-semibold">{{ __('Attendance') }}</span>
-                            <span class="block truncate text-xs opacity-60">{{ \App\Support\School::name() }}</span>
-                        </span>
-                    </a>
-                    <button type="button" class="btn btn-ghost btn-sm btn-square hidden lg:inline-flex" data-action="pin-menu"
-                            data-label-pin="{{ __('Pin menu') }}" data-label-unpin="{{ __('Unpin menu') }}"
-                            data-msg-pinned="{{ __('Menu pinned') }}" data-msg-unpinned="{{ __('Menu hides automatically. Point at an icon on the left to open it.') }}"
-                            aria-label="{{ __('Unpin menu') }}" title="{{ __('Unpin menu') }}">
-                        <i data-lucide="pin" class="size-4 pin-on"></i>
-                        <i data-lucide="pin-off" class="size-4 pin-off"></i>
-                    </button>
-                </div>
-                <ul class="menu w-full grow gap-1 px-3">
-                    @foreach ($groups as $i => $group)
-                        <li @class(["menu-title side-group", "is-shown" => $i === $currentGroup]) data-group="{{ $i }}">{{ __($group) }}</li>
-                        @foreach ($menu[$group] as $item)
-                            <li @class(["side-group", "is-shown" => $i === $currentGroup]) data-group="{{ $i }}">
-                                <a href="{{ route($item['route']) }}" @class(['menu-active' => request()->routeIs($item['route'])])>
-                                    <i data-lucide="{{ $item['icon'] }}" class="size-4"></i>
-                                    <span>{{ __($item['label']) }}</span>
-                                </a>
-                            </li>
-                        @endforeach
+                    <li @class(['menu-title side-group', 'is-shown' => $i === $currentGroup]) data-group="{{ $i }}">{{ __($group) }}</li>
+                    @foreach ($menu[$group] as $item)
+                        <li @class(['side-group', 'is-shown' => $i === $currentGroup]) data-group="{{ $i }}">
+                            <a href="{{ route($item['route']) }}" @class(['menu-active' => request()->routeIs($item['route'])])>
+                                <i data-lucide="{{ $item['icon'] }}" class="size-4"></i>
+                                <span>{{ __($item['label']) }}</span>
+                            </a>
+                        </li>
                     @endforeach
-                </ul>
-                @if ($year = \App\Models\AcademicYear::current())
-                    <p class="px-5 py-4 text-xs opacity-50">{{ __('Academic year') }} {{ $year->name }}</p>
-                @endif
-            </aside>
+                @endforeach
+            </ul>
+            @if ($year = \App\Models\AcademicYear::current())
+                <p class="px-5 py-4 text-xs opacity-50">{{ __('Academic year') }} {{ $year->name }}</p>
+            @endif
+        </aside>
         </div>
     </div>
 </div>

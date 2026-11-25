@@ -264,7 +264,7 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
     form.addEventListener('submit', () => form.querySelector('button:not([type])')?.classList.add('btn-disabled'));
 });
 
-/* ---------- Side menu on computer screens: icon bar + menu panel ----------
+/* ---------- Side menu on computer screens: slim icon bar + menu panel ----------
    Pointing at an icon shows that group's links. Unpinned, the panel slides out while
    the mouse is on the icon bar or the panel, and closes 460 ms after it leaves.
    The pin choice is remembered in the browser (read in <head>, so nothing jumps). */
@@ -295,15 +295,12 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
 
     sidebar.querySelectorAll('.rail-item').forEach((item) => {
         item.addEventListener('mouseenter', () => showGroup(item.dataset.group));
-        item.addEventListener('focus', () => {
-            showGroup(item.dataset.group);
-            open();
-        });
+        item.addEventListener('focus', () => showGroup(item.dataset.group));
     });
     shell.addEventListener('mouseenter', open);
     shell.addEventListener('mouseleave', closeSoon);
     shell.addEventListener('focusout', (e) => {
-        if (!shell.contains(e.relatedTarget)) closeSoon();
+        if (!shell.contains(e.relatedTarget)) showGroup(currentGroup);
     });
 
     const drawPinButton = () => {
@@ -316,17 +313,6 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
         });
     };
 
-    const showMessage = (text) => {
-        document.querySelectorAll('[data-menu-toast]').forEach((t) => t.remove());
-        const toast = document.createElement('div');
-        toast.className = 'toast toast-end toast-bottom z-50';
-        toast.dataset.menuToast = '';
-        toast.innerHTML = '<div role="status" class="alert alert-info"><span></span></div>';
-        toast.querySelector('span').textContent = text;
-        document.body.append(toast);
-        setTimeout(() => toast.remove(), 2600);
-    };
-
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-action="pin-menu"]');
         if (!btn) return;
@@ -335,15 +321,14 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
         else delete root.dataset.menu;
         sidebar.classList.remove('peek');
         showGroup(currentGroup);
+        // A mouse click leaves focus on the button; drop it so the menu can close at once
+        btn.blur();
         try {
             localStorage.setItem('menu', unpin ? 'unpinned' : 'pinned');
         } catch {
             // private mode: the choice lasts only for this page
         }
         drawPinButton();
-        showMessage(unpin ? btn.dataset.msgUnpinned : btn.dataset.msgPinned);
-        // Charts and wide tables take the new width
-        window.dispatchEvent(new Event('resize'));
     });
 
     drawPinButton();
