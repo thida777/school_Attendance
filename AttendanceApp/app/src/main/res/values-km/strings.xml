@@ -232,7 +232,5 @@
     <string name="telegram_not_yet">មិនទាន់មាន Telegram</string>
     <string name="telegram_invite">អញ្ជើញចូល Telegram (QR)</string>
     <string name="telegram_qr_title">អញ្ជើញចូល Telegram · %1$s</string>
-    <string name="telegram_qr_steps">១. អាណាព្យាបាលស្កេន QR នេះដោយកាមេរ៉ាទូរស័ព្ទ។
-២. Telegram បើកបូតរបស់សាលា៖ ចុច Start។
-៣. រួចរាល់៖ អាណាព្យាបាលទទួលព័ត៌មានវត្តមានតាម Telegram។</string>
+    <string name="telegram_qr_steps">១. អាណាព្យាបាលស្កេន QR នេះដោយកាមេរ៉ាទូរស័ព្ទ។\n២. Telegram បើកបូតរបស់សាលា៖ ចុច Start។\n៣. រួចរាល់៖ អាណាព្យាបាលទទួលព័ត៌មានវត្តមានតាម Telegram។</string>
 </resources>

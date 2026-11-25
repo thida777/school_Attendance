@@ -183,7 +183,8 @@ public final class Ui {
         if (iso == null || iso.length() < 16) return iso == null ? "" : iso;
         Date date;
         try {
-            date = new SimpleDateFormat("yyyy-MM-ddTHH:mm", Locale.US).parse(iso.substring(0, 16));
+            // "2026-11-25T13:05" → "2026-11-25 13:05" (the T between date and time)
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse(iso.substring(0, 16).replace('T', ' '));
         } catch (ParseException e) {
             return iso;
         }

@@ -232,7 +232,5 @@
     <string name="telegram_not_yet">Not on Telegram yet</string>
     <string name="telegram_invite">Telegram invite (QR code)</string>
     <string name="telegram_qr_title">Telegram invite · %1$s</string>
-    <string name="telegram_qr_steps">1. The parent scans this QR code with the phone camera.
-2. Telegram opens the school bot: press Start.
-3. Done: the parent gets attendance news on Telegram.</string>
+    <string name="telegram_qr_steps">1. The parent scans this QR code with the phone camera.\n2. Telegram opens the school bot: press Start.\n3. Done: the parent gets attendance news on Telegram.</string>
 </resources>
