@@ -45,7 +45,16 @@
         {{-- Profile --}}
         <div class="card bg-base-100 border-base-300 border">
             <div class="card-body items-center text-center">
-                @include('partials.student-avatar', ['student' => $student, 'size' => 'size-24', 'text' => 'text-3xl'])
+                {{-- The same big rounded picture as in the student form --}}
+                <span class="photo-frame is-static">
+                    <span class="photo-frame-inner">
+                        @if ($photo = $student->photoUrl())
+                            <img src="{{ $photo }}" alt="{{ $student->name_latin }}">
+                        @else
+                            <span class="photo-initials">{{ $student->initials() }}</span>
+                        @endif
+                    </span>
+                </span>
                 <h2 class="mt-2 text-xl font-bold">{{ $km ? $student->name_km : $student->name_latin }}</h2>
                 <p class="grow-0 opacity-60">{{ $km ? $student->name_latin : $student->name_km }} · {{ $student->student_code }}</p>
                 <div class="flex flex-wrap justify-center gap-2">

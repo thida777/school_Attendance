@@ -700,3 +700,79 @@ html[lang="km"] {
 html[lang="km"] .card-title + p {
   margin-top: 0.2rem;
 }
+
+/* ---------- Student photo in the student form: big rounded square in a gradient frame ---------- */
+.photo-frame {
+  position: relative;
+  display: block;
+  padding: 4px;
+  border-radius: 2.25rem;
+  background: var(--brand-gradient);
+  box-shadow: var(--brand-glow);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.photo-frame:hover {
+  transform: translateY(-2px);
+}
+.photo-frame:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+.photo-frame-inner {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 8.5rem;
+  height: 8.5rem;
+  overflow: hidden;
+  border-radius: 2rem;
+  border: 3px solid var(--color-base-100);
+  background: color-mix(in oklab, var(--color-primary) 14%, var(--color-base-100));
+  color: var(--color-primary);
+}
+.photo-frame-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-initials {
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+/* A soft dark layer with a camera when the mouse is on the picture */
+.photo-hover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 0.35);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.photo-frame:hover .photo-hover {
+  opacity: 1;
+}
+.photo-badge {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 9999px;
+  border: 3px solid var(--color-base-100);
+  background: var(--brand-gradient);
+  color: var(--color-primary-content);
+  box-shadow: var(--brand-glow);
+}
+/* The same frame on the student's page, only to look at */
+.photo-frame.is-static {
+  cursor: default;
+}
+.photo-frame.is-static:hover {
+  transform: none;
+}

@@ -27,29 +27,30 @@
             <input type="hidden" name="_modal" value="student-form">
 
             {{-- Photo: a preview right away, saved together with the form --}}
-            <div class="flex items-center gap-4 sm:col-span-2">
-                <div class="avatar avatar-placeholder" data-photo-circle>
-                    <div class="bg-primary/15 text-primary size-20 overflow-hidden rounded-full">
-                        <img src="" alt="" class="hidden size-full object-cover" data-photo-img>
-                        <span class="text-2xl font-semibold" data-photo-initials><i data-lucide="user" class="size-8"></i></span>
-                    </div>
+            {{-- Big rounded picture in a gradient frame; tap the picture (or the camera) to choose a photo --}}
+            <div class="flex flex-col items-center gap-3 pt-1 sm:col-span-2">
+                <label class="photo-frame" title="{{ __('Choose photo') }}">
+                    <span class="photo-frame-inner">
+                        <img src="" alt="" class="hidden" data-photo-img>
+                        <span class="photo-initials" data-photo-initials><i data-lucide="user" class="size-12"></i></span>
+                        <span class="photo-hover"><i data-lucide="camera" class="size-7"></i></span>
+                    </span>
+                    <span class="photo-badge" aria-hidden="true"><i data-lucide="camera" class="size-4"></i></span>
+                    <input type="file" name="photo" id="student-photo-input" accept="image/jpeg,image/png,image/webp" class="hidden" data-photo-input>
+                </label>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <label for="student-photo-input" class="btn btn-sm">
+                        <i data-lucide="image-plus" class="size-4"></i><span data-photo-choose>{{ __('Add photo') }}</span>
+                    </label>
+                    <button type="button" class="btn btn-sm btn-ghost text-error hidden" data-photo-remove>
+                        <i data-lucide="trash-2" class="size-4"></i>{{ __('Remove photo') }}
+                    </button>
                 </div>
-                <div class="min-w-0">
-                    <div class="flex flex-wrap gap-2">
-                        <label class="btn btn-sm">
-                            <i data-lucide="camera" class="size-4"></i><span data-photo-choose>{{ __('Add photo') }}</span>
-                            <input type="file" name="photo" accept="image/jpeg,image/png,image/webp" class="hidden" data-photo-input>
-                        </label>
-                        <button type="button" class="btn btn-sm btn-ghost text-error hidden" data-photo-remove>
-                            <i data-lucide="trash-2" class="size-4"></i>{{ __('Remove photo') }}
-                        </button>
-                    </div>
-                    <input type="hidden" name="remove_photo" value="" data-photo-remove-flag>
-                    <p class="mt-1 text-xs opacity-60">{{ __('JPG, PNG or WebP, up to 5 MB. It is cut to a square and made small (400 × 400).') }}</p>
-                    @error('photo')
-                        <p class="text-error mt-1 text-xs" data-error>{{ $message }}</p>
-                    @enderror
-                </div>
+                <input type="hidden" name="remove_photo" value="" data-photo-remove-flag>
+                <p class="text-center text-xs opacity-60">{{ __('JPG, PNG or WebP, up to 5 MB. It is cut to a square and made small (400 × 400).') }}</p>
+                @error('photo')
+                    <p class="text-error text-center text-xs" data-error>{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- 1. The student --}}
