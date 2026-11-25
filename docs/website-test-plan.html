@@ -53,7 +53,7 @@
     <tr><td>Project</td><td>Student Attendance Analytics System for a high school in Cambodia</td></tr>
     <tr><td>Part tested</td><td>Laravel website and API v1, version of 23 November 2026 (Days 3–6: school data, attendance, analytics, follow-ups, reports, parent messages, forgot password), the online site <b>https://demohs-attendance.alwaysdata.net</b> and the Android app v1.1 (installation and main flow)</td></tr>
     <tr><td>Roles</td><td>Admin and Teacher (parents receive messages only; students do not log in)</td></tr>
-    <tr><td>Number of test cases</td><td>155 manual test cases in 22 groups, plus 129 automatic tests</td></tr>
+    <tr><td>Number of test cases</td><td>162 manual test cases in 22 groups, plus 137 automatic tests</td></tr>
     <tr><td>Tester</td><td>______________________________________</td></tr>
     <tr><td>Test date</td><td>______________________________________</td></tr>
   </table>
@@ -126,14 +126,14 @@
 
 <!-- ======================= 3. Automatic tests ======================= -->
 <h2>3. Automatic tests</h2>
-<p>The project contains 129 automatic tests (PHPUnit) in 17 files. They create their own temporary database, so they never change your real data. Run:</p>
+<p>The project contains 137 automatic tests (PHPUnit) in 18 files. They create their own temporary database, so they never change your real data. Run:</p>
 <pre>php artisan test</pre>
 <table>
   <thead><tr><th>Test file</th><th>What it checks</th><th>Tests</th></tr></thead>
   <tbody>
     <tr><td>LoginAndRolesTest</td><td>Login by email or phone, wrong password, 5-try limit, roles, Khmer switch, database rules</td><td>12</td></tr>
     <tr><td>StudentManagementTest</td><td>Search, add, shared parent, form errors, edit, delete rules</td><td>8</td></tr>
-    <tr><td>SchoolDataTest</td><td>Classes, Subjects, Teachers, Parents, Teaching Assignments and their rules</td><td>18</td></tr>
+    <tr><td>SchoolDataTest</td><td>Classes, Subjects, Teachers, Parents, Teaching Assignments and their rules</td><td>20</td></tr>
     <tr><td>TakeAttendanceTest</td><td>Today's lessons, marking, reasons, 24-hour rule, past and future dates</td><td>13</td></tr>
     <tr><td>CorrectionsTest</td><td>History, direct changes, requests, approve, reject, audit log</td><td>9</td></tr>
     <tr><td>ApiTest</td><td>Every API address used by the Android app</td><td>10</td></tr>
@@ -144,13 +144,14 @@
     <tr><td>InterventionsTest</td><td>Rate before / after (10 school days), measure and close, filters, form rules</td><td>7</td></tr>
     <tr><td>ReportsAndTeacherDetailsTest</td><td>Report numbers, date checks, Excel rows and reasons, printable PDF, Teacher details</td><td>5</td></tr>
     <tr><td>ParentMessagesTest</td><td>3-days-in-a-row alert (once per streak), demo mode, real Telegram, failure and resend, Message parent</td><td>5</td></tr>
+    <tr><td>ParentRepliesTest</td><td>Answer buttons in Telegram: reason on the streak, phone-call follow-up, once only, only that parent, secret check, /start</td><td>6</td></tr>
     <tr><td>ForgotPasswordTest</td><td>Telegram code, wrong / old code, 5-try limit, same answer for every account, API, Teachers field</td><td>5</td></tr>
     <tr><td>KhmerValidationTest</td><td>Form errors in Khmer on the website and in the API; English stays English</td><td>3</td></tr>
     <tr><td>SchoolSettingsTest</td><td>School name: change, shown on the website, API and messages; rules and roles</td><td>3</td></tr>
     <tr><td>ExampleTest</td><td>The home address answers</td><td>1</td></tr>
   </tbody>
 </table>
-<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 129 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
+<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 137 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
 
 <!-- ======================= 4. Test cases ======================= -->
 <h2 class="page-break">4. Manual test cases</h2>
@@ -175,6 +176,7 @@
 <tr><td>B-02</td><td>Language is remembered</td><td>Log out and log in again with the same account.</td><td>The website opens in the language chosen last time.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>B-03</td><td>Dark theme</td><td>Click the moon button. Reload the page.</td><td>Dark navy colours; text stays easy to read; the choice stays after reload.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>B-04</td><td>Error messages in Khmer</td><td>In Khmer, try test C-05 (duplicate student code).</td><td>The page labels are Khmer. Note: some validation sentences may still be English (full Khmer check is planned for Day 6).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>B-05</td><td>Pin or unpin the menu</td><td>On a computer, click the pin at the top of the menu. Point at the icons on the left edge, then move the mouse away. Reload. Click the pin again.</td><td>Unpinned: only the slim icon bar stays and the page is wider. Pointing at an icon slides the panel out with that group's links (and a name tip); it closes about half a second after the mouse leaves. The choice stays after reload. Pinned again: both stay open. On a phone the ☰ button works as before.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>C. Students (admin)</h3>
@@ -200,6 +202,8 @@
 <tr><td>D-05</td><td>Delete empty class</td><td>Delete class 10C.</td><td>"Class deleted." The card disappears.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>D-06</td><td>Students button</td><td>Click "Students" on the 11A card.</td><td>The Students page opens, filtered to class 11A.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>D-07</td><td>Rate colours and at-risk chip</td><td>After group I, look at the 10A card. Then click its red "student(s) at risk" chip.</td><td>The rate number and its bar have the <b>same colour</b>: green 90% or more, orange 80–89%, red under 80%. Caption "Attendance this school year". A red chip "N student(s) at risk" (or green "All on track"). The chip opens Students filtered to 10A.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-08</td><td>Grade tabs and search</td><td>Classes: click the tab "Grade 11", then "All". Type <code>pen</code>, then <code>302</code>, then <code>zzz</code> in the search box.</td><td>Grade 11 shows only 11A and 11B. "pen" → 10A (Pen Sovann), "302" → 12B, "zzz" → "No class matches your search." No page reload.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>D-09</td><td>List view</td><td>Click "List", reload the page, then click "Cards". Add a class with grade 7.</td><td>List: one row per class with room, homeroom teacher, students, attendance bar and at-risk count; still List after reload. Cards are grouped under "Grade 10/11/12". Grade 7 is accepted and gets its own tab.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>E. Subjects (admin)</h3>
@@ -372,6 +376,10 @@ Only use it on test data.</div>
 <tr><td>S-05</td><td>Failed and Resend</td><td>Put a wrong chat ID (e.g. 123) on a parent, message them, then put the right ID back and click Resend.</td><td>First: red "Failed" with Telegram's reason. After Resend: "Delivered". The teacher's attendance is never blocked by a message problem.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>S-06</td><td>Filters and log</td><td>Filter by Delivered, Demo, Failed; by type; search a name. Click a message.</td><td>The list follows the filters. The full text opens under the line.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>S-07</td><td>Teachers cannot open it</td><td>As Pen Sovann, type /messages.</td><td>"No permission" page (403).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-08</td><td>Answer buttons</td><td>With Telegram on, make a student whose parent joined the bot absent 3 school days in a row (or ask the developer to send a test alert).</td><td>The Telegram message ends with "Please tap a button below…" and has 3 buttons: 🤒 ឈឺ, 🏠 កិច្ចការគ្រួសារ, 📞 សូមគ្រូទូរស័ព្ទមក. Parent Messages shows "Waiting for the parent to answer in Telegram".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-09</td><td>Parent taps 🤒 ឈឺ</td><td>In Telegram tap 🤒 ឈឺ. Reload Parent Messages and open the student's page.</td><td>Pop-up "🤒 ឈឺ ✓", the buttons disappear and the bot says thank you. The website shows "Parent replied: 🤒 Sick"; the streak's absences without a reason now have the reason Sick (a reason the teacher gave is kept).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-10</td><td>Parent taps 📞</td><td>On another alert, tap 📞 សូមគ្រូទូរស័ព្ទមក. Open Interventions.</td><td>The bot says the homeroom teacher will call. A new open follow-up "Phone call" for that student, due in 7 days. No absence reason is changed.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>S-11</td><td>Only once, only the parent; /start</td><td>Tap another button on an answered message (if it is still visible). Send /start to the bot from any Telegram account.</td><td>"Already received" and nothing changes. /start: the bot answers with that person's Telegram chat ID, to give to the school.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>T. Forgot password and Khmer form errors</h3>
@@ -430,11 +438,11 @@ Only use it on test data.</div>
 <table class="fill">
   <thead><tr><th>Group</th><th style="width:20mm">Cases</th><th style="width:20mm">Passed</th><th style="width:20mm">Failed</th></tr></thead>
   <tbody>
-    <tr><td>3. Automatic tests</td><td>129</td><td></td><td></td></tr>
+    <tr><td>3. Automatic tests</td><td>137</td><td></td><td></td></tr>
     <tr><td>A. Login, logout and roles</td><td>9</td><td></td><td></td></tr>
-    <tr><td>B. Language and theme</td><td>4</td><td></td><td></td></tr>
+    <tr><td>B. Language and theme</td><td>5</td><td></td><td></td></tr>
     <tr><td>C. Students</td><td>10</td><td></td><td></td></tr>
-    <tr><td>D. Classes</td><td>7</td><td></td><td></td></tr>
+    <tr><td>D. Classes</td><td>9</td><td></td><td></td></tr>
     <tr><td>E. Subjects</td><td>4</td><td></td><td></td></tr>
     <tr><td>F. Teachers</td><td>6</td><td></td><td></td></tr>
     <tr><td>G. Parents</td><td>5</td><td></td><td></td></tr>
@@ -449,11 +457,11 @@ Only use it on test data.</div>
     <tr><td>P. At-Risk and Student details</td><td>7</td><td></td><td></td></tr>
     <tr><td>Q. Interventions</td><td>8</td><td></td><td></td></tr>
     <tr><td>R. Reports and Teacher details</td><td>8</td><td></td><td></td></tr>
-    <tr><td>S. Parent messages</td><td>7</td><td></td><td></td></tr>
+    <tr><td>S. Parent messages</td><td>11</td><td></td><td></td></tr>
     <tr><td>T. Forgot password and Khmer errors</td><td>8</td><td></td><td></td></tr>
     <tr><td>U. Online site and Android app</td><td>8</td><td></td><td></td></tr>
     <tr><td>V. School settings</td><td>3</td><td></td><td></td></tr>
-    <tr><th>Total manual</th><th>155</th><th></th><th></th></tr>
+    <tr><th>Total manual</th><th>162</th><th></th><th></th></tr>
   </tbody>
 </table>
 <table class="meta" style="margin-top:8mm">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v5 · Student Attendance Analytics System</title>
+<title>ERD v6 · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -196,6 +196,8 @@ erDiagram
     text body
     enum status "pending, sent, failed"
     boolean simulated "demo, not delivered"
+    string reply "sick, family_matter, call_me"
+    timestamp replied_at
     timestamp sent_at
   }
   alerts {
@@ -599,6 +601,8 @@ erDiagram
         <tr><td>status</td><td>enum</td><td>pending, sent, failed</td></tr>
         <tr><td>simulated</td><td>boolean</td><td>Yes = saved only (demo mode or SMS), not really delivered</td></tr>
         <tr><td>error</td><td>varchar</td><td>Why sending failed</td></tr>
+        <tr><td>reply</td><td>varchar(20)</td><td>The parent's answer with a button in Telegram: sick, family_matter (also written as the absence reason) or call_me (opens a phone-call follow-up); empty = no answer yet. One answer per message</td></tr>
+        <tr><td>replied_at</td><td>timestamp</td><td>When the parent answered</td></tr>
         <tr><td>sent_at</td><td>timestamp</td><td>When it was delivered</td></tr>
       </table>
       <p>Every message to a parent, so the school can prove what was sent and when.</p>

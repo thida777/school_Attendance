@@ -50,7 +50,7 @@
     <br><code>php artisan db:seed --class=DemoAttendanceSeeder --force</code>
     <br>Run it on the laptop too (WAMP on, in <code>D:\Project\Student_Attendance_Analytics</code>), so the local backup in section 4 shows the same picture.</li>
   <li><span class="box"></span><b>Check the defense day has a 10A lesson for Pen Sovann:</b> Mon P1, Tue P4, Thu P2, Fri P5, Sat P5. <b>Wednesday has none</b>: then mark his first lesson of the day instead, and skip the “Chea Rithy absent” part in step 1.</li>
-  <li><span class="box"></span><b>Telegram works:</b> on the server, <code>php artisan telegram:chats</code> shows your name. Both Chea Rithy’s parent (Chea Samnang) and Pen Sovann are linked to your Telegram (chat ID 829169853).</li>
+  <li><span class="box"></span><b>Telegram works:</b> send <code>/start</code> to the bot; it answers at once with your chat ID (829169853). On the server, <code>php artisan telegram:webhook --info</code> shows the website address and no errors. Both Chea Rithy’s parent (Chea Samnang) and Pen Sovann are linked to your Telegram (chat ID 829169853).</li>
   <li><span class="box"></span><b>Rehearse the whole script twice</b>, with a timer. Each rehearsal adds a follow-up and a message; that is fine and looks realistic.</li>
   <li><span class="box"></span><b>Fill in the slide placeholders</b> (name, supervisor, date, university, team testing result) and download the deck as PDF and PowerPoint as a backup.</li>
   <li><span class="box"></span><b>Charge</b> the laptop, the phone and a power bank. Prepare a phone hotspot in case the room Wi-Fi fails.</li>
@@ -94,8 +94,8 @@
     <td>Open <b>At-Risk Students</b>. Point at the four level cards and at <b>Chea Rithy, Critical</b> at the top. Click his name. On Student details, read the coloured box (the reason in one sentence) and point at the 8-week chart and the weekday pattern.</td>
     <td>“The system does not just say ‘at risk’; it says why.” (Read the reason and the numbers from the box, e.g. the rate and how many points it fell.) “A teacher can check the rule.”</td></tr>
   <tr><td>4</td><td>Laptop + phone<br>2 min</td>
-    <td>On Chea Rithy’s page press <b>Message parent</b>. Show the Khmer + English text with this month’s rate. Keep <b>“Also add a follow-up”</b> ticked. Press <b>Send</b>. <b>Hold up the phone: the Telegram message arrives.</b> Then open <b>Interventions</b>: the new follow-up with the “Before” rate filled in.</td>
-    <td>“Parents use Telegram, so the school bot sends it, in Khmer first. And the message is also recorded as a follow-up, so in two weeks the system measures whether attendance improved.”</td></tr>
+    <td>On Chea Rithy’s page press <b>Message parent</b>. Show the Khmer + English text with this month’s rate. Keep <b>“Also add a follow-up”</b> ticked. Press <b>Send</b>. <b>Hold up the phone: the Telegram message arrives.</b> Then open <b>Interventions</b>: the new follow-up with the “Before” rate filled in.<br><b>One-tap answer:</b> if Chea Rithy was absent the two school days before, step 1 also sent the automatic alert with three buttons. On the phone tap <b>🤒 ឈឺ</b>: the buttons disappear and the bot says thank you. Reload <b>Parent Messages</b>: “Parent replied: 🤒 Sick”.</td>
+    <td>“Parents use Telegram, so the school bot sends it, in Khmer first. And the message is also recorded as a follow-up, so in two weeks the system measures whether attendance improved. And the parent can answer with one tap: the reason is saved on the absences, or the teacher gets a reminder to call.”</td></tr>
   <tr><td>5</td><td>Laptop · Reports<br>1.5 min</td>
     <td>Open <b>Reports</b>. Choose class 10A to show the numbers change. Click <b>Excel</b> (show the file opens with Khmer names). Click <b>Export PDF</b>: show the A4 report in the print window, then Cancel.</td>
     <td>“For the principal: any period, class or subject, as Excel or a printable report with signature lines.”</td></tr>
@@ -132,7 +132,7 @@
   <tr><td>Do parents agree to receive messages?</td><td>Yes: a parent receives Telegram messages only after opening the school bot and pressing Start themselves.</td></tr>
   <tr><td>What if a teacher forgets to take attendance?</td><td>The dashboard shows “Not recorded today”, Reports show lessons recorded against the timetable, and Teacher details show each teacher’s missing lessons.</td></tr>
   <tr><td>Why the 24-hour rule?</td><td>A teacher can fix a mistake quickly, but old records cannot change silently: after 24 hours a change needs the admin’s approval, and every change is logged.</td></tr>
-  <tr><td>How was it tested?</td><td>129 automatic tests (653 checks) that all pass, and a written test plan with 155 manual cases in 22 groups.</td></tr>
+  <tr><td>How was it tested?</td><td>137 automatic tests (699 checks) that all pass, and a written test plan with 162 manual cases in 22 groups.</td></tr>
   <tr><td>How much would it cost a school?</td><td>The demo runs on a free hosting plan and Telegram bots are free. A real school would need a small paid hosting plan, and SMS would cost per message. [Add a price only if you have checked one.]</td></tr>
   <tr><td>How would a school start using it?</td><td>The admin enters classes, subjects, teachers, students and parents on the website (Excel import is future work), sets the timetable, and teachers install the app.</td></tr>
   </tbody>
