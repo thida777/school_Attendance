@@ -263,3 +263,52 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
     form.querySelector('[data-photo-cancel]').addEventListener('click', reset);
     form.addEventListener('submit', () => form.querySelector('button:not([type])')?.classList.add('btn-disabled'));
 });
+
+/* ---------- Pin / unpin the side menu (computer screens), remembered in the browser ---------- */
+(function sideMenu() {
+    const root = document.documentElement;
+    const sidebar = document.getElementById('sidebar');
+    const edge = document.getElementById('sidebar-edge');
+    if (!sidebar || !edge) return;
+    let hideTimer;
+
+    const show = () => {
+        clearTimeout(hideTimer);
+        sidebar.classList.add('peek');
+    };
+    const hideSoon = () => {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => sidebar.classList.remove('peek'), 300);
+    };
+    const drawPinButton = () => {
+        const unpinned = root.dataset.menu === 'unpinned';
+        document.querySelectorAll('[data-action="pin-menu"]').forEach((btn) => {
+            const label = unpinned ? btn.dataset.labelPin : btn.dataset.labelUnpin;
+            btn.setAttribute('aria-label', label);
+            btn.title = label;
+            btn.setAttribute('aria-pressed', String(!unpinned));
+        });
+    };
+
+    edge.addEventListener('mouseenter', show);
+    sidebar.querySelector('aside').addEventListener('mouseenter', show);
+    sidebar.querySelector('aside').addEventListener('mouseleave', hideSoon);
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('[data-action="pin-menu"]')) return;
+        const unpin = root.dataset.menu !== 'unpinned';
+        if (unpin) root.dataset.menu = 'unpinned';
+        else delete root.dataset.menu;
+        sidebar.classList.remove('peek');
+        try {
+            localStorage.setItem('menu', unpin ? 'unpinned' : 'pinned');
+        } catch {
+            // private mode: the choice lasts only for this page
+        }
+        drawPinButton();
+        // Charts and wide tables take the new width
+        window.dispatchEvent(new Event('resize'));
+    });
+
+    drawPinButton();
+})();

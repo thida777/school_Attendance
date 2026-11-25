@@ -84,18 +84,29 @@
     </dialog>
 
     {{-- Sidebar: only the pages this role may open --}}
+    {{-- Unpinned menu (computer only): touching this thin strip on the left edge slides the menu out --}}
+    <div id="sidebar-edge" aria-hidden="true"></div>
+
     <div class="drawer-side z-40" id="sidebar">
         <label for="sidebar-toggle" aria-label="{{ __('Close menu') }}" class="drawer-overlay"></label>
         <aside class="bg-base-100 border-base-300 flex min-h-full w-64 flex-col border-r">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 px-5 py-4">
-                <span class="brand-mark text-primary-content grid size-10 place-items-center rounded-2xl">
-                    <i data-lucide="clipboard-check" class="size-5"></i>
-                </span>
-                <span>
-                    <span class="block leading-tight font-semibold">{{ __('Attendance') }}</span>
-                    <span class="block text-xs opacity-60">{{ \App\Support\School::name() }}</span>
-                </span>
-            </a>
+            <div class="flex items-center gap-1 pr-3">
+                <a href="{{ route('home') }}" class="flex min-w-0 flex-1 items-center gap-3 py-4 pl-5">
+                    <span class="brand-mark text-primary-content grid size-10 shrink-0 place-items-center rounded-2xl">
+                        <i data-lucide="clipboard-check" class="size-5"></i>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block leading-tight font-semibold">{{ __('Attendance') }}</span>
+                        <span class="block truncate text-xs opacity-60">{{ \App\Support\School::name() }}</span>
+                    </span>
+                </a>
+                <button type="button" class="btn btn-ghost btn-sm btn-square hidden lg:inline-flex" data-action="pin-menu"
+                        data-label-pin="{{ __('Pin menu') }}" data-label-unpin="{{ __('Unpin menu') }}"
+                        aria-label="{{ __('Unpin menu') }}" title="{{ __('Unpin menu') }}">
+                    <i data-lucide="pin" class="size-4 pin-on"></i>
+                    <i data-lucide="pin-off" class="size-4 pin-off"></i>
+                </button>
+            </div>
             <ul class="menu w-full grow gap-1 px-3">
                 @foreach ($menu as $group => $items)
                     <li class="menu-title">{{ __($group) }}</li>

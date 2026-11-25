@@ -10,6 +10,8 @@
     <script>
         try { document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light'; }
         catch { document.documentElement.dataset.theme = 'light'; }
+        // The same for the side menu: pinned (always open) or unpinned (hidden until the mouse reaches the left edge)
+        try { if (localStorage.getItem('menu') === 'unpinned') document.documentElement.dataset.menu = 'unpinned'; } catch {}
     </script>
 
     @fonts
