@@ -507,10 +507,14 @@ body {
   font-weight: 500;
 }
 
-/* ---------- Pin / unpin the side menu (computer screens) ----------
-   Pinned: the menu always stays open (daisyUI lg:drawer-open).
-   Unpinned (<html data-menu="unpinned">): the page uses the full width and the menu
-   slides out over it when the mouse touches the left edge (#sidebar-edge). */
+/* ---------- Side menu on computer screens: icon bar + menu panel ----------
+   The icon bar (#side-rail) always stays. The panel (#side-panel) shows the links of
+   one group: the hovered icon's group, otherwise the group of the current page.
+   Pinned: both stay open. Unpinned (<html data-menu="unpinned">): the panel slides out
+   while the mouse is on the icon bar or the panel. Phones: no icon bar, every group. */
+#side-rail {
+  display: none;
+}
 [data-action="pin-menu"] .pin-off,
 [data-menu="unpinned"] [data-action="pin-menu"] .pin-on {
   display: none;
@@ -521,41 +525,97 @@ body {
 [data-action="pin-menu"] .pin-on {
   color: var(--color-primary);
 }
-#sidebar-edge {
-  display: none;
-}
 @media (min-width: 1024px) {
-  [data-menu="unpinned"] #sidebar-edge {
-    display: block;
-    position: fixed;
-    inset: 0 auto 0 0;
-    width: 0.75rem;
-    z-index: 45;
+  .side-shell {
+    position: relative;
   }
+  #side-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    width: 5.25rem;
+    margin: 1rem 0 1rem 1rem;
+    padding: 1rem 0.5rem;
+    min-height: calc(100dvh - 2rem);
+    border-radius: 1.75rem;
+    background-color: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+  }
+  .rail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    width: 100%;
+    padding: 0.6rem 0.2rem;
+    border-radius: 1rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: center;
+    opacity: 0.75;
+    transition: background-color 0.15s, opacity 0.15s;
+  }
+  .rail-item:hover,
+  .rail-item:focus-visible,
+  .rail-item.is-shown {
+    opacity: 1;
+    background-color: var(--glass-field);
+  }
+  .rail-item[aria-current] {
+    opacity: 1;
+    color: var(--color-primary);
+  }
+  #sidebar #side-panel {
+    margin-left: 0.75rem;
+  }
+  .side-panel-logo {
+    display: none;
+  }
+  #side-panel .side-group:not(.is-shown) {
+    display: none;
+  }
+
+  /* Unpinned: the panel floats next to the icon bar and slides out on hover */
   [data-menu="unpinned"] #sidebar {
-    position: fixed;
-    z-index: 50;
-    height: 100dvh;
-    pointer-events: none;
+    overflow: visible;
   }
   [data-menu="unpinned"] #sidebar > .drawer-overlay {
     display: none;
   }
-  [data-menu="unpinned"] #sidebar > aside {
-    /* It floats over the page, so it needs a solid background to stay readable */
+  [data-menu="unpinned"] #sidebar #side-panel {
+    position: absolute;
+    top: 0;
+    left: 6.25rem;
     background-color: var(--color-base-100);
-    pointer-events: auto;
-    translate: calc(-100% - 1.5rem);
-    transition: translate 0.25s ease-out, box-shadow 0.25s;
-  }
-  [data-menu="unpinned"] #sidebar.peek > aside,
-  [data-menu="unpinned"] #sidebar:focus-within > aside {
-    translate: 0;
     box-shadow: 0 24px 60px rgb(0 0 0 / 0.25);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    translate: -0.75rem 0;
+    transition: translate 0.2s ease-out, opacity 0.2s ease-out, visibility 0.2s;
+  }
+  [data-menu="unpinned"] #sidebar.peek #side-panel,
+  [data-menu="unpinned"] #side-panel:focus-within {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    translate: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  [data-menu="unpinned"] #sidebar > aside {
+  [data-menu="unpinned"] #sidebar #side-panel {
     transition: none;
+  }
+}
+/* Phone: the menu slides over the page, so it needs a solid background to stay readable
+   (the glass blur cannot see through the sliding wrapper) */
+@media (max-width: 1023px) {
+  #sidebar #side-panel {
+    background-color: var(--color-base-100);
   }
 }

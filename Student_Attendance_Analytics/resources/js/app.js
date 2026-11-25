@@ -264,22 +264,48 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
     form.addEventListener('submit', () => form.querySelector('button:not([type])')?.classList.add('btn-disabled'));
 });
 
-/* ---------- Pin / unpin the side menu (computer screens), remembered in the browser ---------- */
+/* ---------- Side menu on computer screens: icon bar + menu panel ----------
+   Pointing at an icon shows that group's links. Unpinned, the panel slides out while
+   the mouse is on the icon bar or the panel, and closes 460 ms after it leaves.
+   The pin choice is remembered in the browser (read in <head>, so nothing jumps). */
 (function sideMenu() {
     const root = document.documentElement;
     const sidebar = document.getElementById('sidebar');
-    const edge = document.getElementById('sidebar-edge');
-    if (!sidebar || !edge) return;
-    let hideTimer;
+    const shell = sidebar?.querySelector('.side-shell');
+    if (!shell || !document.getElementById('side-rail')) return;
+    const currentGroup = sidebar.dataset.currentGroup;
+    let closeTimer;
 
-    const show = () => {
-        clearTimeout(hideTimer);
+    const showGroup = (group) => {
+        sidebar.querySelectorAll('.side-group, .rail-item').forEach((el) => {
+            el.classList.toggle('is-shown', el.dataset.group === group);
+        });
+    };
+    const open = () => {
+        clearTimeout(closeTimer);
         sidebar.classList.add('peek');
     };
-    const hideSoon = () => {
-        clearTimeout(hideTimer);
-        hideTimer = setTimeout(() => sidebar.classList.remove('peek'), 300);
+    const closeSoon = () => {
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => {
+            sidebar.classList.remove('peek');
+            showGroup(currentGroup);
+        }, 460);
     };
+
+    sidebar.querySelectorAll('.rail-item').forEach((item) => {
+        item.addEventListener('mouseenter', () => showGroup(item.dataset.group));
+        item.addEventListener('focus', () => {
+            showGroup(item.dataset.group);
+            open();
+        });
+    });
+    shell.addEventListener('mouseenter', open);
+    shell.addEventListener('mouseleave', closeSoon);
+    shell.addEventListener('focusout', (e) => {
+        if (!shell.contains(e.relatedTarget)) closeSoon();
+    });
+
     const drawPinButton = () => {
         const unpinned = root.dataset.menu === 'unpinned';
         document.querySelectorAll('[data-action="pin-menu"]').forEach((btn) => {
@@ -290,22 +316,32 @@ document.querySelectorAll('form[data-photo-form]').forEach((form) => {
         });
     };
 
-    edge.addEventListener('mouseenter', show);
-    sidebar.querySelector('aside').addEventListener('mouseenter', show);
-    sidebar.querySelector('aside').addEventListener('mouseleave', hideSoon);
+    const showMessage = (text) => {
+        document.querySelectorAll('[data-menu-toast]').forEach((t) => t.remove());
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-end toast-bottom z-50';
+        toast.dataset.menuToast = '';
+        toast.innerHTML = '<div role="status" class="alert alert-info"><span></span></div>';
+        toast.querySelector('span').textContent = text;
+        document.body.append(toast);
+        setTimeout(() => toast.remove(), 2600);
+    };
 
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('[data-action="pin-menu"]')) return;
+        const btn = e.target.closest('[data-action="pin-menu"]');
+        if (!btn) return;
         const unpin = root.dataset.menu !== 'unpinned';
         if (unpin) root.dataset.menu = 'unpinned';
         else delete root.dataset.menu;
         sidebar.classList.remove('peek');
+        showGroup(currentGroup);
         try {
             localStorage.setItem('menu', unpin ? 'unpinned' : 'pinned');
         } catch {
             // private mode: the choice lasts only for this page
         }
         drawPinButton();
+        showMessage(unpin ? btn.dataset.msgUnpinned : btn.dataset.msgPinned);
         // Charts and wide tables take the new width
         window.dispatchEvent(new Event('resize'));
     });

@@ -675,5 +675,8 @@
     "Printed reports (PDF)": "របាយការណ៍បោះពុម្ព (PDF)",
     "Telegram messages to parents and password codes (Khmer name first, then English)": "សារ Telegram ទៅអាណាព្យាបាល និងលេខកូដពាក្យសម្ងាត់ (ឈ្មោះខ្មែរមុន បន្ទាប់មកអង់គ្លេស)",
     "Pin menu": "ខ្ទាស់ម៉ឺនុយ",
-    "Unpin menu": "ឈប់ខ្ទាស់ម៉ឺនុយ"
+    "Unpin menu": "ឈប់ខ្ទាស់ម៉ឺនុយ",
+    "Menu groups": "ក្រុមម៉ឺនុយ",
+    "Menu pinned": "បានខ្ទាស់ម៉ឺនុយ",
+    "Menu hides automatically. Point at an icon on the left to open it.": "ម៉ឺនុយលាក់ដោយស្វ័យប្រវត្តិ។ ដាក់ព្រួញកណ្តុរលើរូបតំណាងខាងឆ្វេង ដើម្បីបើកវា។"
 }
