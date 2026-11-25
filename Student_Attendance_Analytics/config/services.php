@@ -39,6 +39,8 @@ return [
     // Parent messages: with a bot token, Telegram messages are really sent; without one they are saved as a demo.
     'telegram' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
+        // Parents' button taps come back to /api/telegram/webhook with this secret (php artisan telegram:webhook)
+        'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
     ],
 
 ];

@@ -84,7 +84,7 @@ class ParentMessenger
             return $message;
         }
 
-        $error = $this->telegram->send($message->guardian->telegram_chat_id, $message->body);
+        $error = $this->telegram->send($message->guardian->telegram_chat_id, $message->body, $this->replyButtons($message));
         $message->update($error === null
             ? ['status' => 'sent', 'simulated' => false, 'error' => null, 'sent_at' => now()]
             : ['status' => 'failed', 'error' => $error]);
@@ -92,17 +92,37 @@ class ParentMessenger
         return $message;
     }
 
+    /**
+     * Answer buttons under an absence alert (one row): sick, family matter, please call me.
+     * A tap sends "reply:<message id>:<code>" to the webhook (ParentReplies).
+     */
+    public function replyButtons(ParentMessage $message): ?array
+    {
+        if ($message->type !== 'absence_alert' || $message->reply) {
+            return null;
+        }
+
+        return [collect(ParentMessage::REPLIES)->map(fn ($r, $code) => [
+            'text' => "{$r[0]} {$r[1]}",
+            'callback_data' => "reply:{$message->id}:{$code}",
+        ])->values()->all()];
+    }
+
     /** Automatic message: absent several school days in a row. */
     public function absenceText(Student $student, Guardian $guardian, int $days): string
     {
         [$teacher, $teacherKm, $phone] = $this->contact($student);
         $date = today();
+        // On Telegram the parent can answer with a button under the message (ParentReplies)
+        $buttons = $guardian->preferredChannel() === 'telegram';
 
         return 'សួស្តី '.($guardian->name_km ?: $guardian->name)."!\n"
             ."កូនរបស់អ្នក {$student->name_km} ថ្នាក់ {$student->schoolClass->name} បានអវត្តមាន {$days} ថ្ងៃសិក្សាជាប់គ្នា (ថ្ងៃចុងក្រោយ {$date->copy()->locale('km')->translatedFormat('j F Y')})។ "
-            ."សូមទាក់ទងគ្រូបន្ទុកថ្នាក់ {$teacherKm} {$phone}។\n\n"
+            ."សូមទាក់ទងគ្រូបន្ទុកថ្នាក់ {$teacherKm} {$phone}។"
+            .($buttons ? ' សូមចុចប៊ូតុងខាងក្រោម ដើម្បីប្រាប់មូលហេតុ។' : '')."\n\n"
             ."Hello {$guardian->name}, your child {$student->name_latin} ({$student->schoolClass->name}) has been absent "
-            ."{$days} school days in a row (latest: {$date->format('j M Y')}). Please contact the homeroom teacher {$teacher}, {$phone}.\n\n"
+            ."{$days} school days in a row (latest: {$date->format('j M Y')}). Please contact the homeroom teacher {$teacher}, {$phone}."
+            .($buttons ? ' Please tap a button below to tell us the reason.' : '')."\n\n"
             .School::signature();
     }
 

@@ -25,6 +25,12 @@ class TelegramChats extends Command
         }
 
         $response = Http::timeout(10)->get("https://api.telegram.org/bot{$token}/getUpdates");
+        if (str_contains((string) $response->json('description'), 'webhook')) {
+            // With the webhook on (telegram:webhook), the bot itself answers /start with the chat ID
+            $this->warn('The bot is connected to the website (webhook). Ask the parent to send /start to the bot: it answers with their chat ID.');
+
+            return self::SUCCESS;
+        }
         if (! $response->json('ok')) {
             $this->error('Telegram said: '.($response->json('description') ?? 'HTTP '.$response->status()));
 

@@ -119,6 +119,18 @@
                                     </span>
                                 </div>
                             </div>
+                            {{-- The parent's answer with a button under the Telegram message --}}
+                            @if ($message->reply)
+                                <p class="bg-success/10 text-success mt-2 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
+                                    <i data-lucide="reply" class="size-4"></i>
+                                    {{ __('Parent replied:') }} {{ $message->replyLabel() }}
+                                    <span class="text-xs font-normal opacity-70">· {{ $message->replied_at->translatedFormat('j M, H:i') }}</span>
+                                </p>
+                            @elseif ($message->type === 'absence_alert' && $message->channel === 'telegram' && ! $message->simulated && $message->status === 'sent')
+                                <p class="mt-2 inline-flex items-center gap-2 text-xs opacity-60">
+                                    <i data-lucide="hourglass" class="size-3.5"></i>{{ __('Waiting for the parent to answer in Telegram') }}
+                                </p>
+                            @endif
                             <details class="mt-1">
                                 <summary class="cursor-pointer text-sm opacity-80">{{ \Illuminate\Support\Str::limit(collect(preg_split('/\R/u', $message->body))->filter()->get(1) ?? $message->body, 120) }}</summary>
                                 <p class="bg-base-200 mt-2 rounded-box p-3 text-sm whitespace-pre-line">{{ $message->body }}</p>

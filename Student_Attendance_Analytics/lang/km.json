@@ -685,5 +685,8 @@
     "Show as cards": "បង្ហាញជាកាត",
     "Show as list": "បង្ហាញជាបញ្ជី",
     "Actions": "សកម្មភាព",
-    "No class matches your search.": "រកមិនឃើញថ្នាក់ដែលត្រូវនឹងការស្វែងរកទេ។"
+    "No class matches your search.": "រកមិនឃើញថ្នាក់ដែលត្រូវនឹងការស្វែងរកទេ។",
+    "Please call me": "សូមគ្រូទូរស័ព្ទមក",
+    "Parent replied:": "អាណាព្យាបាលឆ្លើយតប៖",
+    "Waiting for the parent to answer in Telegram": "កំពុងរង់ចាំអាណាព្យាបាលឆ្លើយតបក្នុង Telegram"
 }

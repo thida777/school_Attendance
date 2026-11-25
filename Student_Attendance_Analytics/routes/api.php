@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\HistoryController;
 use App\Http\Controllers\Api\V1\TeachingController;
 use App\Http\Controllers\SchoolSettingsController;
+use App\Http\Controllers\TelegramWebhookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
  * "Accept-Language: km" gives messages in Khmer.
  * The rules are the same as on the website (App\Services\AttendanceRecorder).
  */
+// The school's Telegram bot: parents' button taps and /start (checked with a secret, see the controller)
+Route::post('/telegram/webhook', TelegramWebhookController::class)->middleware('throttle:120,1');
+
 Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // 5 tries per minute
 

@@ -34,5 +34,6 @@
         <env name="NIGHTWATCH_ENABLED" value="false"/>
         <!-- Tests never send real Telegram messages -->
         <env name="TELEGRAM_BOT_TOKEN" value="" force="true"/>
+        <env name="TELEGRAM_WEBHOOK_SECRET" value="" force="true"/>
     </php>
 </phpunit>

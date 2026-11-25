@@ -88,6 +88,12 @@
                         {{ __('Last message: :when', ['when' => $messages->first()->created_at->translatedFormat('j M, H:i')]) }}
                         ({{ trans_choice('{1} :count message|[0,*] :count messages', $student->parentMessages()->count()) }})
                     </a>
+                    @if ($replied = $messages->firstWhere('reply', '!=', null))
+                        <p class="text-success mt-1 inline-flex items-center gap-1.5 text-xs font-medium">
+                            <i data-lucide="reply" class="size-3.5"></i>{{ __('Parent replied:') }} {{ $replied->replyLabel() }}
+                            <span class="font-normal opacity-70">· {{ $replied->replied_at->translatedFormat('j M') }}</span>
+                        </p>
+                    @endif
                 @endif
             </div>
         </div>
