@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v6 (short) · Student Attendance Analytics System</title>
+<title>ERD v7 (short) · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -115,6 +115,7 @@ erDiagram
     enum gender "male, female"
     date date_of_birth
     enum status "active, inactive"
+    string photo_path "nullable, private photo"
   }
   guardians {
     bigint id PK
@@ -122,6 +123,7 @@ erDiagram
     string name_km
     string phone UK
     string telegram_chat_id "nullable"
+    string telegram_invite UK "one-time QR invite"
   }
   guardian_student {
     bigint id PK
@@ -312,7 +314,8 @@ erDiagram
         <tr><td>name_latin</td><td>varchar</td><td>Latin name</td></tr>
         <tr><td>gender</td><td>enum</td><td>male, female</td></tr>
         <tr><td>date_of_birth</td><td>date</td><td>Optional</td></tr>
-        <tr><td>status</td><td>enum</td><td>active, inactive (left the school)</td></tr>
+        <tr><td>status</td><td>enum</td><td>active (studying), inactive (left school)</td></tr>
+        <tr><td>photo_path</td><td>varchar</td><td>Optional photo, 400 × 400 WebP in private storage (storage/app/private/student-photos); shown only through a signed link that works until the end of the next day; empty = initials</td></tr>
       </table>
       <p>Students do not log in. They are records managed by the admin.</p>
     </div>
@@ -326,6 +329,7 @@ erDiagram
         <tr><td>name_km</td><td>varchar</td><td>Khmer name</td></tr>
         <tr><td>phone</td><td>varchar</td><td>Unique; used for SMS</td></tr>
         <tr><td>telegram_chat_id</td><td>varchar</td><td>Set when the parent joins the school's Telegram bot</td></tr>
+        <tr><td>telegram_invite</td><td>varchar(40), unique</td><td>One-time code of the parent's invite link / QR code (t.me/&lt;bot&gt;?start=code); cleared when the parent presses Start and is linked</td></tr>
       </table>
       <p>Parents are contacts only. Telegram if they joined the bot, otherwise SMS.</p>
     </div>

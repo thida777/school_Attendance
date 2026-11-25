@@ -53,7 +53,7 @@
     <tr><td>Project</td><td>Student Attendance Analytics System for a high school in Cambodia</td></tr>
     <tr><td>Part tested</td><td>Laravel website and API v1, version of 23 November 2026 (Days 3–6: school data, attendance, analytics, follow-ups, reports, parent messages, forgot password), the online site <b>https://demohs-attendance.alwaysdata.net</b> and the Android app v1.1 (installation and main flow)</td></tr>
     <tr><td>Roles</td><td>Admin and Teacher (parents receive messages only; students do not log in)</td></tr>
-    <tr><td>Number of test cases</td><td>162 manual test cases in 22 groups, plus 137 automatic tests</td></tr>
+    <tr><td>Number of test cases</td><td>175 manual test cases in 22 groups, plus 152 automatic tests</td></tr>
     <tr><td>Tester</td><td>______________________________________</td></tr>
     <tr><td>Test date</td><td>______________________________________</td></tr>
   </table>
@@ -126,14 +126,14 @@
 
 <!-- ======================= 3. Automatic tests ======================= -->
 <h2>3. Automatic tests</h2>
-<p>The project contains 137 automatic tests (PHPUnit) in 18 files. They create their own temporary database, so they never change your real data. Run:</p>
+<p>The project contains 152 automatic tests (PHPUnit) in 21 files. They create their own temporary database, so they never change your real data. Run:</p>
 <pre>php artisan test</pre>
 <table>
   <thead><tr><th>Test file</th><th>What it checks</th><th>Tests</th></tr></thead>
   <tbody>
     <tr><td>LoginAndRolesTest</td><td>Login by email or phone, wrong password, 5-try limit, roles, Khmer switch, database rules</td><td>12</td></tr>
     <tr><td>StudentManagementTest</td><td>Search, add, shared parent, form errors, edit, delete rules</td><td>8</td></tr>
-    <tr><td>SchoolDataTest</td><td>Classes, Subjects, Teachers, Parents, Teaching Assignments and their rules</td><td>20</td></tr>
+    <tr><td>SchoolDataTest</td><td>Classes, Subjects, Teachers, Parents, Teaching Assignments and their rules</td><td>23</td></tr>
     <tr><td>TakeAttendanceTest</td><td>Today's lessons, marking, reasons, 24-hour rule, past and future dates</td><td>13</td></tr>
     <tr><td>CorrectionsTest</td><td>History, direct changes, requests, approve, reject, audit log</td><td>9</td></tr>
     <tr><td>ApiTest</td><td>Every API address used by the Android app</td><td>10</td></tr>
@@ -145,13 +145,16 @@
     <tr><td>ReportsAndTeacherDetailsTest</td><td>Report numbers, date checks, Excel rows and reasons, printable PDF, Teacher details</td><td>5</td></tr>
     <tr><td>ParentMessagesTest</td><td>3-days-in-a-row alert (once per streak), demo mode, real Telegram, failure and resend, Message parent</td><td>5</td></tr>
     <tr><td>ParentRepliesTest</td><td>Answer buttons in Telegram: reason on the streak, phone-call follow-up, once only, only that parent, secret check, /start</td><td>6</td></tr>
+    <tr><td>StudentPhotoTest</td><td>Student photo: small square and private, signed link only, shown on the pages and in the app API, remove and replace, only pictures and only the admin</td><td>5</td></tr>
+    <tr><td>ParentInviteTest</td><td>Parents page: Telegram counts and filters, one-time invite link that links the parent, printable invites, the unlink question</td><td>4</td></tr>
+    <tr><td>CallsApiTest</td><td>App v1.4: parents asking for a call (homeroom teacher only, Done with a note), QR invite only for parents not on Telegram</td><td>3</td></tr>
     <tr><td>ForgotPasswordTest</td><td>Telegram code, wrong / old code, 5-try limit, same answer for every account, API, Teachers field</td><td>5</td></tr>
     <tr><td>KhmerValidationTest</td><td>Form errors in Khmer on the website and in the API; English stays English</td><td>3</td></tr>
     <tr><td>SchoolSettingsTest</td><td>School name: change, shown on the website, API and messages; rules and roles</td><td>3</td></tr>
     <tr><td>ExampleTest</td><td>The home address answers</td><td>1</td></tr>
   </tbody>
 </table>
-<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 137 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
+<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 152 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
 
 <!-- ======================= 4. Test cases ======================= -->
 <h2 class="page-break">4. Manual test cases</h2>
@@ -191,6 +194,9 @@
 <tr><td>C-08</td><td>Delete without attendance</td><td>Delete Chan Rotha / S-10A-100 → confirm.</td><td>A confirmation asks first. After Delete: "Student deleted."</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>C-09</td><td>Student with attendance is kept</td><td>After group I, try to delete a student who now has attendance (any student of the lesson you submitted in I-07).</td><td>Red message: the student has attendance records and cannot be deleted; set the student to Inactive instead. The student stays.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>C-10</td><td>Page numbers without reload</td><td>On Students, scroll down and click page 2, then 3, then the browser Back button.</td><td>Only the list changes: the page does not reload or jump to the top. The address bar shows <code>?page=2</code> / <code>?page=3</code>. Back shows page 2 again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-11</td><td>Student photo</td><td>Students → ✏️ Sok Dara → click the big picture → choose a JPG photo → Save. Open the list, Sok Dara's page and Take attendance (10A). Then Edit → Remove photo → Save.</td><td>The photo shows in a big rounded frame in the form, as a small circle in the list and on Take attendance, and big on the student page. The photo link only works from the website or the app (a copied link stops working after a day). After Remove photo: the initials "SD" again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-12</td><td>Student form</td><td>Students → Add student. Choose gender with the buttons and the date of birth with Day / Month / Year. Choose Status "Left school".</td><td>Three parts: Student, Class and status, Parent. Gender is two buttons, the date of birth three boxes (Khmer month names in Khmer). "Left school" shows a short note. The parent part shows "Telegram linked" or "No Telegram yet".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>C-13</td><td>Words and page numbers</td><td>Students: open the status filter. Go to page 2. Look at the Risk column.</td><td>The filter says All students / Studying / Left school. Page 2 is a filled coloured button and the text says "Page 2 of 3". Risk: "Good" is quiet grey-green text; Watch, High risk and Critical are coloured badges.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>D. Classes (admin)</h3>
@@ -231,6 +237,9 @@
 <tr><td>G-03</td><td>Link a second child</td><td>Edit Chea Sokunthea, choose another child (e.g. Chan Sreyneang · 10A), Save.</td><td>Chea Sokunthea shows 2 children.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>G-04</td><td>Every student keeps a parent</td><td>Click × on a child label of a parent who is that child's only parent. Then try to delete that parent.</td><td>Both are refused: "… would have no parent contact. Add another parent for this student first."</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>G-05</td><td>Remove a link</td><td>Click × on Sok Dara under Chea Sokunthea (Sok Dara has 2 parents now).</td><td>"Child removed from this parent."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-06</td><td>Parent with two children</td><td>Parents → Add parent: type "10A" in the children search, pick two children (Enter or click), relation Mother → Save. Then Edit: remove one child (✕) → Save.</td><td>Both children show as chips and are saved. After Edit only the other child stays. Removing a child whose only parent this is gives an error and nothing changes.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-07</td><td>Telegram QR invite</td><td>On the online site: Parents → "Invite" next to a parent who is not on Telegram. Scan the QR code with a phone, press Start in Telegram. Reload the page.</td><td>The bot answers "✅ … you are now connected to the school for …". The parent now shows "Telegram ✓" and the card "On Telegram" is one more. Scanning the same QR again: "This invite link can no longer be used."</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>G-08</td><td>Filters and printed invites</td><td>Parents: filter "Not on Telegram yet", then class 10A. Click "Print QR invites" on the card.</td><td>Only parents without Telegram (of 10A) are listed. A printable page opens with one card per parent: school name, parent, child, QR code and the 3 steps in Khmer and English.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>H. Teaching Assignments (admin)</h3>
@@ -239,6 +248,9 @@
 <tr><td>H-02</td><td>One teacher per subject per class</td><td>Add: class 10A, Mathematics, teacher Tep Mony.</td><td>Error: "This class already has a teacher for this subject. Edit that assignment instead."</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>H-03</td><td>Busy teacher is refused</td><td>Edit 10A · Mathematics and choose another teacher who teaches at the same time (try a few).</td><td>For a busy teacher: "This teacher already teaches another class on [day], period [n]." Nothing changes.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>H-04</td><td>Change back</td><td>If a change worked in H-03, set the teacher back to Pen Sovann.</td><td>"Assignment saved." Pen Sovann's lessons are back in Take Attendance.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>H-05</td><td>Grid by grade</td><td>Teaching Assignments: click the tabs Grade 10, 11, 12. Add a class 10C (Classes) with no subjects, then come back.</td><td>One grade at a time: classes down, subjects across, each box shows the teacher. The Grade 10 tab shows ⚠ with the number of missing subjects; 10C has dashed "Assign" boxes. Clicking "Assign" opens the form with class and subject filled in.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>H-06</td><td>Copy to other classes</td><td>Click the copy icon on the 10A row. Check the ticked classes, then Copy.</td><td>10B and 10C are ticked (same grade), 10A cannot be ticked. "… assignments added to 2 classes". 10C now has every subject; 10B keeps its own teachers. Afterwards delete 10C again.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>H-07</td><td>Teachers' load</td><td>Look at "Teachers' load". Click a teacher. Click "Show all teachers", search "Tep".</td><td>Teachers over 30 hours a week are red with ⚠ (e.g. Tep Mony 42 h). Clicking a teacher highlights their boxes in the grid. The search finds the teacher.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>I. Take Attendance (teacher and admin)</h3>
@@ -340,6 +352,7 @@ Only use it on test data.</div>
 <tr><td>P-05</td><td>Student details</td><td>Click Chea Rithy.</td><td>Profile with parent and phone, a coloured box with the risk and the reason in one sentence, an 8-week chart, absences by weekday, reasons, follow-ups and recent records.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>P-06</td><td>Edit from the details page</td><td>Click Edit, change nothing, Save.</td><td>The same student form as on the Students page, already filled in; "Student saved."</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>P-07</td><td>Teachers cannot open it</td><td>As Pen Sovann, type /at-risk.</td><td>"No permission" page (403).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>P-08</td><td>Risk words</td><td>Open At-Risk Students, a student page and the Dashboard, in English and Khmer.</td><td>Everywhere the same four words: Good, Watch, High risk, Critical (ល្អ, ត្រូវតាមដាន, ហានិភ័យខ្ពស់, ធ្ងន់ធ្ងរ). The rules table at the bottom of At-Risk uses them too.</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>Q. Interventions (follow-ups)</h3>
@@ -400,12 +413,15 @@ Only use it on test data.</div>
 <table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
 <tr><td>U-01</td><td>Online site</td><td>Open https://demohs-attendance.alwaysdata.net on a computer and on a phone browser.</td><td>Padlock (HTTPS). The login page looks like the computer version and fits the phone screen.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>U-02</td><td>Speed and time</td><td>Log in, open Dashboard, At-Risk, Reports.</td><td>Each page opens in about 1–3 seconds. Today's date is the Cambodia date.</td><td>☐ Pass<br>☐ Fail</td></tr>
-<tr><td>U-03</td><td>Install the APK</td><td>Send AttendanceApp-v1.1.apk to the phone (e.g. Telegram), tap it, allow "Install unknown apps", Install.</td><td>The app "Attendance" is installed and opens on the login screen.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-03</td><td>Install the APK</td><td>Send AttendanceApp-v1.4.apk to the phone (e.g. Telegram), tap it, allow "Install unknown apps", Install.</td><td>The app "Attendance" is installed and opens on the login screen.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>U-04</td><td>App login</td><td>Log in as a teacher (phone number + online password).</td><td>"Welcome back" with today's date and the same lessons as the website's Take Attendance page for that teacher.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>U-05</td><td>Same data everywhere</td><td>Mark a lesson in the app. On the website, open Attendance Monitoring.</td><td>The same records appear on the website within seconds.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>U-06</td><td>Language and theme</td><td>In the app, switch to ខ្មែរ and to dark mode.</td><td>All screens change language and colours at once.</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>U-07</td><td>Forgot password in the app</td><td>Log out → "Forgot password?" → phone number → Send code.</td><td>Step 2 appears (code + new password). The code arrives on the linked Telegram. (Finish only if you will set the password back.)</td><td>☐ Pass<br>☐ Fail</td></tr>
 <tr><td>U-08</td><td>Update without uninstalling</td><td>With v1.0 installed, install v1.1.</td><td>"Update" instead of "Install"; the app keeps working (same signature).</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-09</td><td>App v1.4: photos and words</td><td>Install AttendanceApp-v1.4.apk over the old app. Open Classes → 10A, then Attendance for a lesson.</td><td>Students with a photo show it in the circle (grey when absent). Risk words: Good / Watch / High risk / Critical; a student who left school says "Left school".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-10</td><td>App: parents asking for a call</td><td>A parent of the homeroom class taps 📞 under an absence alert in Telegram (see S-10). Open the app as the homeroom teacher (Pen Sovann for 10A).</td><td>Home shows "Parents asking for a call (1)" with parent, child, class and phone. "Call" opens the phone app with the number. "Done" asks for a short note; then the card disappears and the follow-up on the website has the note.</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>U-11</td><td>App: Telegram QR</td><td>In the app: Classes → 10A. Look at each parent; tap the QR button of a parent who is not on Telegram.</td><td>"Telegram ✓" or "Not on Telegram yet" under each parent. The QR button shows a big QR code with the 3 steps; the parent can scan it from the teacher's phone (same as G-07).</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
 <h3>V. School settings (admin)</h3>
@@ -438,15 +454,15 @@ Only use it on test data.</div>
 <table class="fill">
   <thead><tr><th>Group</th><th style="width:20mm">Cases</th><th style="width:20mm">Passed</th><th style="width:20mm">Failed</th></tr></thead>
   <tbody>
-    <tr><td>3. Automatic tests</td><td>137</td><td></td><td></td></tr>
+    <tr><td>3. Automatic tests</td><td>152</td><td></td><td></td></tr>
     <tr><td>A. Login, logout and roles</td><td>9</td><td></td><td></td></tr>
     <tr><td>B. Language and theme</td><td>5</td><td></td><td></td></tr>
-    <tr><td>C. Students</td><td>10</td><td></td><td></td></tr>
+    <tr><td>C. Students</td><td>13</td><td></td><td></td></tr>
     <tr><td>D. Classes</td><td>9</td><td></td><td></td></tr>
     <tr><td>E. Subjects</td><td>4</td><td></td><td></td></tr>
     <tr><td>F. Teachers</td><td>6</td><td></td><td></td></tr>
-    <tr><td>G. Parents</td><td>5</td><td></td><td></td></tr>
-    <tr><td>H. Teaching Assignments</td><td>4</td><td></td><td></td></tr>
+    <tr><td>G. Parents</td><td>8</td><td></td><td></td></tr>
+    <tr><td>H. Teaching Assignments</td><td>7</td><td></td><td></td></tr>
     <tr><td>I. Take Attendance</td><td>16</td><td></td><td></td></tr>
     <tr><td>J. Monitoring / History</td><td>6</td><td></td><td></td></tr>
     <tr><td>K. Corrections and Audit Log</td><td>8</td><td></td><td></td></tr>
@@ -454,14 +470,14 @@ Only use it on test data.</div>
     <tr><td>M. Profile</td><td>9</td><td></td><td></td></tr>
     <tr><td>N. API</td><td>7</td><td></td><td></td></tr>
     <tr><td>O. Dashboards and Insights</td><td>7</td><td></td><td></td></tr>
-    <tr><td>P. At-Risk and Student details</td><td>7</td><td></td><td></td></tr>
+    <tr><td>P. At-Risk and Student details</td><td>8</td><td></td><td></td></tr>
     <tr><td>Q. Interventions</td><td>8</td><td></td><td></td></tr>
     <tr><td>R. Reports and Teacher details</td><td>8</td><td></td><td></td></tr>
     <tr><td>S. Parent messages</td><td>11</td><td></td><td></td></tr>
     <tr><td>T. Forgot password and Khmer errors</td><td>8</td><td></td><td></td></tr>
-    <tr><td>U. Online site and Android app</td><td>8</td><td></td><td></td></tr>
+    <tr><td>U. Online site and Android app</td><td>11</td><td></td><td></td></tr>
     <tr><td>V. School settings</td><td>3</td><td></td><td></td></tr>
-    <tr><th>Total manual</th><th>162</th><th></th><th></th></tr>
+    <tr><th>Total manual</th><th>175</th><th></th><th></th></tr>
   </tbody>
 </table>
 <table class="meta" style="margin-top:8mm">
