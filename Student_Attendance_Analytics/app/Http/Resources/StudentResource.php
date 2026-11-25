@@ -39,6 +39,8 @@ class StudentResource extends JsonResource
                     'phone' => $guardian->phone,
                     'relation' => $guardian->pivot->relation,
                     'channel' => $guardian->preferredChannel(),
+                    // Not on Telegram yet: the parent's one-time invite, shown as a QR code in the app
+                    'invite_link' => $guardian->telegram_chat_id ? null : $guardian->telegramInviteLink(),
                 ] : null,
             ]),
             $this->mergeWhen(isset($this->mark), fn () => [

@@ -8,9 +8,16 @@ public class Parent {
     private String relation;
     private String channel;
 
+    /** Not on Telegram yet: the one-time invite link (t.me/...), shown as a QR code. Null when on Telegram. */
+    @com.google.gson.annotations.SerializedName("invite_link")
+    private String inviteLink;
+
     public String getName() { return name; }
     public String getPhone() { return phone; }
     public String getChannel() { return channel; }
+    public String getInviteLink() { return inviteLink; }
+    public String getRelation() { return relation; }
+    public boolean onTelegram() { return "telegram".equals(channel); }
 
     /** "012345678" → "012 345 678". */
     public String getPhoneFormatted() {

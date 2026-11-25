@@ -174,11 +174,11 @@
     <string name="students_title">សិស្ស (%1$d)</string>
     <string name="my_subjects_here">មុខវិជ្ជារបស់ខ្ញុំក្នុងថ្នាក់នេះ</string>
     <string name="risk_good">ល្អ</string>
-    <string name="risk_watch">តាមដាន</string>
+    <string name="risk_watch">ត្រូវតាមដាន</string>
     <string name="risk_at_risk">មានហានិភ័យ</string>
     <string name="parent_line">អាណាព្យាបាល៖ %1$s</string>
     <string name="call_parent">ហៅទៅអាណាព្យាបាល</string>
-    <string name="inactive">អសកម្ម</string>
+    <string name="inactive">ឈប់រៀន</string>
 
     <!-- History -->
     <string name="history_title">ប្រវត្តិវត្តមាន</string>
@@ -214,4 +214,25 @@
     <string name="send_new_code">ផ្ញើលេខកូដថ្មី</string>
     <string name="please_wait">សូមរង់ចាំ…</string>
     <string name="account_label">គណនី៖ %1$s</string>
+
+    <!-- v1.4: parents asking for a call, Telegram QR invite, the same risk words as the website -->
+    <string name="risk_high">ហានិភ័យខ្ពស់</string>
+    <string name="risk_critical">ធ្ងន់ធ្ងរ</string>
+    <string name="relation_father">ឪពុក</string>
+    <string name="relation_mother">ម្តាយ</string>
+    <string name="relation_guardian">អាណាព្យាបាល</string>
+    <string name="close">បិទ</string>
+    <string name="calls_title">ឪពុកម្តាយសុំឲ្យទូរស័ព្ទទៅ (%1$d)</string>
+    <string name="call_asked_on">បានសុំនៅ %1$s</string>
+    <string name="call_now">ហៅ</string>
+    <string name="call_done">រួចរាល់</string>
+    <string name="call_done_title">ការហៅទូរស័ព្ទយ៉ាងដូចម្តេច?</string>
+    <string name="call_note_hint">កំណត់ចំណាំខ្លី (មិនចាំបាច់) ឧ. ឈឺ នឹងមករៀនថ្ងៃចន្ទ</string>
+    <string name="telegram_linked">Telegram ✓</string>
+    <string name="telegram_not_yet">មិនទាន់មាន Telegram</string>
+    <string name="telegram_invite">អញ្ជើញចូល Telegram (QR)</string>
+    <string name="telegram_qr_title">អញ្ជើញចូល Telegram · %1$s</string>
+    <string name="telegram_qr_steps">១. អាណាព្យាបាលស្កេន QR នេះដោយកាមេរ៉ាទូរស័ព្ទ។
+២. Telegram បើកបូតរបស់សាលា៖ ចុច Start។
+៣. រួចរាល់៖ អាណាព្យាបាលទទួលព័ត៌មានវត្តមានតាម Telegram។</string>
 </resources>

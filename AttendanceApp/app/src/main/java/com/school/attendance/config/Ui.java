@@ -92,12 +92,15 @@ public final class Ui {
     public static void showRisk(TextView chip, String risk) {
         Context c = chip.getContext();
         int text, color, background;
+        // The same four words as the website: Good · Watch · High risk · Critical
         if ("low".equals(risk)) {
             text = R.string.risk_good; color = R.color.present_text; background = R.drawable.bg_chip_present;
         } else if ("medium".equals(risk)) {
             text = R.string.risk_watch; color = R.color.warning_text; background = R.drawable.bg_chip_warning;
-        } else if ("high".equals(risk) || "critical".equals(risk)) {
-            text = R.string.risk_at_risk; color = R.color.absent_text; background = R.drawable.bg_chip_absent;
+        } else if ("high".equals(risk)) {
+            text = R.string.risk_high; color = R.color.absent_text; background = R.drawable.bg_chip_absent;
+        } else if ("critical".equals(risk)) {
+            text = R.string.risk_critical; color = R.color.absent_text; background = R.drawable.bg_chip_absent;
         } else {
             text = R.string.no_records_yet; color = R.color.text_muted; background = R.drawable.bg_chip_grey;
         }
@@ -174,5 +177,71 @@ public final class Ui {
             photo.clearColorFilter();
             photo.setAlpha(1f);
         }
+    }
+    /** "2026-11-25T13:05:00+07:00" → "25 Nov, 13:05" or "25 វិច្ឆិកា 13:05". */
+    public static String dateTimeText(String iso) {
+        if (iso == null || iso.length() < 16) return iso == null ? "" : iso;
+        Date date;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-ddTHH:mm", Locale.US).parse(iso.substring(0, 16));
+        } catch (ParseException e) {
+            return iso;
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        String time = new SimpleDateFormat("HH:mm", Locale.US).format(date);
+        return isKhmer()
+                ? c.get(Calendar.DAY_OF_MONTH) + " " + KM_MONTHS[c.get(Calendar.MONTH)] + " " + time
+                : new SimpleDateFormat("d MMM", Locale.ENGLISH).format(date) + ", " + time;
+    }
+
+    /** father / mother / guardian → the word in the app language. */
+    public static String relationText(Context context, String relation) {
+        if ("father".equals(relation)) return context.getString(R.string.relation_father);
+        if ("mother".equals(relation)) return context.getString(R.string.relation_mother);
+        if ("guardian".equals(relation)) return context.getString(R.string.relation_guardian);
+        return "";
+    }
+
+    /**
+     * The parent's Telegram invite as a big QR code, to show at a parents' meeting.
+     * The parent scans it with the phone camera, Telegram opens the school bot, they press Start: linked.
+     */
+    public static void showTelegramQr(Context context, String parentName, String link) {
+        int size = (int) (240 * context.getResources().getDisplayMetrics().density);
+        android.graphics.Bitmap qr;
+        try {
+            com.google.zxing.common.BitMatrix m = new com.google.zxing.qrcode.QRCodeWriter()
+                    .encode(link, com.google.zxing.BarcodeFormat.QR_CODE, size, size);
+            qr = android.graphics.Bitmap.createBitmap(size, size, android.graphics.Bitmap.Config.RGB_565);
+            for (int x = 0; x < size; x++) {
+                for (int y = 0; y < size; y++) {
+                    qr.setPixel(x, y, m.get(x, y) ? 0xFF0F2F2C : 0xFFFFFFFF);
+                }
+            }
+        } catch (com.google.zxing.WriterException e) {
+            return;
+        }
+
+        android.widget.LinearLayout box = new android.widget.LinearLayout(context);
+        box.setOrientation(android.widget.LinearLayout.VERTICAL);
+        box.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
+        int pad = (int) (16 * context.getResources().getDisplayMetrics().density);
+        box.setPadding(pad, pad / 2, pad, 0);
+        android.widget.ImageView image = new android.widget.ImageView(context);
+        image.setImageBitmap(qr);
+        image.setContentDescription(context.getString(R.string.telegram_invite));
+        box.addView(image, new android.widget.LinearLayout.LayoutParams(size, size));
+        android.widget.TextView steps = new android.widget.TextView(context);
+        steps.setText(R.string.telegram_qr_steps);
+        steps.setPadding(0, pad, 0, 0);
+        steps.setTextSize(13);
+        box.addView(steps);
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.telegram_qr_title, parentName))
+                .setView(box)
+                .setPositiveButton(R.string.close, null)
+                .show();
     }
 }

@@ -206,6 +206,53 @@
                         app:cornerRadius="12dp" />
                 </LinearLayout>
 
+                <!-- Parents asking for a call (they tapped 📞 under an absence alert in Telegram) -->
+                <LinearLayout
+                    android:id="@+id/cardCalls"
+                    style="@style/Attendance.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_icon_tile"
+                            android:contentDescription="@null"
+                            android:padding="7dp"
+                            android:src="@drawable/ic_call"
+                            app:tint="@color/warning_text" />
+
+                        <TextView
+                            android:id="@+id/txtCallsTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:textColor="@color/text_main"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="Parents asking for a call (1)" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/callList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+
                 <!-- Next class -->
                 <LinearLayout
                     android:id="@+id/cardNext"

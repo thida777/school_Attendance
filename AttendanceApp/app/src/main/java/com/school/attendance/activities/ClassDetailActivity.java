@@ -218,6 +218,20 @@ public class ClassDetailActivity extends AppCompatActivity {
                 parentLine.setVisibility(View.GONE);
                 call.setVisibility(View.GONE);
             }
+
+            // Telegram: ✓ when the parent gets messages there; otherwise a QR invite to show at a parents' meeting
+            TextView telegram = row.findViewById(R.id.txtTelegram);
+            View qr = row.findViewById(R.id.btnQr);
+            if (parent != null) {
+                telegram.setVisibility(View.VISIBLE);
+                telegram.setText(parent.onTelegram() ? R.string.telegram_linked : R.string.telegram_not_yet);
+                telegram.setTextColor(ContextCompat.getColor(this, parent.onTelegram() ? R.color.present_text : R.color.text_muted));
+                telegram.setBackgroundResource(parent.onTelegram() ? R.drawable.bg_chip_present : R.drawable.bg_chip_grey);
+                if (!parent.onTelegram() && parent.getInviteLink() != null) {
+                    qr.setVisibility(View.VISIBLE);
+                    qr.setOnClickListener(v -> Ui.showTelegramQr(this, parent.getName(), parent.getInviteLink()));
+                }
+            }
             if (!s.isActive()) row.setAlpha(0.55f);
             list.addView(row);
         }

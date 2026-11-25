@@ -764,5 +764,7 @@
     "Copy to": "ចម្លងទៅ",
     ":count subject|:count subjects": "មុខវិជ្ជា :count",
     "Choose at least one class to copy to.": "សូមជ្រើសរើសថ្នាក់យ៉ាងហោចណាស់មួយ ដើម្បីចម្លងទៅ។",
-    ":count assignment added to :classes class.|:count assignments added to :classes classes.": "បានបន្ថែមការចាត់តាំង :count ទៅថ្នាក់ :classes។"
+    ":count assignment added to :classes class.|:count assignments added to :classes classes.": "បានបន្ថែមការចាត់តាំង :count ទៅថ្នាក់ :classes។",
+    "Called the parent on :date (teacher app).": "បានទូរស័ព្ទទៅអាណាព្យាបាលនៅថ្ងៃ :date (កម្មវិធីគ្រូ)។",
+    "Saved. The follow-up stays open on the website to measure attendance.": "បានរក្សាទុក។ ការតាមដាននៅតែបើកនៅលើគេហទំព័រ ដើម្បីវាស់វត្តមាន។"
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CallsController;
 use App\Http\Controllers\Api\V1\HistoryController;
 use App\Http\Controllers\Api\V1\TeachingController;
 use App\Http\Controllers\SchoolSettingsController;
@@ -41,6 +42,10 @@ Route::prefix('v1')->group(function () {
 
         Route::get('/attendance/roster', [AttendanceController::class, 'roster']);
         Route::post('/attendance', [AttendanceController::class, 'store']);
+
+        // Parents who asked for a call (📞 in Telegram), for their homeroom teacher
+        Route::get('/calls', [CallsController::class, 'index']);
+        Route::post('/calls/{id}/done', [CallsController::class, 'done'])->whereNumber('id');
 
         Route::get('/history', [HistoryController::class, 'index']);
         Route::post('/records/{record}/correct', [HistoryController::class, 'correct']);
