@@ -176,7 +176,7 @@
                                 <tr>
                                     <td><a href="{{ route('students.show', $s) }}" class="link link-hover font-medium">{{ $km ? $s->name_km : $s->name_latin }}</a></td>
                                     <td>{{ $insights->classes[$s->school_class_id]->name }}</td>
-                                    <td><span class="badge {{ Risk::badge($r->level) }}">{{ __(ucfirst($r->level)) }}</span></td>
+                                    <td>@include('partials.risk-badge', ['level' => $r->level])</td>
                                     <td class="text-right font-semibold {{ $toneText[Risk::tone($r->rate)] }}">{{ $r->rate }}%</td>
                                     <td class="text-right">
                                         @if ($r->trend !== null)<span @class(['text-error font-semibold' => $r->trend < 0, 'text-success' => $r->trend > 0])>{{ $r->trend < 0 ? '▼' : '▲' }} {{ abs($r->trend) }}</span>@else – @endif

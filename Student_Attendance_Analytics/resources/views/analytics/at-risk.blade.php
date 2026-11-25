@@ -26,7 +26,7 @@
                 style="--tw-ring-color: {{ $color }}" aria-pressed="{{ $active === $level ? 'true' : 'false' }}">
                 <div class="stat">
                     <div class="stat-figure" style="--chip: {{ $color }}"><i data-lucide="{{ $icon }}"></i></div>
-                    <div class="stat-title">{{ __(ucfirst($level)) }}</div>
+                    <div class="stat-title">{{ Risk::label($level) }}</div>
                     <div class="stat-value">{{ $counts[$level] }}</div>
                     <div class="stat-desc">{{ trans_choice('{1} student|[0,*] students', $counts[$level]) }}</div>
                 </div>
@@ -43,9 +43,9 @@
                 </div>
                 <form method="GET" action="{{ route('at-risk') }}" class="flex flex-wrap gap-2" data-auto-submit>
                     <select name="level" class="select w-auto" aria-label="{{ __('Risk') }}" data-picker data-filter data-icon="gauge">
-                        <option value="">{{ __('Critical, High and Medium') }}</option>
+                        <option value="">{{ __('Critical, High risk and Watch') }}</option>
                         @foreach (Risk::LEVELS as $level)
-                            <option value="{{ $level }}" @selected($active === $level)>{{ __(ucfirst($level)) }}</option>
+                            <option value="{{ $level }}" @selected($active === $level)>{{ Risk::label($level) }}</option>
                         @endforeach
                     </select>
                     <select name="class" class="select w-auto" aria-label="{{ __('Class') }}" data-picker data-filter data-icon="school">
@@ -86,7 +86,7 @@
                                     </td>
                                     <td>{{ $s->schoolClass->name }}</td>
                                     <td>
-                                        <span class="badge {{ Risk::badge($r->level) }}">{{ __(ucfirst($r->level)) }}</span>
+                                        @include('partials.risk-badge', ['level' => $r->level])
                                         @if ($r->action())
                                             <div class="mt-1 text-xs whitespace-nowrap opacity-60">{{ __($r->action()) }}</div>
                                         @endif
@@ -134,10 +134,10 @@
                 <table class="table table-sm">
                     <thead><tr><th>{{ __('Level') }}</th><th>{{ __('Rule (any one is enough)') }}</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="badge badge-error">{{ __('Critical') }}</span></td><td>{{ __('Rate below 70%, or absent 5+ school days in a row') }}</td></tr>
-                        <tr><td><span class="badge badge-warning">{{ __('High') }}</span></td><td>{{ __('Rate 70–79%, or absent 3–4 days in a row, or trend down 10+ points') }}</td></tr>
-                        <tr><td><span class="badge badge-info">{{ __('Medium') }}</span></td><td>{{ __('Rate 80–89%, or trend down 5–9 points, or 3+ days absent with no reason this month') }}</td></tr>
-                        <tr><td><span class="badge badge-success">{{ __('Low') }}</span></td><td>{{ __('Rate 90% or higher, and the trend is stable or improving') }}</td></tr>
+                        <tr><td>@include('partials.risk-badge', ['level' => 'critical'])</td><td>{{ __('Rate below 70%, or absent 5+ school days in a row') }}</td></tr>
+                        <tr><td>@include('partials.risk-badge', ['level' => 'high'])</td><td>{{ __('Rate 70–79%, or absent 3–4 days in a row, or trend down 10+ points') }}</td></tr>
+                        <tr><td>@include('partials.risk-badge', ['level' => 'medium'])</td><td>{{ __('Rate 80–89%, or trend down 5–9 points, or 3+ days absent with no reason this month') }}</td></tr>
+                        <tr><td>@include('partials.risk-badge', ['level' => 'low'])</td><td>{{ __('Rate 90% or higher, and the trend is stable or improving') }}</td></tr>
                     </tbody>
                 </table>
             </div>

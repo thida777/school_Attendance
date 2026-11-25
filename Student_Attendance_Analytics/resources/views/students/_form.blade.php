@@ -101,10 +101,10 @@
             {{-- 2. Class and status --}}
             {!! $section('school', __('Class and status')) !!}
             @include('partials.field', ['name' => 'school_class_id', 'label' => __('Class'), 'options' => $classes->pluck('name', 'id')->all(), 'icon' => 'school'])
-            @include('partials.field', ['name' => 'status', 'label' => __('Status'), 'options' => ['active' => __('Active'), 'inactive' => __('Inactive (left the school)')], 'icon' => 'user-check'])
+            @include('partials.field', ['name' => 'status', 'label' => __('Status'), 'options' => ['active' => __('Studying'), 'inactive' => __('Left school')], 'icon' => 'user-check'])
             <p class="bg-warning/10 text-warning-content rounded-box hidden items-start gap-2 p-3 text-sm sm:col-span-2" data-inactive-note>
                 <i data-lucide="triangle-alert" class="text-warning mt-0.5 size-4 shrink-0"></i>
-                {{ __('An inactive student is no longer on attendance lists and gets no messages. The attendance history is kept.') }}
+                {{ __('A student who left school is no longer on attendance lists and gets no messages. The attendance history is kept.') }}
             </p>
 
             {{-- 3. The parent --}}

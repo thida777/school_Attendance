@@ -69,14 +69,15 @@
     <dialog id="confirm-delete" class="modal">
         <div class="modal-box max-w-sm">
             <div class="bg-error/10 text-error mb-4 grid size-12 place-items-center rounded-2xl"><i data-lucide="trash-2" class="size-6"></i></div>
-            <h3 class="text-lg font-bold">{{ __('Delete this record?') }}</h3>
-            <p class="py-2 opacity-75"><span class="font-semibold" id="confirm-delete-name"></span> {{ __('will be removed permanently.') }}</p>
+            {{-- A button can give its own words: data-confirm-title, data-confirm-text, data-confirm-button --}}
+            <h3 class="text-lg font-bold" id="confirm-delete-title" data-default="{{ __('Delete this record?') }}">{{ __('Delete this record?') }}</h3>
+            <p class="py-2 opacity-75" id="confirm-delete-text" data-default="{{ __('will be removed permanently.') }}"><span class="font-semibold" id="confirm-delete-name"></span> <span data-text>{{ __('will be removed permanently.') }}</span></p>
             <div class="modal-action">
                 <form method="dialog"><button class="btn btn-ghost">{{ __('Cancel') }}</button></form>
                 <form method="POST" id="confirm-delete-form">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-error">{{ __('Delete') }}</button>
+                    <button class="btn btn-error" id="confirm-delete-button" data-default="{{ __('Delete') }}">{{ __('Delete') }}</button>
                 </form>
             </div>
         </div>

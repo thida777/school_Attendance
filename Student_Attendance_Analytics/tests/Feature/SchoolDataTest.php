@@ -185,6 +185,34 @@ class SchoolDataTest extends TestCase
         $this->assertEqualsCanonicalizing([$first->id, $second->id], $parent->students()->pluck('students.id')->all());
     }
 
+    public function test_the_parent_form_saves_several_children_and_keeps_every_child_reachable(): void
+    {
+        [$first, $second, $third] = Student::orderBy('id')->take(3)->get();
+
+        // Add: two children at once, one relation for both
+        $this->post('/parents', ['name' => 'Keo Dara', 'phone' => '017 555 666', 'relation' => 'mother', 'student_ids' => [$first->id, $second->id]])
+            ->assertSessionHas('status');
+        $parent = Guardian::where('phone', '017555666')->firstOrFail();
+        $this->assertEqualsCanonicalizing([$first->id, $second->id], $parent->students()->pluck('students.id')->all());
+        $this->assertSame(['mother'], $parent->students()->pluck('guardian_student.relation')->unique()->values()->all());
+
+        // Edit: the form sends the whole list, so a child left out is unlinked (it still has its own parent)
+        $this->put("/parents/{$parent->id}", ['name' => 'Keo Dara', 'phone' => '017555666', 'relation' => 'guardian', 'student_ids' => [$second->id, $third->id]])
+            ->assertSessionHas('status');
+        $this->assertEqualsCanonicalizing([$second->id, $third->id], $parent->students()->pluck('students.id')->all());
+
+        // But never the only parent of a child
+        $onlyParent = $third->guardians()->where('guardians.id', '!=', $parent->id)->first();
+        $onlyParent->students()->detach($third->id); // now Keo Dara is the only contact of the third child
+        $this->put("/parents/{$parent->id}", ['name' => 'Keo Dara', 'phone' => '017555666', 'relation' => 'guardian', 'student_ids' => [$second->id]])
+            ->assertSessionHas('error');
+        $this->assertContains($third->id, $parent->students()->pluck('students.id')->all());
+
+        // At least one child
+        $this->put("/parents/{$parent->id}", ['name' => 'Keo Dara', 'phone' => '017555666', 'relation' => 'guardian', 'student_ids' => []])
+            ->assertSessionHasErrors('student_ids');
+    }
+
     public function test_every_student_keeps_at_least_one_parent(): void
     {
         $student = Student::first();
@@ -202,6 +230,46 @@ class SchoolDataTest extends TestCase
     }
 
     // ---------- Teaching assignments ----------
+
+    public function test_the_assignments_grid_shows_one_grade_its_gaps_and_the_teachers_load(): void
+    {
+        $tenA = SchoolClass::where('name', '10A')->firstOrFail();
+        $new = SchoolClass::create(['academic_year_id' => $tenA->academic_year_id, 'name' => '10C', 'grade' => 10]);
+        TeachingAssignment::create(['school_class_id' => $new->id, 'subject_id' => $tenA->teachingAssignments()->first()->subject_id, 'teacher_id' => $tenA->teachingAssignments()->first()->teacher_id]);
+        $gaps = $tenA->teachingAssignments()->count() - 1;
+
+        $this->withSession(['locale' => 'en'])->get('/assignments?grade=10')->assertOk()
+            ->assertSee('Grade 10')->assertSee('Grade 11')            // grade tabs
+            ->assertSee('10C')
+            ->assertSee("</i>{$gaps}</span>", false)                 // ⚠ count on the tab
+            ->assertSee("Teachers' load")->assertSee('teachers have too many hours');
+        // The grid itself has only grade 10, with one dashed box per missing subject
+        $html = $this->get('/assignments?grade=10')->getContent();
+        $grid = substr($html, strpos($html, '<table class="assign-grid">'), strpos($html, '</table>', strpos($html, 'assign-grid')) - strpos($html, '<table class="assign-grid">'));
+        $this->assertStringContainsString('10C', $grid);
+        $this->assertStringNotContainsString('11A', $grid);
+        $this->assertSame($gaps, substr_count($grid, 'cell is-missing'));
+
+        $this->get('/assignments?view=table&grade=11')->assertOk()->assertSee('<span class="badge badge-ghost">11A</span>', false)->assertDontSee('<span class="badge badge-ghost">10A</span>', false);
+    }
+
+    public function test_copy_gives_other_classes_the_same_subjects_and_keeps_their_own_teachers(): void
+    {
+        $tenA = SchoolClass::where('name', '10A')->firstOrFail();
+        $tenB = SchoolClass::where('name', '10B')->firstOrFail();
+        $new = SchoolClass::create(['academic_year_id' => $tenA->academic_year_id, 'name' => '10C', 'grade' => 10]);
+        $other = $this->teacher('Hak Chanthou');
+        $first = $tenB->teachingAssignments()->first();
+        $first->update(['teacher_id' => $other->id]); // 10B already has its own teacher for this subject
+
+        $this->post('/assignments/copy', ['from' => $tenA->id, 'to' => [$tenB->id, $new->id]])
+            ->assertSessionHas('status');
+
+        $this->assertSame($tenA->teachingAssignments()->count(), $new->teachingAssignments()->count());
+        $this->assertSame($other->id, $first->fresh()->teacher_id);   // kept
+        $this->post('/assignments/copy', ['from' => $tenA->id, 'to' => []])->assertSessionHasErrors('to');
+        $this->post('/assignments/copy', ['from' => $tenA->id, 'to' => [$tenA->id]])->assertSessionHasErrors('to.0');
+    }
 
     public function test_a_class_has_one_teacher_per_subject(): void
     {

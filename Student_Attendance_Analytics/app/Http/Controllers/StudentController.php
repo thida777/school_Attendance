@@ -137,7 +137,7 @@ class StudentController extends Controller
     public function destroy(Student $student): RedirectResponse
     {
         if ($student->attendanceRecords()->exists()) {
-            return back()->with('error', __(':name has attendance records and cannot be deleted. Set the student to Inactive instead.', ['name' => $student->name_latin]));
+            return back()->with('error', __(':name has attendance records and cannot be deleted. Set the student to Left school instead.', ['name' => $student->name_latin]));
         }
 
         $student->replacePhoto(null); // the photo file goes too

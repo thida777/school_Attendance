@@ -35,9 +35,9 @@
                     <option value="female" @selected(($filters['gender'] ?? '') === 'female')>{{ __('Female') }}</option>
                 </select>
                 <select name="status" class="select w-auto" aria-label="{{ __('Status') }}" data-picker data-filter data-icon="user-check">
-                    <option value="">{{ __('Active and inactive') }}</option>
-                    <option value="active" @selected(($filters['status'] ?? '') === 'active')>{{ __('Active') }}</option>
-                    <option value="inactive" @selected(($filters['status'] ?? '') === 'inactive')>{{ __('Inactive') }}</option>
+                    <option value="">{{ __('All students') }}</option>
+                    <option value="active" @selected(($filters['status'] ?? '') === 'active')>{{ __('Studying') }}</option>
+                    <option value="inactive" @selected(($filters['status'] ?? '') === 'inactive')>{{ __('Left school') }}</option>
                 </select>
                 <button class="btn"><i data-lucide="search" class="size-4"></i>{{ __('Search') }}</button>
                 @if (array_filter($filters))
@@ -100,9 +100,9 @@
                                     </td>
                                     <td>
                                         @if ($student->status === 'inactive')
-                                            <span class="badge badge-soft badge-ghost">{{ __('Inactive') }}</span>
+                                            <span class="badge badge-soft badge-ghost">{{ __('Left school') }}</span>
                                         @elseif ($level)
-                                            <span class="badge badge-soft {{ Risk::badge($level) }}">{{ __(ucfirst($level)) }}</span>
+                                            @include('partials.risk-badge', ['level' => $level])
                                         @else
                                             <span class="opacity-60">—</span>
                                         @endif

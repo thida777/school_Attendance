@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "apexcharts": "^8.8.0",
-        "lucide": "^1.70.0"
+        "lucide": "^1.70.0",
+        "qrcode": "^1.5.4"
     }
 }

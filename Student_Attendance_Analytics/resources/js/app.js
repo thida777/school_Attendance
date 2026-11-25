@@ -90,8 +90,29 @@ document.addEventListener('click', (e) => {
     if (!btn) return;
     document.getElementById('confirm-delete-form').action = btn.dataset.delete;
     document.getElementById('confirm-delete-name').textContent = btn.dataset.name || '';
+    // Own words for this button (e.g. "Remove the child from this parent?"), otherwise "Delete this record?"
+    const title = document.getElementById('confirm-delete-title');
+    const text = document.querySelector('#confirm-delete-text [data-text]');
+    const button = document.getElementById('confirm-delete-button');
+    title.textContent = btn.dataset.confirmTitle || title.dataset.default;
+    text.textContent = btn.dataset.confirmText || document.getElementById('confirm-delete-text').dataset.default;
+    button.textContent = btn.dataset.confirmButton || button.dataset.default;
     document.getElementById('confirm-delete').showModal();
 });
+
+/* ---------- QR codes ----------
+   <div data-qr="https://t.me/…"></div> becomes a QR code picture. The QR library loads only on pages that use it. */
+window.drawQr = async (root = document) => {
+    const boxes = [...root.querySelectorAll('[data-qr]')].filter((b) => b.dataset.qr);
+    if (!boxes.length) return;
+    const QRCode = (await import('qrcode')).default;
+    for (const box of boxes) {
+        box.innerHTML = await QRCode.toString(box.dataset.qr, { type: 'svg', margin: 1, errorCorrectionLevel: 'M', color: { dark: '#0f2f2c', light: '#ffffff' } });
+        box.querySelector('svg')?.setAttribute('aria-label', box.dataset.qrLabel || 'QR code');
+        box.querySelector('svg')?.setAttribute('role', 'img');
+    }
+};
+window.drawQr();
 
 /* ---------- Toast messages disappear after a few seconds ---------- */
 setTimeout(() => document.querySelectorAll('[data-toast]').forEach((t) => t.remove()), 4000);

@@ -40,6 +40,21 @@ class Risk
         };
     }
 
+    /**
+     * The word people see for a level. It says what to do: Good (nothing), Watch (keep an eye),
+     * High risk / Critical (act now). The levels themselves (low … critical) do not change.
+     */
+    public static function label(?string $level): string
+    {
+        return __(match ($level) {
+            'critical' => 'Critical',
+            'high' => 'High risk',
+            'medium' => 'Watch',
+            'low' => 'Good',
+            default => '—',
+        });
+    }
+
     /** daisyUI badge colour for each level. */
     public static function badge(?string $level): string
     {

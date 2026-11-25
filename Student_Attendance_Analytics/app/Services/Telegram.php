@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -16,6 +17,28 @@ class Telegram
     public function isLive(): bool
     {
         return filled(config('services.telegram.token'));
+    }
+
+    /**
+     * The bot's user name (e.g. demohs_attendance_bot), for t.me links.
+     * TELEGRAM_BOT_USERNAME in .env, otherwise asked once from Telegram (getMe) and remembered for a day.
+     */
+    public function username(): ?string
+    {
+        if ($name = config('services.telegram.username')) {
+            return $name;
+        }
+        if (! $this->isLive()) {
+            return null;
+        }
+
+        return Cache::remember('telegram.bot_username', now()->addDay(), function () {
+            try {
+                return Http::timeout(8)->get('https://api.telegram.org/bot'.config('services.telegram.token').'/getMe')->json('result.username');
+            } catch (Throwable) {
+                return null;
+            }
+        }) ?: null;
     }
 
     /**

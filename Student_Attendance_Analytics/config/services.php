@@ -41,6 +41,8 @@ return [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         // Parents' button taps come back to /api/telegram/webhook with this secret (php artisan telegram:webhook)
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        // The bot's user name for parents' invite links (t.me/...); empty = asked from Telegram
+        'username' => env('TELEGRAM_BOT_USERNAME'),
     ],
 
 ];

@@ -61,9 +61,9 @@
                     <span class="badge badge-soft">{{ $student->schoolClass->name }}</span>
                     <span class="badge badge-soft">{{ __(ucfirst($student->gender)) }}</span>
                     @if ($student->status === 'inactive')
-                        <span class="badge badge-ghost">{{ __('Inactive') }}</span>
+                        <span class="badge badge-ghost">{{ __('Left school') }}</span>
                     @elseif ($risk->level)
-                        <span class="badge {{ Risk::badge($risk->level) }}">{{ __(ucfirst($risk->level).' risk') }}</span>
+                        @include('partials.risk-badge', ['level' => $risk->level])
                     @endif
                 </div>
                 <ul class="mt-4 w-full space-y-3 text-left text-sm">
@@ -112,7 +112,7 @@
                     <div role="alert" class="alert alert-soft {{ $alertClass[$risk->level] }} mt-1">
                         <i data-lucide="{{ $risk->isAtRisk() ? 'triangle-alert' : ($risk->level === 'low' ? 'circle-check' : 'eye') }}" class="size-5"></i>
                         <span>
-                            <b>{{ __(ucfirst($risk->level).' risk') }}:</b>
+                            <b>{{ Risk::label($risk->level) }}:</b>
                             {{ $whyText ? $whyText.'.' : __('attendance is good and stable.') }}
                             @if ($risk->action()) <span class="opacity-80">→ {{ __($risk->action()) }}</span> @endif
                         </span>

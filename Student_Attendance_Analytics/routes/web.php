@@ -84,8 +84,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('classes', SchoolClassController::class)->only($crud);
         Route::resource('subjects', SubjectController::class)->only($crud);
         Route::resource('teachers', TeacherController::class)->only([...$crud, 'show']);
+        // Printable Telegram invites with QR codes (one parent, a class, or everyone not on Telegram yet)
+        Route::get('/parents/invites', [GuardianController::class, 'invites'])->name('parents.invites');
         Route::resource('parents', GuardianController::class)->only($crud);
         Route::delete('/parents/{parent}/students/{student}', [GuardianController::class, 'unlink'])->name('parents.unlink');
+        // Copy a class's subjects and teachers to other classes (e.g. a whole grade at the start of the year)
+        Route::post('/assignments/copy', [TeachingAssignmentController::class, 'copy'])->name('assignments.copy');
         Route::resource('assignments', TeachingAssignmentController::class)->only($crud);
     });
 

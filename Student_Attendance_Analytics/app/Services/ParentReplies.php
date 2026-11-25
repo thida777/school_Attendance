@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\AttendanceRecord;
+use App\Models\Guardian;
 use App\Models\Intervention;
 use App\Models\ParentMessage;
 use App\Models\User;
+use App\Support\School;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -149,10 +151,38 @@ class ParentReplies
         ]);
     }
 
-    /** Any text sent to the bot (e.g. /start): tell the person their chat ID, to give to the school. */
+    /** Links the parent of this invite code to the chat. The code then stops working. Returns the bot's answer. */
+    public function join(string $code, string $chatId): string
+    {
+        $guardian = Guardian::with('students.schoolClass')->where('telegram_invite', $code)->first();
+        if (! $guardian) {
+            return "តំណភ្ជាប់នេះមិនអាចប្រើបានទៀតទេ។ សូមសុំតំណថ្មីពីសាលា។\n\nThis invite link can no longer be used. Please ask the school for a new one.";
+        }
+
+        $guardian->forceFill(['telegram_chat_id' => $chatId, 'telegram_invite' => null])->save();
+        $children = $guardian->students->map(fn ($s) => "{$s->name_km} ({$s->schoolClass->name})")->join(', ');
+        $childrenEn = $guardian->students->map(fn ($s) => "{$s->name_latin} ({$s->schoolClass->name})")->join(', ');
+
+        return '✅ សួស្តី '.($guardian->name_km ?: $guardian->name)."! អ្នកបានភ្ជាប់ជាមួយសាលាហើយ សម្រាប់ {$children}។ "
+            ."សាលានឹងផ្ញើព័ត៌មានអំពីវត្តមាននៅទីនេះ។\n\n"
+            ."✅ Hello {$guardian->name}, you are now connected to the school for {$childrenEn}. "
+            ."Attendance news will be sent here.\n\n".School::signature();
+    }
+
+    /**
+     * Text sent to the bot.
+     *  - "/start <invite code>" from a parent's invite link (QR code): link that parent to this chat, once.
+     *  - Anything else (e.g. /start alone): tell the person their chat ID, to give to the school.
+     */
     private function text(array $message): void
     {
         $chatId = (string) $message['chat']['id'];
+
+        if (preg_match('/^\/start\s+([A-Za-z0-9]{24})$/', trim((string) ($message['text'] ?? '')), $m)) {
+            $this->telegram->send($chatId, $this->join($m[1], $chatId));
+
+            return;
+        }
         $this->telegram->send($chatId,
             "សួស្តី! លេខ Telegram (Chat ID) របស់អ្នកគឺ៖ {$chatId}\nសូមផ្ញើលេខនេះទៅសាលា ដើម្បីទទួលព័ត៌មានអំពីវត្តមានកូនរបស់អ្នក។\n\n"
             ."Hello! Your Telegram chat ID is: {$chatId}\nPlease give this number to the school to receive attendance news about your child."

@@ -204,7 +204,7 @@
                         @foreach ($students as $s)
                             @php $level = $risks->get($s->id)?->level; @endphp
                             <option value="{{ $s->id }}" @selected($current === (string) $s->id)
-                                @isset($riskDot[$level]) data-dot="{{ $riskDot[$level] }}" data-hint="{{ __(ucfirst($level)) }} · {{ $risks->get($s->id)->rate }}%" @endisset>
+                                @isset($riskDot[$level]) data-dot="{{ $riskDot[$level] }}" data-hint="{{ \App\Support\Risk::label($level) }} · {{ $risks->get($s->id)->rate }}%" @endisset>
                                 {{ $name($s) }} · {{ $s->schoolClass->name }}
                             </option>
                         @endforeach
