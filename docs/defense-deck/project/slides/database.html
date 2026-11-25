@@ -1,12 +1,12 @@
 <section id="database">
 <div class="head">
 <p class="eyebrow">Database</p>
-<h2>15 tables, one source of truth</h2>
+<h2>16 tables, one source of truth</h2>
 </div>
 <div class="grid3">
 <div class="card rise" style="--i:0">
-<p class="tag">School data · 9</p>
-<p>users · academic_years · school_classes · subjects · students · guardians · guardian_student · teaching_assignments · timetable_slots</p>
+<p class="tag">School data · 10</p>
+<p>users · academic_years · school_classes · subjects · students · guardians · guardian_student · teaching_assignments · timetable_slots · settings (school name)</p>
 </div>
 <div class="card rise" style="--i:1">
 <p class="tag">Attendance · 3</p>
@@ -23,5 +23,5 @@
 <div class="step"><x-icon name="Check" class="icon"></x-icon><p>Every change is logged; nothing is deleted</p></div>
 </div>
 <p class="pagenum"></p>
-<aside>The database has 15 project tables in three groups. Nine hold the school itself: users, classes, subjects, students, parents and the timetable. Three hold attendance: a session is one lesson, a record is one student in that lesson, and corrections is the audit log. Three support analytics and contact: follow-ups, every message sent to parents, and alerts. Three rules keep the data clean: one lesson per class, period and day; a status is only present or absent, with a reason; and every change is logged instead of deleted. The full ERD and data dictionary are in my report.</aside>
+<aside>The database has 16 project tables in three groups. Ten hold the school itself: users, classes, subjects, students, parents, the timetable, and the school settings such as the school name. Three hold attendance: a session is one lesson, a record is one student in that lesson, and corrections is the audit log. Three support analytics and contact: follow-ups, every message sent to parents, and alerts. Three rules keep the data clean: one lesson per class, period and day; a status is only present or absent, with a reason; and every change is logged instead of deleted. The full ERD and data dictionary are in my report.</aside>
 </section>

@@ -31,6 +31,7 @@ import com.school.attendance.R;
 import com.school.attendance.config.ApiError;
 import com.school.attendance.config.Config;
 import com.school.attendance.config.RetrofitInstance;
+import com.school.attendance.config.SchoolName;
 import com.school.attendance.config.Session;
 import com.school.attendance.models.LoginRequest;
 import com.school.attendance.models.LoginResponse;
@@ -75,6 +76,9 @@ public class LoginActivity extends AppCompatActivity {
         chkRemember = findViewById(R.id.chkRemember);
         btnSignIn = findViewById(R.id.btnSignIn);
         btnTheme = findViewById(R.id.btnTheme);
+        // Footer: the school name set by the admin on the website, then the year
+        SchoolName.show(findViewById(R.id.txtLoginFooter),
+                " · " + java.util.Calendar.getInstance().get(java.util.Calendar.YEAR));
 
         handleSystemBarsAndKeyboard();
         drawLanguageSwitch();

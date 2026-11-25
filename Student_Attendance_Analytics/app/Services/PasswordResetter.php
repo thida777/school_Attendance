@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Support\School;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -67,7 +68,7 @@ class PasswordResetter
         $this->telegram->send($user->telegram_chat_id,
             "លេខកូដប្តូរពាក្យសម្ងាត់របស់អ្នក៖ {$code}\nប្រើបានរយៈពេល ".self::CODE_MINUTES." នាទី។ កុំប្រាប់អ្នកណាទាំងអស់។\n\n"
             ."Your password reset code: {$code}\nIt works for ".self::CODE_MINUTES." minutes. Do not share it with anyone.\n\n"
-            .'— '.__('Demo High School', [], 'km').' / '.__('Demo High School', [], 'en'));
+            .School::signature());
     }
 
     /** Step 3. Changes the password, or throws a form error on "code". */

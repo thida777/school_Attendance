@@ -17,7 +17,7 @@
             <h1 class="text-4xl leading-tight font-semibold">{{ __('Student Attendance Analytics System') }}</h1>
             <p class="mt-4 max-w-md opacity-80">{{ __('Take attendance in one minute, and find the students who need help before it is too late.') }}</p>
         </div>
-        <p class="text-sm opacity-70">{{ __('Demo High School') }}</p>
+        <p class="text-sm opacity-70">{{ \App\Support\School::name() }}</p>
     </div>
 
     {{-- Right: login form --}}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v4 (short) · Student Attendance Analytics System</title>
+<title>ERD v5 (short) · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -36,7 +36,7 @@
       <h1>1. ERD: the project tables</h1>
       <div class="sub">Student Attendance Analytics System · Plan v2.0 · Laravel + MySQL · database <b>attendance_db</b></div>
     </div>
-    <div class="sub">Page 1 of 3 · 15 project tables · Crow's foot notation</div>
+    <div class="sub">Page 1 of 3 · 16 project tables · Crow's foot notation</div>
   </header>
 
   <div class="diagram">
@@ -207,6 +207,10 @@ erDiagram
     date date
     string message
     timestamp handled_at
+  }
+  settings {
+    string key PK "school_name_en, school_name_km"
+    text value
   }
 </pre>
   </div>
@@ -477,6 +481,15 @@ erDiagram
         <tr><td class="k">handled_by</td><td>bigint</td><td>FK → users.id</td></tr>
       </table>
       <p>Early warnings. Risk levels themselves are calculated, not stored: Critical (&lt;70% or 5+ days in a row), High (70–79%, 3–4 days or down 10+ points), Medium (80–89% or down 5–9), Low.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <caption>settings</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">key</td><td>varchar</td><td>Primary key, e.g. school_name_en, school_name_km</td></tr>
+        <tr><td>value</td><td>text</td><td>The value set by the admin on the School settings page</td></tr>
+      </table>
+      <p>School-wide settings. The school name appears on the website, in printed reports, in Telegram messages and in the Android app (through GET /api/v1/school).</p>
     </div>
   </div>
 </section>

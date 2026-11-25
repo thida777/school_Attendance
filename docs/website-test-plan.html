@@ -53,7 +53,7 @@
     <tr><td>Project</td><td>Student Attendance Analytics System for a high school in Cambodia</td></tr>
     <tr><td>Part tested</td><td>Laravel website and API v1, version of 23 November 2026 (Days 3–6: school data, attendance, analytics, follow-ups, reports, parent messages, forgot password), the online site <b>https://demohs-attendance.alwaysdata.net</b> and the Android app v1.1 (installation and main flow)</td></tr>
     <tr><td>Roles</td><td>Admin and Teacher (parents receive messages only; students do not log in)</td></tr>
-    <tr><td>Number of test cases</td><td>152 manual test cases in 21 groups, plus 126 automatic tests</td></tr>
+    <tr><td>Number of test cases</td><td>155 manual test cases in 22 groups, plus 129 automatic tests</td></tr>
     <tr><td>Tester</td><td>______________________________________</td></tr>
     <tr><td>Test date</td><td>______________________________________</td></tr>
   </table>
@@ -126,7 +126,7 @@
 
 <!-- ======================= 3. Automatic tests ======================= -->
 <h2>3. Automatic tests</h2>
-<p>The project contains 126 automatic tests (PHPUnit) in 16 files. They create their own temporary database, so they never change your real data. Run:</p>
+<p>The project contains 129 automatic tests (PHPUnit) in 17 files. They create their own temporary database, so they never change your real data. Run:</p>
 <pre>php artisan test</pre>
 <table>
   <thead><tr><th>Test file</th><th>What it checks</th><th>Tests</th></tr></thead>
@@ -146,10 +146,11 @@
     <tr><td>ParentMessagesTest</td><td>3-days-in-a-row alert (once per streak), demo mode, real Telegram, failure and resend, Message parent</td><td>5</td></tr>
     <tr><td>ForgotPasswordTest</td><td>Telegram code, wrong / old code, 5-try limit, same answer for every account, API, Teachers field</td><td>5</td></tr>
     <tr><td>KhmerValidationTest</td><td>Form errors in Khmer on the website and in the API; English stays English</td><td>3</td></tr>
+    <tr><td>SchoolSettingsTest</td><td>School name: change, shown on the website, API and messages; rules and roles</td><td>3</td></tr>
     <tr><td>ExampleTest</td><td>The home address answers</td><td>1</td></tr>
   </tbody>
 </table>
-<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 126 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
+<table class="fill"><tr><td style="width:60%">Expected: <b>Tests: 129 passed</b>. Result: ______ passed, ______ failed</td><td>☐ Pass &nbsp; ☐ Fail</td></tr></table>
 
 <!-- ======================= 4. Test cases ======================= -->
 <h2 class="page-break">4. Manual test cases</h2>
@@ -399,6 +400,13 @@ Only use it on test data.</div>
 <tr><td>U-08</td><td>Update without uninstalling</td><td>With v1.0 installed, install v1.1.</td><td>"Update" instead of "Install"; the app keeps working (same signature).</td><td>☐ Pass<br>☐ Fail</td></tr>
 </tbody></table>
 
+<h3>V. School settings (admin)</h3>
+<table class="cases"><thead><tr><th>ID</th><th>Test</th><th>Steps</th><th>Expected result</th><th>Result</th></tr></thead><tbody>
+<tr><td>V-01</td><td>Open the page</td><td>As admin, open School data → School settings.</td><td>Both names are filled in (Demo High School and វិទ្យាល័យសាកល្បង), with the box "Where the name appears".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>V-02</td><td>Change the name</td><td>Type a new English and Khmer name → Save. Look at the menu, log out, look at the login page, then switch to Khmer. Print a report (Reports → Export PDF). Reopen the Android app (v1.2). Afterwards set the old names back.</td><td>"School settings saved." The menu, the login page and the PDF header show the new name; in Khmer mode the Khmer name. The app's start and login screens show it too. The next Telegram message ends with "— Khmer name / English name".</td><td>☐ Pass<br>☐ Fail</td></tr>
+<tr><td>V-03</td><td>Rules</td><td>Save with the English name empty. Then, as Pen Sovann, type the address /settings/school.</td><td>A red error under the English name; nothing changes. The teacher gets the "No permission" page (403).</td><td>☐ Pass<br>☐ Fail</td></tr>
+</tbody></table>
+
 <!-- ======================= 5. Bugs and summary ======================= -->
 <h2 class="page-break">5. Bug report</h2>
 <p class="small">Write one line for each failed test. Severity: High = data wrong or lost, page cannot be used · Medium = feature wrong but a way around exists · Low = text, layout or translation.</p>
@@ -422,7 +430,7 @@ Only use it on test data.</div>
 <table class="fill">
   <thead><tr><th>Group</th><th style="width:20mm">Cases</th><th style="width:20mm">Passed</th><th style="width:20mm">Failed</th></tr></thead>
   <tbody>
-    <tr><td>3. Automatic tests</td><td>126</td><td></td><td></td></tr>
+    <tr><td>3. Automatic tests</td><td>129</td><td></td><td></td></tr>
     <tr><td>A. Login, logout and roles</td><td>9</td><td></td><td></td></tr>
     <tr><td>B. Language and theme</td><td>4</td><td></td><td></td></tr>
     <tr><td>C. Students</td><td>10</td><td></td><td></td></tr>
@@ -444,7 +452,8 @@ Only use it on test data.</div>
     <tr><td>S. Parent messages</td><td>7</td><td></td><td></td></tr>
     <tr><td>T. Forgot password and Khmer errors</td><td>8</td><td></td><td></td></tr>
     <tr><td>U. Online site and Android app</td><td>8</td><td></td><td></td></tr>
-    <tr><th>Total manual</th><th>152</th><th></th><th></th></tr>
+    <tr><td>V. School settings</td><td>3</td><td></td><td></td></tr>
+    <tr><th>Total manual</th><th>155</th><th></th><th></th></tr>
   </tbody>
 </table>
 <table class="meta" style="margin-top:8mm">

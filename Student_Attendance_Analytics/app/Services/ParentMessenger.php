@@ -7,6 +7,7 @@ use App\Models\ParentMessage;
 use App\Models\Student;
 use App\Models\User;
 use App\Support\Risk;
+use App\Support\School;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -102,7 +103,7 @@ class ParentMessenger
             ."សូមទាក់ទងគ្រូបន្ទុកថ្នាក់ {$teacherKm} {$phone}។\n\n"
             ."Hello {$guardian->name}, your child {$student->name_latin} ({$student->schoolClass->name}) has been absent "
             ."{$days} school days in a row (latest: {$date->format('j M Y')}). Please contact the homeroom teacher {$teacher}, {$phone}.\n\n"
-            .'— '.__('Demo High School', [], 'km').' / '.__('Demo High School', [], 'en');
+            .School::signature();
     }
 
     /** Starting text for a message the admin writes by hand: the attendance this month. */
@@ -120,7 +121,7 @@ class ParentMessenger
             ."សូមជួយលើកទឹកចិត្តកូនឲ្យមករៀនទៀងទាត់។ ចង់សួរព័ត៌មាន សូមទាក់ទងគ្រូបន្ទុកថ្នាក់ {$teacherKm} {$phone}។\n\n"
             ."Hello {$guardian->name}, this month {$student->name_latin} ({$student->schoolClass->name}) has an attendance rate of {$rate}% "
             ."({$absent} lessons missed). Please help your child come to school every day. For questions, contact the homeroom teacher {$teacher}, {$phone}.\n\n"
-            .'— '.__('Demo High School', [], 'km').' / '.__('Demo High School', [], 'en');
+            .School::signature();
     }
 
     /** Homeroom teacher: [name, Khmer name, phone] (or the school office). */

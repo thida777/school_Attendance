@@ -31,6 +31,7 @@ return [
             ['route' => 'teachers.index', 'icon' => 'graduation-cap', 'label' => 'Teachers'],
             ['route' => 'parents.index', 'icon' => 'contact', 'label' => 'Parents'],
             ['route' => 'assignments.index', 'icon' => 'calendar-check', 'label' => 'Teaching Assignments'],
+            ['route' => 'settings.school', 'icon' => 'settings', 'label' => 'School settings'],
         ],
         'Account' => [
             ['route' => 'profile', 'icon' => 'circle-user', 'label' => 'Profile'],

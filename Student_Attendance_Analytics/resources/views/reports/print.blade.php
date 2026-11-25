@@ -49,7 +49,7 @@
         {{-- Heading --}}
         <header class="flex items-start justify-between gap-4 border-b-2 border-[#1f2d3a] pb-4">
             <div>
-                <p class="text-xs tracking-wide uppercase opacity-60">{{ __('Demo High School') }}</p>
+                <p class="text-xs tracking-wide uppercase opacity-60">{{ \App\Support\School::name() }}</p>
                 <h1 class="mt-1 text-2xl font-bold">{{ __('Attendance report') }}</h1>
                 <p class="mt-1">{{ $date($report->from) }} – {{ $date($report->to) }}</p>
                 <p class="opacity-70">

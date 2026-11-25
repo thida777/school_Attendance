@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SchoolClassController;
+use App\Http\Controllers\SchoolSettingsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -68,6 +69,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/messages/{message}/resend', [ParentMessageController::class, 'resend'])->name('messages.resend');
         Route::get('/reports', [ReportController::class, 'index'])->name('reports');
         Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
+
+        // School settings: the school name (website, app, reports, Telegram)
+        Route::get('/settings/school', [SchoolSettingsController::class, 'edit'])->name('settings.school');
+        Route::put('/settings/school', [SchoolSettingsController::class, 'update'])->name('settings.school.update');
 
         // School data: list, add, edit and delete on one page with pop-up forms
         $crud = ['index', 'store', 'update', 'destroy'];

@@ -2,7 +2,7 @@
     <!-- Khmer. Same names as values/strings.xml. -->
     <string name="app_name">វត្តមាន</string>
     <string name="app_full_name">ប្រព័ន្ធវិភាគវត្តមានសិស្ស</string>
-    <string name="school_name">វិទ្យាល័យ</string>
+    <string name="school_name">វិទ្យាល័យសាកល្បង</string>
 
     <!-- Login -->
     <string name="sign_in">ចូលប្រើ</string>
@@ -14,7 +14,7 @@
     <string name="forgot_password">ភ្លេចពាក្យសម្ងាត់?</string>
     <string name="forgot_info">សូមស្នើឱ្យអ្នកគ្រប់គ្រងសាលាកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។</string>
     <string name="signing_in">កំពុងចូល…</string>
-    <string name="login_footer">វិទ្យាល័យ · 2026</string>
+    <string name="login_footer">វិទ្យាល័យសាកល្បង · 2026</string>
     <string name="fill_all">សូមបញ្ចូលលេខទូរស័ព្ទ និងពាក្យសម្ងាត់។</string>
     <string name="switch_theme">ប្តូរពន្លឺ ឬងងឹត</string>
     <string name="lang_en">EN</string>

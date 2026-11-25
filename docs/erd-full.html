@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ERD v4 · Student Attendance Analytics System</title>
+<title>ERD v5 · Student Attendance Analytics System</title>
 <style>
   @page { size: A3 landscape; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -36,7 +36,7 @@
       <h1>1. ERD: the project tables</h1>
       <div class="sub">Student Attendance Analytics System · Plan v2.0 · Laravel + MySQL · database <b>attendance_db</b></div>
     </div>
-    <div class="sub">Page 1 of 7 · 15 project tables · Crow's foot notation</div>
+    <div class="sub">Page 1 of 7 · 16 project tables · Crow's foot notation</div>
   </header>
 
   <div class="diagram">
@@ -208,6 +208,10 @@ erDiagram
     string message
     timestamp handled_at
   }
+  settings {
+    string key PK "school_name_en, school_name_km"
+    text value
+  }
 </pre>
   </div>
 
@@ -228,7 +232,7 @@ erDiagram
   <header>
     <div>
       <h1>2. Full database ERD: all linked tables</h1>
-      <div class="sub">The 15 project tables (key columns only) plus the Laravel tables that link to users: app login tokens, web sessions and password reset</div>
+      <div class="sub">The 16 project tables (key columns only) plus the Laravel tables that link to users: app login tokens, web sessions and password reset</div>
     </div>
     <div class="sub">Page 2 of 7 · database attendance_db</div>
   </header>
@@ -336,6 +340,9 @@ erDiagram
     bigint teacher_id FK
     bigint student_id FK
     bigint timetable_slot_id FK
+  }
+  settings {
+    string key PK
   }
   personal_access_tokens {
     bigint id PK
@@ -613,6 +620,15 @@ erDiagram
       </table>
       <p>Early warnings. Risk levels themselves are calculated, not stored: Critical (&lt;70% or 5+ days in a row), High (70–79%, 3–4 days or down 10+ points), Medium (80–89% or down 5–9), Low.</p>
     </div>
+    <div class="tbl">
+      <table>
+        <caption>settings</caption>
+        <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        <tr><td class="k">key</td><td>varchar</td><td>Primary key, e.g. school_name_en, school_name_km</td></tr>
+        <tr><td>value</td><td>text</td><td>The value set by the admin on the School settings page</td></tr>
+      </table>
+      <p>School-wide settings. The school name appears on the website, in printed reports, in Telegram messages and in the Android app (through GET /api/v1/school).</p>
+    </div>
   </div>
 </section>
 
@@ -828,15 +844,16 @@ erDiagram
         <tr><td>13</td><td>interventions</td><td>Project</td><td>Built ✓</td></tr>
         <tr><td>14</td><td>parent_messages</td><td>Project</td><td>Built ✓</td></tr>
         <tr><td>15</td><td>alerts</td><td>Project</td><td>Built ✓</td></tr>
-        <tr><td>16</td><td>personal_access_tokens</td><td>Framework</td><td>Built ✓ (Sanctum)</td></tr>
-        <tr><td>17</td><td>sessions</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>18</td><td>password_reset_tokens</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>19</td><td>cache</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>20</td><td>cache_locks</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>21</td><td>jobs</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>22</td><td>job_batches</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>23</td><td>failed_jobs</td><td>Framework</td><td>Laravel default ✓</td></tr>
-        <tr><td>24</td><td>migrations</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>16</td><td>settings</td><td>Project</td><td>Built ✓</td></tr>
+        <tr><td>17</td><td>personal_access_tokens</td><td>Framework</td><td>Built ✓ (Sanctum)</td></tr>
+        <tr><td>18</td><td>sessions</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>19</td><td>password_reset_tokens</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>20</td><td>cache</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>21</td><td>cache_locks</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>22</td><td>jobs</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>23</td><td>job_batches</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>24</td><td>failed_jobs</td><td>Framework</td><td>Laravel default ✓</td></tr>
+        <tr><td>25</td><td>migrations</td><td>Framework</td><td>Laravel default ✓</td></tr>
       </table>
       <p>✓ = already in attendance_db. personal_access_tokens was added with Laravel Sanctum for the Android app.</p>
     </div>

@@ -662,5 +662,16 @@
     "Phone number or email": "លេខទូរស័ព្ទ ឬអ៊ីមែល",
     "e.g. 012 345 678": "ឧ. 012 345 678",
     "Enter your password": "បញ្ចូលពាក្យសម្ងាត់",
-    "Type it again": "វាយម្តងទៀត"
+    "Type it again": "វាយម្តងទៀត",
+    "School settings": "ការកំណត់សាលា",
+    "School name": "ឈ្មោះសាលា",
+    "School name (English)": "ឈ្មោះសាលា (អង់គ្លេស)",
+    "School name (Khmer)": "ឈ្មោះសាលា (ខ្មែរ)",
+    "School settings saved.": "បានរក្សាទុកការកំណត់សាលា។",
+    "Type the name in both languages. Each page shows the one that matches its language.": "សូមវាយឈ្មោះជាពីរភាសា។ ទំព័រនីមួយៗបង្ហាញឈ្មោះតាមភាសារបស់វា។",
+    "Where the name appears": "កន្លែងដែលឈ្មោះបង្ហាញ",
+    "The website: the menu and the login page": "គេហទំព័រ៖ ម៉ឺនុយ និងទំព័រចូលប្រើ",
+    "The Android app: the login and start screens": "កម្មវិធី Android៖ អេក្រង់ចូលប្រើ និងអេក្រង់ចាប់ផ្តើម",
+    "Printed reports (PDF)": "របាយការណ៍បោះពុម្ព (PDF)",
+    "Telegram messages to parents and password codes (Khmer name first, then English)": "សារ Telegram ទៅអាណាព្យាបាល និងលេខកូដពាក្យសម្ងាត់ (ឈ្មោះខ្មែរមុន បន្ទាប់មកអង់គ្លេស)"
 }

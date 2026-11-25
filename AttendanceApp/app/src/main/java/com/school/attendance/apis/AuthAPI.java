@@ -3,6 +3,7 @@ package com.school.attendance.apis;
 import com.school.attendance.models.ApiMessage;
 import com.school.attendance.models.ForgotRequest;
 import com.school.attendance.models.ResetRequest;
+import com.school.attendance.models.SchoolResponse;
 import com.school.attendance.models.LocaleRequest;
 import com.school.attendance.models.LoginRequest;
 import com.school.attendance.models.LoginResponse;
@@ -25,6 +26,10 @@ public interface AuthAPI {
     /** POST /api/v1/login → token + teacher. Admin accounts get 403 (the app is for teachers). */
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest body);
+
+    /** GET /api/v1/school → the school name set by the admin (no login needed). */
+    @GET("school")
+    Call<SchoolResponse> school();
 
     /** POST /api/v1/password/forgot → the school bot sends a 6-digit code (same answer for every account). */
     @POST("password/forgot")

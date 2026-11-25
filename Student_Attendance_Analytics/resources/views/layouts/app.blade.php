@@ -93,7 +93,7 @@
                 </span>
                 <span>
                     <span class="block leading-tight font-semibold">{{ __('Attendance') }}</span>
-                    <span class="block text-xs opacity-60">{{ __('Demo High School') }}</span>
+                    <span class="block text-xs opacity-60">{{ \App\Support\School::name() }}</span>
                 </span>
             </a>
             <ul class="menu w-full grow gap-1 px-3">

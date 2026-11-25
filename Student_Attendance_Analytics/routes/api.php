@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\HistoryController;
 use App\Http\Controllers\Api\V1\TeachingController;
+use App\Http\Controllers\SchoolSettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
  */
 Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // 5 tries per minute
+
+    // The school name for the app's login and start screens (no login needed)
+    Route::get('/school', [SchoolSettingsController::class, 'show'])->middleware('throttle:60,1');
 
     // Forgot password: a code by Telegram, then a new password (same rules as the website)
     Route::post('/password/forgot', [AuthController::class, 'forgot'])->middleware('throttle:5,1');

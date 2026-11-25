@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.school.attendance.R;
+import com.school.attendance.config.SchoolName;
 import com.school.attendance.config.Session;
 import com.school.attendance.config.RetrofitInstance;
 import com.school.attendance.models.UserResponse;
@@ -48,6 +49,7 @@ public class SplashActivity extends AppCompatActivity {
         EdgeToEdge.enable(this, SystemBarStyle.dark(Color.TRANSPARENT), SystemBarStyle.dark(Color.TRANSPARENT));
         setContentView(R.layout.activity_splash);
         keepFooterAboveNavigationBar();
+        SchoolName.show(findViewById(R.id.splashFooter), ""); // the name set by the admin on the website
         startedAt = SystemClock.elapsedRealtime();
 
         // "Remember me" was off: a new start of the app means signing in again

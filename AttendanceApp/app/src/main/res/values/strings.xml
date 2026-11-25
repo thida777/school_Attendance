@@ -2,7 +2,7 @@
     <!-- English. The Khmer text is in values-km/strings.xml with the same names. -->
     <string name="app_name">Attendance</string>
     <string name="app_full_name">Student Attendance Analytics System</string>
-    <string name="school_name">High School</string>
+    <string name="school_name">Demo High School</string>
 
     <!-- Login -->
     <string name="sign_in">Sign In</string>
@@ -14,7 +14,7 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="forgot_info">Ask the school admin to reset your password.</string>
     <string name="signing_in">Signing in…</string>
-    <string name="login_footer">High School · 2026</string>
+    <string name="login_footer">Demo High School · 2026</string>
     <string name="fill_all">Please enter your phone number and password.</string>
     <string name="switch_theme">Switch light or dark</string>
     <string name="lang_en">EN</string>
