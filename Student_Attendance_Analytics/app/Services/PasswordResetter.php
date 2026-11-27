@@ -74,14 +74,15 @@ class PasswordResetter
     /** Step 3. Changes the password, or throws a form error on "code". */
     public function reset(string $login, string $code, string $password): User
     {
-        $tries = 'reset-try:'.Str::lower(trim($login));
+        // Wrong codes are counted per account: "012 345 678", "012345678" and "012-345-678" share the same 5 tries
+        $user = $this->find($login);
+        $tries = 'reset-try:'.($user ? 'user:'.$user->id : Str::lower(preg_replace('/[\s\-.]/', '', $login)));
         if (RateLimiter::tooManyAttempts($tries, self::MAX_TRIES)) {
             throw ValidationException::withMessages(['code' => __('Too many attempts. Try again in :seconds seconds.', [
                 'seconds' => RateLimiter::availableIn($tries),
             ])]);
         }
 
-        $user = $this->find($login);
         $row = $user ? DB::table('password_reset_tokens')->where('email', $this->key($user))->first() : null;
         $valid = $row
             && Carbon::parse($row->created_at)->gt(now()->subMinutes(self::CODE_MINUTES))

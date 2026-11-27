@@ -2,6 +2,7 @@ import ApexCharts from 'apexcharts';
 import { createIcons, icons } from 'lucide';
 import { initAttendance } from './attendance';
 import { initDatePickers } from './date-picker';
+import { initKhmerFormMessages } from './form-messages';
 import { initSelectPickers } from './select-picker';
 
 /* ---------- Icons: <i data-lucide="name"> becomes an SVG icon ---------- */
@@ -179,6 +180,7 @@ drawThemeButtons();
 /* ---------- Date boxes with a modern calendar ---------- */
 initDatePickers(drawIcons);
 initSelectPickers(drawIcons);
+initKhmerFormMessages();
 
 /* Live summary under a form: <p data-summary> lists what is picked, e.g. "10A · Biology · Mon, 9 Nov 2026 · Period 1" */
 document.querySelectorAll('form [data-summary]').forEach((summary) => {

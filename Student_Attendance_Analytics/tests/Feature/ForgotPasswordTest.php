@@ -87,6 +87,22 @@ class ForgotPasswordTest extends TestCase
         $this->assertSame($old, $this->teacher->refresh()->password); // even the right code is refused now
     }
 
+    public function test_the_5_tries_count_for_the_account_however_the_phone_is_typed(): void
+    {
+        $this->post('/forgot-password', ['login' => '012 345 678']);
+        $code = $this->sentCode();
+        $form = ['password' => 'NewPass2026', 'password_confirmation' => 'NewPass2026'];
+
+        // 5 wrong codes, each time the same phone number written another way
+        foreach (['012 345 678', '012345678', '012-345-678', ' 012345678 ', '012.345.678'] as $login) {
+            $this->post('/reset-password', [...$form, 'login' => $login, 'code' => '111111'])->assertSessionHasErrors('code');
+        }
+
+        $this->post('/reset-password', [...$form, 'login' => '012345678', 'code' => $code])->assertSessionHasErrors('code');
+        $this->assertStringStartsWith('Too many attempts.', session('errors')->first('code'));
+        $this->assertFalse(Hash::check('NewPass2026', $this->teacher->refresh()->password));
+    }
+
     public function test_unknown_accounts_and_accounts_without_telegram_get_the_same_answer_and_no_message(): void
     {
         $this->post('/forgot-password', ['login' => '099999999'])->assertRedirect('/reset-password?login=099999999');
