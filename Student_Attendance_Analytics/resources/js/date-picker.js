@@ -68,7 +68,9 @@ function build(input, drawIcons) {
     const pop = document.createElement('div');
     pop.className = 'date-pop bg-base-100 border-base-300 rounded-box fixed z-50 hidden w-72 border p-3 shadow-xl';
     pop.setAttribute('role', 'dialog');
-    document.body.append(pop);
+    // Inside a pop-up form (<dialog>) the calendar must live in the dialog too:
+    // an open dialog is drawn above the whole page, so a calendar in <body> would be hidden behind it.
+    (input.closest('dialog') || document.body).append(pop);
 
     let view = fromIso(input.value) || max || new Date(); // the month on screen
     view = new Date(view.getFullYear(), view.getMonth(), 1);
