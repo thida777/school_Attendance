@@ -51,7 +51,7 @@
                 <div class="stat-desc truncate">{{ $classNames ? implode(' · ', $classNames) : '—' }}</div>
             </div>
         </a>
-        <a href="{{ route('teacher.classes') }}" class="stats bg-base-100 border-base-300 border transition hover:shadow-md">
+        <a href="{{ route('teacher.classes') }}#students" class="stats bg-base-100 border-base-300 border transition hover:shadow-md">
             <div class="stat">
                 <div class="stat-figure"><i data-lucide="users"></i></div>
                 <div class="stat-title">{{ __('My students') }}</div>
@@ -130,7 +130,7 @@
                 <h3 class="card-title text-base">{{ __('Students to watch') }}</h3>
                 @forelse ($watch as $w)
                     @php [$badge, $label] = $simple($w['risk']->level); $s = $w['student']; @endphp
-                    <a href="{{ route('teacher.classes', ['class' => $s->school_class_id, 'q' => $s->student_code]) }}" class="hover:bg-base-200 rounded-box -mx-2 flex items-center gap-3 p-2">
+                    <a href="{{ route('teacher.classes', ['class' => $s->school_class_id, 'q' => $s->student_code]) }}#students" class="hover:bg-base-200 rounded-box -mx-2 flex items-center gap-3 p-2">
                         <div class="min-w-0 grow">
                             <div class="truncate font-medium">{{ $km ? $s->name_km : $s->name_latin }}</div>
                             <div class="text-xs opacity-60">

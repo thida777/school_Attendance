@@ -49,7 +49,7 @@
                         @include('partials.class-rate', [
                             'rate' => $rate,
                             'atRisk' => $atRisk[$class->id] ?? 0,
-                            'riskLink' => route('teacher.classes', ['class' => $class->id]),
+                            'riskLink' => route('teacher.classes', ['class' => $class->id]).'#students',
                         ])
                         <dl class="mt-3 grid grid-cols-2 gap-y-1 text-sm">
                             <dt class="opacity-60">{{ __('Students') }}</dt>
@@ -82,11 +82,11 @@
         </div>
 
         {{-- Students of my classes (read only) --}}
-        <div class="card bg-base-100 border-base-300 border scroll-mt-4" data-list>
+        <div id="students" class="card bg-base-100 border-base-300 border scroll-mt-28" data-list>
             <div class="card-body">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <h3 class="card-title text-base">{{ __('Students in my classes') }}</h3>
-                    <form method="GET" action="{{ route('teacher.classes') }}" class="flex flex-wrap gap-2" data-auto-submit>
+                    <form method="GET" action="{{ route('teacher.classes') }}#students" class="flex flex-wrap gap-2" data-auto-submit>
                         <label class="input w-auto">
                             <i data-lucide="search" class="size-4 opacity-50"></i>
                             <input type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('Search name or ID') }}" />
