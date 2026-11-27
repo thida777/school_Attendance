@@ -1,0 +1,201 @@
+<mxfile host="app.diagrams.net" agent="Claude Code" version="24.0.0">
+  <diagram id="add-student" name="Add student">
+    <mxGraphModel dx="1200" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="950" pageHeight="1920" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;Add a student – Student Attendance Analytics System&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;Website · School data → Students · only the admin can do this · the student and the parent are saved together&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="100" y="10" width="660" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Main column (centre x = 430) -->
+        <mxCell id="start" value="Start&lt;br&gt;Admin is logged in" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" value="Open &lt;b&gt;Students&lt;/b&gt; page (/students)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;list, search, filters&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="330" y="170" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" value="User is admin?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="340" y="260" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" value="Click &lt;b&gt;+ Add student&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="330" y="380" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" value="&lt;b&gt;Pop-up form&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Photo (optional)&lt;br&gt;Name (Khmer) · Name (Latin)&lt;br&gt;Student code · Gender&lt;br&gt;Date of birth (optional)&lt;br&gt;Class · Status (Studying / Left school)&lt;br&gt;Parent name · Parent phone · Relation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="320" y="460" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="p4" value="Admin fills in and clicks&lt;br&gt;&lt;b&gt;Save student&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="330" y="620" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" value="Required boxes filled?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(checked by the browser)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="320" y="700" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p5" value="Server cleans the data&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;student code → capitals (s-10a-099 = S-10A-099)&lt;br&gt;parent phone → digits only (012 888 999 = 012888999)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="850" width="260" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" value="&lt;b&gt;All rules OK?&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;names filled · student code not used&lt;br&gt;gender · class exists · birth date before today&lt;br&gt;parent name · phone 8–12 digits · relation&lt;br&gt;photo: JPG/PNG/WebP, max 5 MB, min 100×100&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="270" y="960" width="320" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="p6" value="&lt;b&gt;Save the student&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;student + parent + photo are saved together:&lt;br&gt;if one part fails, nothing is saved&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="315" y="1170" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" value="A parent with this&lt;br&gt;phone already exists?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="320" y="1260" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="pYes" value="Use that parent&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(name updated) · brothers and sisters&lt;br&gt;share one parent and one Telegram&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1285" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pNo" value="Create a new parent&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;not on Telegram yet → messages by SMS&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1285" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p7" value="Link parent ↔ student&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;with the relation (Father / Mother / Guardian)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="315" y="1410" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d5" value="Photo chosen?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1500" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="pPhoto" value="Save the photo&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;cut to a square, made small (400×400)&lt;br&gt;kept private: shown only with a signed link&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1515" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p8" value="Green message &lt;b&gt;&quot;Student saved.&quot;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;the new student is in the list&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="330" y="1630" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="end" value="End&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;the student is in the class list,&lt;br&gt;Take Attendance and the teacher app&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="1720" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Error boxes (left) -->
+        <mxCell id="e0" value="&quot;No permission&quot; page&lt;br&gt;(403)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;teachers can only look at students&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="275" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="Browser bubble:&lt;br&gt;&quot;Please fill in this field.&quot;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(Khmer page: សូមបញ្ចូល ឈ្មោះ (ខ្មែរ)។)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="725" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="&lt;b&gt;Nothing is saved&lt;/b&gt;&lt;br&gt;Pop-up opens again, typed values kept,&lt;br&gt;red message under each wrong box&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;e.g. &quot;The student code has already been taken.&quot;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1000" width="230" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Next steps (right) -->
+        <mxCell id="n1" value="&lt;b&gt;Next (optional)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Parents page: Telegram QR invite,&lt;br&gt;so the parent gets absence alerts&lt;br&gt;by Telegram instead of SMS&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1625" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows: main path -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="start" target="p1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p1" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d1" target="p2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p2" target="p3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p3" target="p4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p4" target="d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" value="Yes&lt;br&gt;send to server" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d2" target="p5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p5" target="d3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a9" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d3" target="p6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p6" target="d4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a11" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d4" target="pYes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a12" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d4" target="pNo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pYes" target="p7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pNo" target="p7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a15" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p7" target="d5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a16" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d5" target="pPhoto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a17" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pPhoto" target="p8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="1605" />
+              <mxPoint x="430" y="1605" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a18" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d5" target="p8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a19" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;" edge="1" parent="1" source="p8" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a20" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;dashed=1;" edge="1" parent="1" source="p8" target="n1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows: errors -->
+        <mxCell id="a21" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d1" target="e0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a22" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d2" target="e1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a23" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontStyle=1;" edge="1" parent="1" source="d3" target="e2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Back to the form -->
+        <mxCell id="b1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#b85450;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="e1" target="p3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="35" y="755" />
+              <mxPoint x="35" y="525" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b2" value="back to the form&lt;br&gt;(fix and save again)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#b85450;fontColor=#b85450;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="e2" target="p3">
+          <mxGeometry x="0.6" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="15" y="1045" />
+              <mxPoint x="15" y="525" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="lg1" value="Start / End" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="90" y="1840" width="100" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="lg2" value="Step" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1840" width="100" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="lg3" value="Decision" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="370" y="1834" width="100" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="lg4" value="Error message" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="510" y="1840" width="100" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="lg5" value="Optional next step" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="650" y="1840" width="110" height="36" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
