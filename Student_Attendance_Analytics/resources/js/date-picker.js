@@ -140,7 +140,9 @@ function build(input, drawIcons) {
         const r = button.getBoundingClientRect();
         const h = pop.offsetHeight;
         const below = window.innerHeight - r.bottom;
-        const top = below < h + 12 && r.top > h + 12 ? r.top - h - 8 : r.bottom + 8;
+        let top = below < h + 12 && r.top > h + 12 ? r.top - h - 8 : r.bottom + 8;
+        // On a short screen it fits neither below nor above: keep it whole on the screen
+        top = Math.max(8, Math.min(top, window.innerHeight - h - 8));
         const left = Math.min(Math.max(8, r.left), window.innerWidth - pop.offsetWidth - 8);
         pop.style.top = `${top}px`;
         pop.style.left = `${left}px`;
